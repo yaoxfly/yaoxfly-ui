@@ -1,7 +1,7 @@
 <!--
 * @Author: yx
 * @Description: 上传组件
-* @Date: 2020-11-06
+* @Date: 2020-11-05
 -->
 <template>
   <div>
