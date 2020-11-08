@@ -1,0 +1,33 @@
+/*常用的一些初始化样式--一定要放在element-ui的前面，某些样式可能会影响element-ui的类*/
+* {
+  /*css3的盒子模型，可以让border和padding不会撑大盒子。*/
+  box-sizing: border-box;
+}
+
+//em和i协调的文字不倾斜
+em,
+i {
+  font-style: normal;
+}
+
+//去掉li的小圆点
+li {
+  list-style: none;
+}
+
+img {
+  /*border:0 照顾低版本浏览器， 如果图片外面包含了链接会有边框的问题*/
+  border: 0;
+  //取消图片底侧有空白缝隙的问题
+  vertical-align: middle;
+}
+
+button {
+  /*当我们鼠标经过button 按钮的时候，鼠标会变成小手*/
+  cursor: pointer;
+}
+
+a {
+  //隐藏蓝色的线
+  text-decoration: none;
+}
