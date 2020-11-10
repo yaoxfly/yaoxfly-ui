@@ -9,7 +9,7 @@
     <el-form
       ref="formValidate"
       :model="model"
-      :rules="ruleValidate"
+      :rules="rules"
       :label-width="'0px'"
     >
       <section class="eve-select-form__flex">
@@ -44,10 +44,10 @@
               <slot name="input"></slot>
             </section>
 
-            <!--time-picker -->
+            <!--date-picker -->
             <section
               class="eve-select-form__flex-row-center"
-              :key="`time-picker${index}`"
+              :key="`date-picker${index}`"
               v-if="item.type === 'date'"
             >
               <label
@@ -64,11 +64,48 @@
               >
                 <slot :name="item.prop" :row="item" :data="data">
                   <el-date-picker
-                    type="date"
+                    :type="item.pickerType"
                     v-model="model[item.prop]"
                     :placeholder="item.placeholder || '选择日期'"
                     :style="{ width: `${getFormWidth(item.formWidth)}px` }"
+                    :value-format="
+                      pickerFormat(item.valueFormat, item.pickerType, item.type)
+                    "
                   ></el-date-picker>
+                </slot>
+              </el-form-item>
+              <slot name="datePicker"></slot>
+            </section>
+
+            <!--time-picker -->
+            <section
+              class="eve-select-form__flex-row-center"
+              :key="`time-picker${index}`"
+              v-if="item.type === 'time'"
+            >
+              <label
+                class="eve-select-form__from-lable"
+                :style="{ width: `${getLabelWidth(item.labelWidth)}px` }"
+                :class="[checkHidden(index)]"
+                >{{ item.label }}</label
+              >
+
+              <el-form-item
+                :prop="item.prop"
+                class="eve-select-form__formItem"
+                :class="[checkHidden(index)]"
+              >
+                <slot :name="item.prop" :row="item" :data="data">
+                  <el-time-picker
+                    v-model="model[item.prop]"
+                    :picker-options="item.pickerOptions"
+                    :style="{ width: `${getFormWidth(item.formWidth)}px` }"
+                    :placeholder="item.placeholder || '选择时间'"
+                    :value-format="
+                      pickerFormat(item.valueFormat, item.pickerType, item.type)
+                    "
+                  >
+                  </el-time-picker>
                 </slot>
               </el-form-item>
               <slot name="timePicker"></slot>
@@ -283,9 +320,17 @@ export default {
           ]
         },
         {
-          label: '时间：',
+          label: '日期：',
           prop: 'date',
           type: 'date',
+          pickerType: 'datetime', //类型可选为:date、datetime
+          // valueFormat: 'yyyy-MM-dd HH:mm:ss' //可以传进去自定义输出格式
+        },
+        {
+          label: '时间：',
+          prop: 'time',
+          type: 'time',
+          pickerOptions: { selectableRange: '15:30:00 - 20:30:00' }
         }
       ]
     },
@@ -302,22 +347,21 @@ export default {
       })
     },
 
-
-    // 规则验证
-    ruleValidate: {
+    // 规则验证--名字有变更之前是ruleValidate
+    rules: {
       type: Object,
       default: () => ({
         // name: [
         //   {
         //     required: true,
-        //     message: "The name cannot be empty",
-        //     trigger: "blur"
+        //     message: 'The name cannot be empty',
+        //     trigger: 'blur'
         //   },
         //   {
-        //     type: "string",
+        //     type: 'string',
         //     min: 20,
-        //     message: "Introduce no less than 20 words",
-        //     trigger: "blur"
+        //     message: 'Introduce no less than 20 words',
+        //     trigger: 'blur'
         //   }
         // ],
         // department: [
@@ -475,10 +519,32 @@ export default {
         return width || this.labelWidth
       }
     },
+
     //获取表单局部或全局的宽度--用户在局部有传formWidth就使用局部的，局部覆盖全局
     getFormWidth () {
       return function (width) {
         return width || this.formWidth
+      }
+    },
+
+    //日期/时间 输出格式
+    pickerFormat () {
+      return function (valueFormat, pickerType, type) {
+        if (valueFormat) {
+          return valueFormat
+        }
+        if (type === 'time') {
+          return 'HH:mm:ss'
+        }
+        const KeyMap = {
+          datetime: () => {
+            return 'yyyy-MM-dd HH:mm:ss'
+          },
+          date: () => {
+            return 'yyyy-MM-dd'
+          }
+        }
+        return KeyMap[pickerType] && KeyMap[pickerType]()
       }
     }
   }

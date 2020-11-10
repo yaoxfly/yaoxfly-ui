@@ -1,4 +1,4 @@
-import { vueClonedeep, setValue, getPropertyDataFromNestObj } from '../../../lib/utils'
+import { vueClonedeep, setValue, getPropertyDataFromNestObj, getKey } from '../../../lib/utils'
 import Vue from 'vue'
 
 export default {
@@ -28,7 +28,7 @@ export default {
         // 复制一个表单项
         const cloned = vueClonedeep(list[index])
         // 设置新的key值
-        let key = `form_field_${(Math.random() * 10 ** 5).toFixed(0)}`
+        let key = `form_field_${getKey()}`
         // 对于高级组件（大部分是布局组件）会加一个layout前缀
         if (cloned.category === 'layout') {
           key = 'layout_' + key
@@ -50,7 +50,7 @@ export default {
   /**
    * 添加表单项后对表单项进行初始设置
    */
-  COMMIT_FORM_ITEM_INIT: (state, { element, index, list }) => {
+  COMMIT_FORM_ITEM_INIT: (state, { element, index, list, elFormItem, common }) => {
     // 添加新的配置项
     const newFormItem = vueClonedeep(element)
     // 每一项的唯一编号，根据这个编号进行表单项的配置定位
@@ -60,11 +60,13 @@ export default {
       key = 'layout_' + key
     } else {
       // newFormItem.fieldName = key
-      const elFormItem = vueClonedeep(state.elFormItem)
-      elFormItem.formItemLabel = newFormItem.label
-      elFormItem.fieldName = key
-      Vue.set(newFormItem, 'elFormItem', elFormItem)
+      const theElFormItem = vueClonedeep(elFormItem)
+      theElFormItem.formItemLabel = newFormItem.label
+      theElFormItem.fieldName = key
+      Vue.set(newFormItem, 'elFormItem', theElFormItem)
     }
+    const theCommon = vueClonedeep(common)
+    Vue.set(newFormItem, 'common', theCommon)
     Vue.set(newFormItem, 'key', key)
     Vue.set(list, index, newFormItem)
     state.activateItem = newFormItem

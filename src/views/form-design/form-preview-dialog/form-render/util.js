@@ -9,6 +9,11 @@ import _ from 'lodash'
 export const buildRender = (h, formItemList, instance) => {
   const renders = []
   formItemList.forEach(formItem => {
+    if (!curCompCanShow(formItem, instance)) {
+      // 当前组件不能展示
+      clearFormDataByFormItem(formItem, instance)
+      return
+    }
     /**
      * comp: 组件类型
      * category 组件类型 layout 布局组件
@@ -36,7 +41,13 @@ export const buildRender = (h, formItemList, instance) => {
           }, renders)
         )
       })
-      renders.push(h(formItem.comp, { props: formItem.props }, childrenRenders))
+      const theProps = {
+        ...formItem.props
+      }
+      if (formItem.comp === 'el-tabs') {
+        theProps.value = instance.tabsActiveNameDic[formItem.key]
+      }
+      renders.push(h(formItem.comp, { props: theProps }, childrenRenders))
     } else {
       /**
        * 非布局组件
@@ -46,7 +57,7 @@ export const buildRender = (h, formItemList, instance) => {
         h('el-form-item', {
           props: formItemProps
         }, [
-          setFormItemComp(h, formItem, instance)
+          setEveCompProps(h, formItem, instance)
         ])
       )
     }
@@ -55,21 +66,82 @@ export const buildRender = (h, formItemList, instance) => {
 }
 
 /**
- * 设置
+ * 当前表单组件能否显示
+ * @param {*} formItem 
+ */
+function curCompCanShow (formItem, instance) {
+  const { common } = formItem
+  // console.log(common, ' common')
+  try {
+    const funcStr = common.fieldShowScript
+    // eslint-disable-next-line no-eval
+    return eval(`(false || function () { return ${funcStr} })()`)(instance.form)
+  } catch (e) {
+    console.error(e)
+    instance.$message.error(`[${formItem.key}] 组件显示 脚本设置异常`)
+    return false
+  }
+}
+
+/**
+ * 如果当前组件不能显示，那就需要清空当前表单项
+ * 布局组件要清空当前布局组件下所有表单项的字段值
+ * @param {*} formItem 
+ * @param {*} instance 
+ */
+function clearFormDataByFormItem (formItem, instance) {
+  const { category } = formItem
+  if (category !== 'layout') {
+    const { fieldName } = formItem.elFormItem || {}
+    delete instance.form[fieldName]
+  } else {
+    const { children } = formItem
+    children.forEach((childComp, idx) => {
+      /**
+       * 子组件配置
+       */
+      const { comps } = childComp
+      /**
+       * 递归解析当前子布局组件下的所有组件
+       */
+      comps.forEach(compItem => clearFormDataByFormItem(compItem, instance))
+    })
+  }
+}
+
+/**
+ * 设置el-form 下的 el-form-item 的 配置的组件的属性
  * @param {*} h 
  * @param {*} formItem 
  * @param {*} instance 
  */
-function setFormItemComp (h, formItem, instance) {
-  const { fieldName } = formItem.elFormItem || {}
+function setEveCompProps (h, formItem, instance) {
+  const { fieldName, size } = formItem.elFormItem || {}
+  const props = formItem.props
+  if (size) {
+    props.size = size
+  } else {
+    props.size = instance.global.common.size
+  }
   return h(formItem.comp, {
     props: {
-      ...formItem.props,
-      value: instance.form[fieldName]
+      ...props,
+      value: instance.form[fieldName],
+      formData: instance.form
+    },
+    on: {
+      input: (value) => {
+        instance.handleInput(fieldName, value, { formItem })
+      }
     }
   })
 }
 
+/**
+ * 
+ * @param {*} formItem 
+ * @param {*} instance 
+ */
 function setFormItemProps (formItem, instance) {
   const { labelWidth, formItemLabel, fieldName } = formItem.elFormItem || {}
   const formItemProps = {
@@ -99,6 +171,12 @@ export const visitFormItem = (formItemList, form, rules, instance) => {
        * children 子组件配置
        */
       const { children } = formItem
+      if (formItem.comp === 'el-tabs') {
+        instance.$set(instance.tabsActiveNameDic, formItem.key, '-')
+        if (children.length > 0) {
+          instance.$set(instance.tabsActiveNameDic, formItem.key, children[0].props.name)
+        }
+      }
       children.forEach((childComp, idx) => {
         /**
          * 子组件配置
@@ -113,26 +191,57 @@ export const visitFormItem = (formItemList, form, rules, instance) => {
       /**
        * 非布局组件 字段名称
        */
-      const { fieldName, isRequired, formItemLabel } = formItem.elFormItem || {}
+      const { fieldName, isRequired, formItemLabel, diyValidator, defaultValue } = formItem.elFormItem || {}
       if (fieldName) {
         // form[fieldName] = getEmpytValue(formItem.props)
         const v = getEmpytValue(formItem.props)
-        instance.$set(form, fieldName, v)
+        const trigger = _.isArray(v) || formItem.triggerUseChange ? 'change' : 'blur'
+        instance.$set(form, fieldName, defaultValue || v)
+        const rulesArr = []
         if (isRequired) {
-          instance.$set(rules, fieldName, [
+          rulesArr.push(
             {
               required: true,
-              validateor: (rule, value, callback) => {
-                if (_.isEmpty(value)) {
+              validator: (rule, v, callback) => {
+                const value = instance.form[fieldName]
+                let isEmpyt = false
+                // 日期类型的数据非空校验
+                if (_.isArray(value) || _.isObject(value)) {
+                  isEmpyt = _.isEmpty(value)
+                } else {
+                  isEmpyt = !value
+                }
+                if (isEmpyt) {
                   callback(new Error(`${formItemLabel}不能为空！`))
                 } else {
                   callback()
                 }
               },
-              trigger: _.isArray(v) || formItem.triggerUseChange ? 'change' : 'blur'
+              trigger
             }
-          ])
+          )
         }
+        rulesArr.push(
+          {
+            validator: (rule, v, callback) => {
+              if (diyValidator) {
+                try {
+                  const funcStr = diyValidator
+                  // eslint-disable-next-line no-eval
+                  eval(`(false || function () { return ${funcStr} })()`)(instance.form, callback)
+                } catch (e) {
+                  console.error(e)
+                  callback(new Error('自定义校验函数脚本设置异常!'))
+                  instance.$message.error(`[${formItem.key}] 组件自定义校验函数 脚本设置异常!`)
+                }
+              } else {
+                callback()
+              }
+            },
+            trigger
+          }
+        )
+        instance.$set(rules, fieldName, rulesArr)
       }
     }
   })

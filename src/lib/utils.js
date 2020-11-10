@@ -31,6 +31,13 @@ export function vueClonedeep (original) {
   }
 }
 
+/**
+ * 生产key
+ */
+export const getKey = () => {
+  return (Math.random() * 10 ** 5).toFixed(0)
+}
+
 // 获取嵌套对象下某个字段的值 propertyName
 export const getPropertyDataFromNestObj = (obj, propertyName) => {
   let curObj = obj
@@ -73,4 +80,34 @@ export function setValue (chartOptions, fieldName, value) {
   })
   // curChartOptions[lastKey] = value
   Vue.set(curChartOptions, lastKey, value)
+}
+
+/**
+ * 日期格式化函数
+ * @param {*} date 
+ * @param {*} param1 
+ */
+export function formatDateByDateObj (date, { format }) {
+  if (typeof date === 'string') return date
+  if (!date) return null
+  const fmt = format
+  var o = {
+    'M+': date.getMonth() + 1, // 月份
+    'd+': date.getDate(), // 日
+    'h+': date.getHours(), // 小时
+    'm+': date.getMinutes(), // 分
+    's+': date.getSeconds(), // 秒
+    'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+    S: date.getMilliseconds() // 毫秒
+  }
+  let rs = null
+  if (/(y+)/.test(fmt)) {
+    rs = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+  }
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(rs)) {
+      rs = rs.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+    }
+  }
+  return rs
 }

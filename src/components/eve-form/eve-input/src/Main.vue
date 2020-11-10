@@ -5,11 +5,11 @@
 -->
 <template>
   <div class="eve-input">
-    <el-input v-model="curValue" style="width: 100%" :placeholder="placeholder"></el-input>
+    <el-input :size="size" v-model="curValue" style="width: 100%" :placeholder="placeholder"></el-input>
   </div>
 </template>
 <script>
-import VModelMixin from '../../../mixins/v-model-mixin'
+import VModelMixin from '../../eve-form-mixin'
 
 export default {
   name: 'EveInput',

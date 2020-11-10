@@ -45,7 +45,7 @@ $borderColor: #000;
     
   }
   .drag-wrapper {
-    display: flex;
+    // display: flex;
     .item {
       width: 50%;
       // font-size: 12px;
@@ -53,6 +53,7 @@ $borderColor: #000;
       text-align: center;
       border: 1px solid rgba(0, 0, 0, 0.125);
       cursor: pointer;
+      display: inline-block;
     }
   }
 }

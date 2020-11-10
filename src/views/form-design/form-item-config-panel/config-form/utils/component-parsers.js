@@ -87,6 +87,14 @@ export default {
         name: 'inactiveValue',
         isBasicJsType: true,
         notNull: true
+      },
+      {
+        name: 'mode',
+        isBasicJsType: true
+      },
+      {
+        name: 'label',
+        isBasicJsType: true
       }
     ]
     return buildFormItemRender(h, instance, formPropertyName, vueNodeConfig, componentProps, parentKey, {})
@@ -194,8 +202,22 @@ export default {
       { name: 'childFormConfig', isBasicJsType: true },
       { name: 'childPropName' },
       { name: 'formPropertyName', value: formPropertyName },
-      { name: 'childOriginalTemplate', isBasicJsType: true }
+      { name: 'childOriginalTemplate', isBasicJsType: true },
+      { name: 'noRandom', isBasicJsType: true },
+      { name: 'label' }
     ]
+    return buildFormItemRender(h, instance, formPropertyName, vueNodeConfig, componentProps, parentKey, {})
+  },
+  'code-editor': (h, instance, vueNodeConfig, formPropertyName, parentKey) => {
+    const componentProps = [
+      { name: 'mode', isBasicJsType: true },
+      // 注释
+      { name: 'comment', isBasicJsType: true }
+    ]
+    return buildFormItemRender(h, instance, formPropertyName, vueNodeConfig, componentProps, parentKey, {})
+  },
+  'ue-self-setter': (h, instance, vueNodeConfig, formPropertyName, parentKey) => {
+    const componentProps = []
     return buildFormItemRender(h, instance, formPropertyName, vueNodeConfig, componentProps, parentKey, {})
   }
 }
@@ -241,10 +263,16 @@ function buildFormItemRender (h, instance, formPropertyName, vueNodeConfig, comp
           oldValue = temp
         }
         // oldValue为空表示是初始化
-        const haveToCommitUpdate = `${temp}` !== 'null' && typeof temp !== 'undefined'
+        const haveToCommitUpdate = (`${temp}` !== 'null' && typeof temp !== 'undefined') || formPropertyName === 'elFormItem.defaultValue'
         instance.$set(instance.form, formPropertyName, value)
         // 设置显示隐藏
-        vueNodeConfig.hideOther && vueNodeConfig.hideFunction(value, instance.setFormItemHideStatus(parentKey), instance.curChartConfig)
+        if (vueNodeConfig.hideOther) {
+          if (_.isString(vueNodeConfig.hideFunction)) {
+            // eslint-disable-next-line no-eval
+            vueNodeConfig.hideFunction = eval(`(false || function () { return ${vueNodeConfig.hideFunction} })()`)
+          }
+          vueNodeConfig.hideFunction(value, instance.setFormItemHideStatus(parentKey), instance.curChartConfig)
+        }
         // 设置禁用
         vueNodeConfig.disableOther && vueNodeConfig.disableFunction(value, instance.setFormItemHideStatus(parentKey, true))
         if (haveToCommitUpdate) {

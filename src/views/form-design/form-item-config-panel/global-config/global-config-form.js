@@ -3,7 +3,9 @@ export const global = {
     // 标签位置
     labelPosition: 'left',
     // 标签宽度
-    labelWidth: 80
+    labelWidth: 95,
+    // 组件大小
+    size: 'medium'
   }
 }
 
@@ -38,6 +40,16 @@ export const globalConfigForm = {
       min: 0,
       max: 350,
       step: 1
+    },
+    size: {
+      configName: '组件尺寸',
+      component: 'ue-select',
+      type: 'String',
+      selections: [
+        { label: '默认', value: 'medium' },
+        { label: '小', value: 'small' },
+        { label: 'mini', value: 'mini' }
+      ]
     }
   }
 }

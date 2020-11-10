@@ -1,6 +1,8 @@
 <template>
   <div class="ue-component-wrapper comp-children">
-    <!-- {{ formPropertyName }} -->
+    <template v-if="label && label !== 'undefined'">
+      {{ label }}
+    </template>
     <div class="child" v-for="(child, index) in children" :key="`${index}_child_config`">
       <child-form label-position="top" :form-property-name="formPropertyName" :root="`${index}${rootSufix ? '.' + rootSufix : ''}`" :config="childrenConfigForm"/>
       <i 
@@ -12,6 +14,7 @@
         size="small"
         type="primary"
         icon="el-icon-plus"
+        :disabled="disabled"
         circle
         @click="handleClickAdd"
       />
@@ -22,8 +25,9 @@
 <script>
 import { mapState } from 'vuex'
 import VModelMixin from './v-model-mixin'
-import { getPropertyDataFromNestObj, vueClonedeep } from '../../../../lib/utils'
+import { getPropertyDataFromNestObj, vueClonedeep, getKey } from '../../../../lib/utils'
 import ChildForm from './ChildForm'
+import _ from 'lodash'
 
 export default {
   name: 'UeChildrenConfig',
@@ -96,6 +100,14 @@ export default {
     childOriginalTemplate: {
       type: Object,
       required: true
+    },
+    noRandom: {
+      type: Boolean,
+      default: false
+    },
+    label: {
+      type: String,
+      default: ''
     }
   },
   computed: {
@@ -117,6 +129,12 @@ export default {
     },
     handleClickAdd () {
       const newChild = vueClonedeep(this.childOriginalTemplate)
+      const obj = this.rootSufix ? newChild[this.rootSufix] : newChild
+      Object.keys(obj).forEach(key => {
+        if (_.isString(obj[key]) && !this.noRandom) {
+          obj[key] = `${obj[key]}${getKey()}`
+        }
+      })
       const cur = this.curValue
       cur.push(newChild)
       this.$emit('input', vueClonedeep(cur))

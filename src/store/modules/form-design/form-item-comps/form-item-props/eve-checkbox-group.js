@@ -1,44 +1,31 @@
-export const selectProps = {
+export const checkboxGroupProps = {
   props: {
     selections: [
       {
         label: '选项1',
-        value: '1'
+        value: 1
       },
       {
         label: '选项2',
-        value: '2'
+        value: 2
+      },
+      {
+        label: '选项3',
+        value: 3
       }
     ],
-    multiple: false,
-    clearable: true,
     size: 'medium',
-    placeholder: '',
     // 远端获取
     isRemote: false,
     // 远端api
-    remoteApi: ''
+    remoteApi: '',
+    // 是多选的
+    multiple: true
   }
 }
 
-export const selectPropsForm = {
+export const checkboxGroupPropsForm = {
   props: {
-    placeholder: {
-      configName: '占位显示',
-      type: 'String',
-      component: 'ue-input',
-      maxlength: 100
-    },
-    clearable: {
-      configName: '是否可清空',
-      type: 'Boolean',
-      component: 'ue-switch'
-    },
-    multiple: {
-      configName: '是否可多选',
-      type: 'Boolean',
-      component: 'ue-switch'
-    },
     isRemote: {
       configName: '是否是远端数据',
       type: 'Boolean',
@@ -66,7 +53,7 @@ export const selectPropsForm = {
       // 子项模板 用于添加新项
       childOriginalTemplate: {
         label: '选项-',
-        value: '-'
+        value: '多选-'
       },
       childFormConfig: {
         label: {

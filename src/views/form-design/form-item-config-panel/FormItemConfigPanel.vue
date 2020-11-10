@@ -3,6 +3,8 @@
     <el-tab-pane v-if="activateItemKey" label="表单组件配置" name="curForm">
       <div class="form-item-config">
         key -> {{ activateItemKey }}
+        <el-divider>通用配置</el-divider>
+        <config-form labelWidth="70px" :config="commonConfig" root="common"/>
         <template v-if="activateItem.category !== 'layout'">
           <el-divider>表单属性配置</el-divider>
           <config-form labelWidth="70px" :config="elFormItemConfig" root="elFormItem"/>
@@ -10,7 +12,7 @@
         </template>
         <config-form :config="curFormItemPropsConfigForm" labelWidth="100px" root="props"/>
         <!-- 有些布局组件要配置子项属性 如 elRow的col -->
-        <template v-if="activateItem.category === 'layout'">
+        <template v-if="activateItem.category === 'layout' && childConfig.childFormConfig">
           <el-divider>子项配置</el-divider>
           <ue-children-config 
             :value="activateItem.children" 
@@ -34,6 +36,8 @@ import { mapState, mapMutations } from 'vuex'
 import ConfigForm from './config-form'
 import UeChildrenConfig from './config-form/UeChildrenConfig'
 import GlobalForm from './global-config'
+import { elFormItemConfig, commonConfig } from '../common-config'
+
 
 export default {
   components: {
@@ -44,14 +48,14 @@ export default {
   data () {
     return {
       activeName: 'curForm',
+      elFormItemConfig,
+      commonConfig
     }
   },
   computed: {
     ...mapState({
       activateItem: state => state.FormDesign.activateItem,
-      formItemPropsForms: state => state.FormDesign.formItemPropsForms,
-      // elFormItem 属性配置表单
-      elFormItemConfig: state => state.FormDesign.elFormItemConfig
+      formItemPropsForms: state => state.FormDesign.formItemPropsForms
     }),
     activateItemKey () {
       return this.activateItem ? this.activateItem.key : ''

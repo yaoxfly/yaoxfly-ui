@@ -1,0 +1,59 @@
+<!--
+* @Author: xjd
+* @Description: 表单设计器单选选框组封装
+* @Date: 2020-11-09
+-->
+<template>
+  <div class="eve-checkbox-group">
+    <!-- {{ selections }} -->
+    <el-radio-group
+      v-model="curValue"
+      :size="size"
+      style="width: 100%"
+      :disabled="disabled"
+    >
+      <el-radio v-for="(item, index) in selections" :label="item.value" :key="`radio_selection_${index}`">{{item.label}}</el-radio>
+    </el-radio-group>
+  </div>
+</template>
+<script>
+import VModelMixin from '../../eve-form-mixin'
+
+export default {
+  name: 'EveRadioGroup',
+  mixins: [
+    VModelMixin
+  ],
+  props: {
+    selections: {
+      type: Array,
+      default: () => []
+    },
+    isRemote: {
+      type: Boolean,
+      default: false
+    },
+    remoteApi: {
+      type: String,
+      default: ''
+    }
+  },
+
+  mounted () {
+
+  },
+
+  data () {
+    return {
+      data: ''
+    }
+  },
+
+  methods: {
+    
+  }
+}
+</script>
+<style lang="scss" scoped>
+
+</style>

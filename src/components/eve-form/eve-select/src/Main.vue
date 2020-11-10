@@ -13,6 +13,7 @@
       :placeholder="placeholder"
       :clearable="clearable"
       :multiple="multiple"
+      filterable
     >
       <el-option
         v-for="(item, index) in selections"
@@ -24,7 +25,7 @@
   </div>
 </template>
 <script>
-import VModelMixin from '../../../mixins/v-model-mixin'
+import VModelMixin from '../../eve-form-mixin'
 
 export default {
   name: 'EveSelect',
@@ -43,10 +44,6 @@ export default {
     clearable: {
       type: Boolean,
       default: false
-    },
-    size: {
-      type: String,
-      default: 'medium'
     },
     isRemote: {
       type: Boolean,

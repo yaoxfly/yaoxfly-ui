@@ -16,9 +16,10 @@
       </el-aside>
     </el-container>
     <form-preview-dialog v-model="showPreviewDialog"/>
+    <json-preview-dialog v-model="showJsonDialog"/>
     <el-footer class="eve-form-design-footer">
       <el-button size="small" @click="handleClickPreview" type="success">表单预览</el-button>
-      <el-button size="small" type="info">JSON文件预览</el-button>
+      <el-button size="small" @click="handleClickPreviewJson" type="info">JSON文件预览</el-button>
       <el-button size="small" type="primary">保存</el-button>
       <el-button size="small" type="warning" plain>取消</el-button>
     </el-footer>
@@ -30,22 +31,28 @@ import FormCompsPanel from './form-comps-panel/FormCompsPanel'
 import FormDesignPanel from './form-design-panel/FormDesignPanel'
 import FormItemConfigPanel from './form-item-config-panel'
 import formPreviewDialog from './form-preview-dialog'
+import JsonPreviewDialog from './json-preview-dialog'
 
 export default {
   components: {
     FormCompsPanel,
     FormDesignPanel,
     FormItemConfigPanel,
-    formPreviewDialog
+    formPreviewDialog,
+    JsonPreviewDialog
   },
   data () {
     return {
-      showPreviewDialog: false
+      showPreviewDialog: false,
+      showJsonDialog: false
     }
   },
   methods: {
     handleClickPreview () {
       this.showPreviewDialog = true
+    },
+    handleClickPreviewJson () {
+      this.showJsonDialog = true
     }
   }
 }

@@ -4,17 +4,19 @@
       <div slot="label" :class="elFormItemConfig.isRequired ? 'form-item-reqiured' : ''">
         {{ formItem.elFormItem && formItem.elFormItem.formItemLabel }}
       </div>
-      <form-item-render :form-item-config="formItem"/>
+      <form-item-render :global="global" :form-item-config="formItem"/>
     </el-form-item>
     <div v-else style="width: 100%; overflow-x: hidden">
       <!-- 布局组件 -->
       <!-- 比如 el-row -->
-      <form-item-render :form-item-config="formItem">
+      <form-item-render :global="global" :form-item-config="formItem">
         <!-- 比如 el-col -->
-        <form-item-render
+        <!-- v-bind 可以将 一个对象 扩展为vue组件的props -->
+        <component
+          :is="childComp.comp"
           v-for="(childComp, compIndex) in formItem.children" 
-          :key="`child_comp_${compIndex}`" 
-          :form-item-config="childComp">
+          v-bind="childComp.props"
+          :key="`child_comp_${compIndex}`">
           <div class="eve-form-design-layout-comp">
             <!-- col中的组件 -->
             <vue-draggable
@@ -27,7 +29,7 @@
               <form-config-item v-for="(formItem, listIdx) in childComp.comps" :parent-list-name="`${curListName}.${compIndex}.comps`" :list-index="listIdx" :key="formItem.key" :form-item="formItem"></form-config-item>
             </vue-draggable>
           </div>
-        </form-item-render>
+        </component>
       </form-item-render>
       <!--  -->
     </div>
@@ -52,6 +54,7 @@
 import FormItemRender from './FormItemRender.vue'
 import VueDraggable from 'vuedraggable'
 import { mapMutations, mapState } from 'vuex'
+import { elFormItem, common } from '../common-config'
 
 export default {
   name: 'FormConfigItem',
@@ -76,6 +79,12 @@ export default {
     parentIsTop: {
       type: Boolean,
       default: false
+    }
+  },
+  data () {
+    return {
+      elFormItem,
+      common
     }
   },
   computed: {
@@ -148,7 +157,9 @@ export default {
       this.commitFormItemInit({
         element: newFormItem,
         list,
-        index: evt.added.newIndex
+        index: evt.added.newIndex,
+        elFormItem: this.elFormItem,
+        common: this.common
       })
     },
     handleClickFormItem () {

@@ -18,6 +18,7 @@
 import { mapState, mapMutations } from 'vuex'
 import VueDraggable from 'vuedraggable'
 import FormConfigItem from './FormConfigItem'
+import { elFormItem, common } from '../common-config'
 
 export default {
   components: {
@@ -32,7 +33,9 @@ export default {
   },
   data () {
     return {
-      refreshPage: false
+      refreshPage: false,
+      elFormItem,
+      common
     }
   },
   methods: {
@@ -51,7 +54,9 @@ export default {
         this.commitFormItemInit({
           element: newFormItem,
           list: this.formItemConfigs,
-          index: evt.added.newIndex
+          index: evt.added.newIndex,
+          elFormItem: this.elFormItem,
+          common: this.common
         })
       }
     }

@@ -5,6 +5,8 @@ import UeRadio from './UeRadio'
 import UeSelect from './UeSelect'
 import UeCommonGroup from './UeCommonGroup'
 import UeChildrenConfig from './UeChildrenConfig'
+import CodeEditor from './code-editor'
+import ueSelfSetter from './ue-self-setter'
 
 import { chartConfigFormTreeBuilder } from './utils/chart-config-form-tree-builder'
 import { buildReder, buildChartForm } from './utils/build-chart-form-config-render'
@@ -20,7 +22,10 @@ export default {
     UeRadio,
     UeCommonGroup,
     UeSelect,
-    UeChildrenConfig
+    UeChildrenConfig,
+    CodeEditor,
+    // 引用自身
+    ueSelfSetter
   },
   props: {
     // 图表表单配置
