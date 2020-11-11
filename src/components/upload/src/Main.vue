@@ -8,7 +8,7 @@
   <div>
     <el-upload
       class="eve-upload"
-      :class="[limit === 2 ? 'eve-upload__none' : '']"
+      :class="[isHideAdd && 'eve-upload__none']"
       :action="action"
       :multiple="multiple"
       :show-file-list="showFileList"
@@ -229,7 +229,7 @@ export default {
     }
   },
 
-  computed: {},
+
   created () { },
   mounted () {
     // console.log(this.$attrs)
@@ -258,10 +258,14 @@ export default {
           this.fileLists = []
           this.$emit('update:file-list', this.fileLists)
           this.imageUrl = URL.createObjectURL(file.raw)
+        },
+        'picture-card': () => {
+          // return this.fileLists.length >= this.limit
         }
+
       }
       KeyMap[this.uploadType] && KeyMap[this.uploadType]()
-      console.log(fileList)
+      console.log(fileList, this.fileLists)
       this.$emit('on-change', file, fileList)
     },
 
@@ -283,6 +287,13 @@ export default {
         this.fileLists = newValue
         this.$emit('update:fileList', this.fileLists)
       }
+    },
+
+  },
+
+  computed: {
+    isHideAdd () {
+      return this.fileLists.length >= this.limit
     }
   }
 

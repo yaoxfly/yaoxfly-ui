@@ -112,18 +112,14 @@ export default {
   width: 100%;
   &__content {
     text-align: center;
-    padding: 0 20px;
   }
-
   &__swiper {
     //防止鼠标右击出现border
     outline: none;
   }
-
   &__menu {
     width: 100%;
   }
-
   &__item {
     outline: none;
     width: 100%;
@@ -162,16 +158,23 @@ export default {
   .el-submenu__title {
     color: white;
   }
-  // 标题选中颜色
+  // 标题选中颜色和线
   .el-submenu.is-active .el-submenu__title {
-    border-bottom: 2px solid blue; //去掉这个就没有线了
+    span {
+      border-bottom: 2px solid blue;
+      padding: 0 10px 10px 10px;
+    }
   }
   //去掉箭头
   .el-submenu__title i {
     color: transparent;
   }
+
   .el-menu-item.is-active {
-    border-bottom: 2px solid blue;
+    span {
+      border-bottom: 2px solid blue;
+      padding: 0 10px 10px 10px;
+    }
   }
 }
 </style>
