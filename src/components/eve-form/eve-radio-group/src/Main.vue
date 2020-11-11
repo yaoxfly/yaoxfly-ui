@@ -10,7 +10,7 @@
       v-model="curValue"
       :size="size"
       style="width: 100%"
-      :disabled="disabled"
+      :disabled="isDisabled || isReadOnly"
     >
       <el-radio v-for="(item, index) in selections" :label="item.value" :key="`radio_selection_${index}`">{{item.label}}</el-radio>
     </el-radio-group>
@@ -37,20 +37,6 @@ export default {
       type: String,
       default: ''
     }
-  },
-
-  mounted () {
-
-  },
-
-  data () {
-    return {
-      data: ''
-    }
-  },
-
-  methods: {
-    
   }
 }
 </script>

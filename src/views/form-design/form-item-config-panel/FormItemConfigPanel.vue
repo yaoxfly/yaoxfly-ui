@@ -1,16 +1,16 @@
 <template>
-  <el-tabs class="eve-form-item-config-form-panel" v-model="activeName" >
+  <el-tabs class="eve-form-item-config-form-panel" v-model="activeName" stretch>
     <el-tab-pane v-if="activateItemKey" label="表单组件配置" name="curForm">
-      <div class="form-item-config">
+      <div class="form-item-config" v-if="!loading">
         key -> {{ activateItemKey }}
         <el-divider>通用配置</el-divider>
-        <config-form labelWidth="70px" :config="commonConfig" root="common"/>
-        <template v-if="activateItem.category !== 'layout'">
+        <config-form labelWidth="85px" :config="commonConfig" root="common"/>
+        <template v-if="activateItem.category === 'input'">
           <el-divider>表单属性配置</el-divider>
-          <config-form labelWidth="70px" :config="elFormItemConfig" root="elFormItem"/>
-          <el-divider>组件属性配置</el-divider>
+          <config-form labelWidth="85px" :config="elFormItemConfig" root="elFormItem"/>
         </template>
-        <config-form :config="curFormItemPropsConfigForm" labelWidth="100px" root="props"/>
+        <el-divider>组件属性配置</el-divider>
+        <config-form :config="curFormItemPropsConfigForm" labelWidth="85px" root="props"/>
         <!-- 有些布局组件要配置子项属性 如 elRow的col -->
         <template v-if="activateItem.category === 'layout' && childConfig.childFormConfig">
           <el-divider>子项配置</el-divider>
@@ -49,7 +49,8 @@ export default {
     return {
       activeName: 'curForm',
       elFormItemConfig,
-      commonConfig
+      commonConfig,
+      loading: false
     }
   },
   computed: {
@@ -73,6 +74,10 @@ export default {
         this.activeName = 'global'
       } else {
         this.activeName = 'curForm'
+        this.loading = true
+        setTimeout(() => {
+          this.loading = false
+        }, 50)
       }
     }
   },
@@ -110,10 +115,6 @@ export default {
     margin-bottom: 5px !important;
   }
   .el-form--label-top {
-    .el-form-item__content {
-      // line-height: 20px !important;
-
-    }
     .el-form-item__label {
       padding-bottom: 5px !important;
       line-height: 20px !important;

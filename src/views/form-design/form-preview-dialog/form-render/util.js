@@ -5,8 +5,9 @@ import _ from 'lodash'
  * @param {*} h render渲染函数
  * @param {*} formItemList 组件列表
  * @param {*} instance 页面实例
+ * @param {*} parentLayoutStatus 父布局组件设置的状态
  */
-export const buildRender = (h, formItemList, instance) => {
+export const buildRender = (h, formItemList, instance, parentLayoutStatus) => {
   const renders = []
   formItemList.forEach(formItem => {
     if (!curCompCanShow(formItem, instance)) {
@@ -19,12 +20,13 @@ export const buildRender = (h, formItemList, instance) => {
      * category 组件类型 layout 布局组件
      * props 当前组件的属性
      * elFormItem 表单属性配置
+     * common 通用配置 显示隐藏等
      */
     if (formItem.category === 'layout') {
       /**
        * children 子组件配置
        */
-      const { children } = formItem
+      const { children, common } = formItem
       const childrenRenders = []
       children.forEach((childComp, idx) => {
         /**
@@ -34,7 +36,7 @@ export const buildRender = (h, formItemList, instance) => {
         /**
          * 递归解析当前子布局组件下的所有组件
          */
-        const renders = buildRender(h, comps, instance)
+        const renders = buildRender(h, comps, instance, common.status || parentLayoutStatus)
         childrenRenders.push(
           h(comp, {
             props
@@ -48,23 +50,23 @@ export const buildRender = (h, formItemList, instance) => {
         theProps.value = instance.tabsActiveNameDic[formItem.key]
       }
       renders.push(h(formItem.comp, { props: theProps }, childrenRenders))
-    } else {
+    } else if (formItem.category === 'input') {
       /**
        * 非布局组件
        */
-      const formItemProps = setFormItemProps(formItem, instance)
       renders.push(
-        h('el-form-item', {
-          props: formItemProps
-        }, [
-          setEveCompProps(h, formItem, instance)
-        ])
+        buildFormItemRender(h, formItem, instance, parentLayoutStatus)
+      )
+    } else if (formItem.category === 'other') {
+      renders.push(
+        h(formItem.comp, {
+          props: formItem.props
+        })
       )
     }
   })
   return renders
 }
-
 /**
  * 当前表单组件能否显示
  * @param {*} formItem 
@@ -112,46 +114,61 @@ function clearFormDataByFormItem (formItem, instance) {
 /**
  * 设置el-form 下的 el-form-item 的 配置的组件的属性
  * @param {*} h 
- * @param {*} formItem 
- * @param {*} instance 
+ * @param {*} formItem
+ * @param {*} instance
  */
-function setEveCompProps (h, formItem, instance) {
-  const { fieldName, size } = formItem.elFormItem || {}
-  const props = formItem.props
-  if (size) {
-    props.size = size
-  } else {
-    props.size = instance.global.common.size
-  }
-  return h(formItem.comp, {
-    props: {
-      ...props,
-      value: instance.form[fieldName],
-      formData: instance.form
-    },
-    on: {
-      input: (value) => {
-        instance.handleInput(fieldName, value, { formItem })
-      }
-    }
-  })
-}
-
-/**
- * 
- * @param {*} formItem 
- * @param {*} instance 
- */
-function setFormItemProps (formItem, instance) {
-  const { labelWidth, formItemLabel, fieldName } = formItem.elFormItem || {}
+function buildFormItemRender (h, formItem, instance, parentFieldStatus) {
+  const { common, elFormItem } = formItem
+  // 当前组件状态
+  const status = common.status || parentFieldStatus
+  const { fieldName, size, labelWidth, formItemLabel } = elFormItem || {}
+  // form-item 组件属性
   const formItemProps = {
-    label: formItemLabel,
+    // label: formItemLabel,
     prop: fieldName
   }
   if (labelWidth) {
     formItemProps.labelWidth = `${labelWidth}px`
   }
-  return formItemProps
+  const formItemLabelRender = formItemLabel ? h('span', {
+    style: {
+      position: 'relative'
+    },
+    class: 'eve-form-item-state',
+    slot: 'label'
+  }, formItemLabel) : null
+  if (!formItemLabelRender) {
+    formItemProps.labelWidth = '0'
+  }
+  // 组件属性
+  const props = formItem.props
+  // disabled 如果父 不是 disbaled 而当前是 那么取哪个？
+  props.status = status || 'enable'
+  if (size) {
+    props.size = size
+  } else {
+    props.size = instance.global.common.size
+  }
+
+  return h('el-form-item', {
+    props: formItemProps,
+    // 只读装
+    class: status === 'sign' ? 'eve-form-state-sign' : ''
+  }, [
+    formItemLabelRender,
+    h(formItem.comp, {
+      props: {
+        ...props,
+        value: instance.form[fieldName],
+        formData: instance.form
+      },
+      on: {
+        input: (value) => {
+          instance.handleInput(fieldName, value, { formItem })
+        }
+      }
+    })
+  ])
 }
 
 /**
@@ -221,26 +238,25 @@ export const visitFormItem = (formItemList, form, rules, instance) => {
             }
           )
         }
-        rulesArr.push(
-          {
-            validator: (rule, v, callback) => {
-              if (diyValidator) {
-                try {
-                  const funcStr = diyValidator
-                  // eslint-disable-next-line no-eval
-                  eval(`(false || function () { return ${funcStr} })()`)(instance.form, callback)
-                } catch (e) {
-                  console.error(e)
-                  callback(new Error('自定义校验函数脚本设置异常!'))
-                  instance.$message.error(`[${formItem.key}] 组件自定义校验函数 脚本设置异常!`)
-                }
-              } else {
-                callback()
+        // 自定义数据校验函数脚本设置
+        rulesArr.push({
+          validator: (rule, v, callback) => {
+            if (diyValidator) {
+              try {
+                const funcStr = diyValidator
+                // eslint-disable-next-line no-eval
+                eval(`(false || function () { return ${funcStr} })()`)(instance.form, callback)
+              } catch (e) {
+                console.error(e)
+                callback(new Error('自定义校验函数脚本设置异常!'))
+                instance.$message.error(`[${formItem.key}] 组件自定义校验函数 脚本设置异常!`)
               }
-            },
-            trigger
-          }
-        )
+            } else {
+              callback()
+            }
+          },
+          trigger
+        })
         instance.$set(rules, fieldName, rulesArr)
       }
     }

@@ -49,7 +49,7 @@ export default {
       ...props,
       notRequest: true
     }
-    if (category !== 'layout' && !this.isLayoutChild) {
+    if (category === 'input' && !this.isLayoutChild) {
       // 组件用通用设置
       const { size } = this.formItemConfig.elFormItem || {}
     // const props = formItem.props
@@ -60,7 +60,7 @@ export default {
       }
       rProps.value = props.multiple ? [] : null
       rProps.formData = {}
-    } else {
+    } else if (category === 'layout') {
       if (comp === 'el-tabs') {
         rProps.value = this.activeName
       }

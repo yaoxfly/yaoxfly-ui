@@ -1,15 +1,50 @@
-export const selectProps = {
+export const cascaderProps = {
   props: {
     selections: [
       {
-        label: '选项1',
-        value: '1'
-      },
-      {
-        label: '选项2',
-        value: '2'
+        value: 'zhinan',
+        label: '指南',
+        children: [
+          {
+            value: 'shejiyuanze',
+            label: '设计原则',
+            children: [
+              {
+                value: 'yizhi',
+                label: '一致'
+              },
+              {
+                value: 'fankui',
+                label: '反馈'
+              },
+              {
+                value: 'xiaolv',
+                label: '效率'
+              },
+              {
+                value: 'kekong',
+                label: '可控'
+              }
+            ]
+          },
+          {
+            value: 'daohang',
+            label: '导航',
+            children: [
+              {
+                value: 'cexiangdaohang',
+                label: '侧向导航'
+              },
+              {
+                value: 'dingbudaohang',
+                label: '顶部导航'
+              }
+            ]
+          }
+        ]
       }
     ],
+    readOnlySeperator: '/',
     multiple: false,
     clearable: true,
     size: 'medium',
@@ -21,13 +56,19 @@ export const selectProps = {
   }
 }
 
-export const selectPropsForm = {
+export const cascaderPropsForm = {
   props: {
     placeholder: {
       configName: '占位显示',
       type: 'String',
       component: 'ue-input',
       maxlength: 100
+    },
+    readOnlySeperator: {
+      configName: '只读分隔符',
+      component: 'ue-input',
+      type: 'String',
+      maxlength: 30
     },
     clearable: {
       configName: '是否可清空',
@@ -66,28 +107,5 @@ export const selectPropsForm = {
       btnLabel: '设置静态数据',
       mode: 'application/json'
     }
-    // selections: {
-    //   type: 'Array',
-    //   component: 'ue-children-config',
-    //   // 子项模板 用于添加新项
-    //   childOriginalTemplate: {
-    //     label: '选项-',
-    //     value: '-'
-    //   },
-    //   childFormConfig: {
-    //     label: {
-    //       configName: '值标签',
-    //       component: 'ue-input',
-    //       type: 'String',
-    //       maxlength: 200
-    //     },
-    //     value: {
-    //       configName: '值',
-    //       component: 'ue-input',
-    //       type: 'String',
-    //       maxlength: 200
-    //     }
-    //   }
-    // }
   }
 }

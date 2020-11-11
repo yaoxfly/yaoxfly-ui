@@ -212,7 +212,8 @@ export default {
     const componentProps = [
       { name: 'mode', isBasicJsType: true },
       // 注释
-      { name: 'comment', isBasicJsType: true }
+      { name: 'comment', isBasicJsType: true },
+      { name: 'btnLabel', isBasicJsType: true, notNull: true }
     ]
     return buildFormItemRender(h, instance, formPropertyName, vueNodeConfig, componentProps, parentKey, {})
   },

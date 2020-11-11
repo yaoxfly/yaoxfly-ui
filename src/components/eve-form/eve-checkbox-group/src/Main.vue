@@ -10,7 +10,7 @@
       v-model="curValue"
       :size="size"
       style="width: 100%"
-      :disabled="disabled"
+      :disabled="isDisabled || isReadOnly"
     >
       <el-checkbox v-for="(item, index) in selections" :label="item.value" :key="`check_group_selection_${index}`">{{item.label}}</el-checkbox>
     </el-checkbox-group>

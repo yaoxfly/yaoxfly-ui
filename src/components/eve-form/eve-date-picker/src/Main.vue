@@ -6,13 +6,18 @@
 <template>
   <div class="eve-input">
     <!-- {{ formData }} -->
-    <el-date-picker 
+    <el-date-picker
+      v-if="!isReadOnly"
       :value-format="valueFormat || 'yyyy-MM-dd'" 
       :size="size" v-model="curValue" 
       style="width: 100%"
+      :disabled="isDisabled"
       :picker-options="pickerOptions"
       :placeholder="placeholder" 
-      :type="type"></el-date-picker>
+      :type="type" />
+    <template v-else>
+      {{ curValue }}
+    </template>
   </div>
 </template>
 <script>
@@ -65,6 +70,10 @@ export default {
     formData: {
       type: Object,
       default: () => ({})
+    },
+    defaultToday: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -74,6 +83,12 @@ export default {
   },
   created () {
     this.curValue = this.value
+    
+    if (!this.curValue && this.defaultToday) {
+      // 值为空值 且默认值的设置为默认今天
+      this.curValue = formatDateByDateObj(new Date(), { format: this.valueFormat })
+      this.$emit('input', this.curValue)
+    }
     // 如果是配置模式 返回
     this.setDisableFunc()
   },
@@ -95,7 +110,8 @@ export default {
       }
       /**
        * 取禁用的日期
-       * 这是一个开区间的取法
+       * 这是一个开区间的取法,
+       * 要禁用的日期该函数返回的值是true
        */
       const disabledDate = (date) => {
         let compare = null
@@ -139,9 +155,12 @@ export default {
           const { targetKey, compareMethod, before, after } = compareConfig
           let func = null
           
-          if (!this.formData[targetKey]) {
+          if (!this.formData[targetKey] || !compareMethod) {
+            /**
+             * 配置不全 函数默认不生效
+             */
             func = () => {
-              return true
+              return false
             }
           } else {
             if (compareMethod === '>') {

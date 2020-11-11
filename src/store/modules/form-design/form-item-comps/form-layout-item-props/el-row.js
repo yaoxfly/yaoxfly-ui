@@ -28,6 +28,14 @@ export const elRowFormConfig = {
       min: 0,
       step: 1,
       max: 3000
+    },
+    type: {
+      configName: '布局模式',
+      component: 'ue-select',
+      selections: [
+        { label: 'flex', value: 'flex' },
+        { label: 'default', value: 'default' }
+      ]
     }
   },
   childConfig: {

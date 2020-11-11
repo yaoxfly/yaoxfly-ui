@@ -49,26 +49,32 @@ export const checkboxGroupPropsForm = {
     },
     selections: {
       type: 'Array',
-      component: 'ue-children-config',
-      // 子项模板 用于添加新项
-      childOriginalTemplate: {
-        label: '选项-',
-        value: '多选-'
-      },
-      childFormConfig: {
-        label: {
-          configName: '值标签',
-          component: 'ue-input',
-          type: 'String',
-          maxlength: 200
-        },
-        value: {
-          configName: '值',
-          component: 'ue-input',
-          type: 'String',
-          maxlength: 200
-        }
-      }
+      component: 'code-editor',
+      btnLabel: '设置静态数据',
+      mode: 'application/json'
     }
+    // selections: {
+    //   type: 'Array',
+    //   component: 'ue-children-config',
+    //   // 子项模板 用于添加新项
+    //   childOriginalTemplate: {
+    //     label: '选项-',
+    //     value: '多选-'
+    //   },
+    //   childFormConfig: {
+    //     label: {
+    //       configName: '值标签',
+    //       component: 'ue-input',
+    //       type: 'String',
+    //       maxlength: 200
+    //     },
+    //     value: {
+    //       configName: '值',
+    //       component: 'ue-input',
+    //       type: 'String',
+    //       maxlength: 200
+    //     }
+    //   }
+    // }
   }
 }

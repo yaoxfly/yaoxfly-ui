@@ -1,11 +1,11 @@
 <template>
   <div class="eve-form-design-item" @click="handleClickFormItem" :class="activateItemKey === formItem.key ? activeClass : ''">
-    <el-form-item v-if="formItem.category !== 'layout'" :label-width="`${elFormItemConfig.labelWidth}px`" style="margin-bottom: 0">
-      <div slot="label" :class="elFormItemConfig.isRequired ? 'form-item-reqiured' : ''">
-        {{ formItem.elFormItem && formItem.elFormItem.formItemLabel }}
+    <component :is="formItem.category === 'input' ? `el-form-item` : 'div'" v-if="formItem.category !== 'layout'" :label-width="`${theFormItemLabel ? elFormItemConfig.labelWidth : 0}px`" style="margin-bottom: 0">
+      <div v-if="formItem.category === 'input'" slot="label" :class="elFormItemConfig.isRequired ? 'form-item-reqiured' : ''">
+        {{ theFormItemLabel }}
       </div>
       <form-item-render :global="global" :form-item-config="formItem"/>
-    </el-form-item>
+    </component>
     <div v-else style="width: 100%; overflow-x: hidden">
       <!-- 布局组件 -->
       <!-- 比如 el-row -->
@@ -121,6 +121,9 @@ export default {
           labelWidth: Number(elFormItem.labelWidth) || this.global.common.labelWidth
         }
       }
+    },
+    theFormItemLabel () {
+      return this.formItem.elFormItem && this.formItem.elFormItem.formItemLabel
     }
   },
   methods: {

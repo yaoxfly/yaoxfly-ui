@@ -24,10 +24,15 @@ export default {
       return this.formConfig.formItemConfigs
     }
   },
+  mounted () {
+    // console.log('mounted') // 子组件全部渲染完成后 再输出顺序 3
+  },
   created () {
+    // console.log('create') // 输出顺序 1
     this.init()
   },
   render: function (h) {
+    // console.log('render') // 输出顺序 2
     const props = {
       labelWidth: `${this.global.common.labelWidth}px`,
       labelPosition: this.global.common.labelPosition,
@@ -36,7 +41,7 @@ export default {
     }
     return h('el-form', {
       props
-    }, buildRender(h, this.formItemConfigs, this))
+    }, buildRender(h, this.formItemConfigs, this, this.global.common.globalStatus))
   },
   methods: {
     init () {
@@ -87,3 +92,30 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.eve-form-state-sign {
+  &>label > span >span::after{
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0px;
+    width: 100%;
+    height: 3px;
+    background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%), -webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%);
+    background-size: 4px 4px;
+    background-repeat: repeat-x;
+  }
+  .eve-form-item-state::after{
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0px;
+    width: 100%;
+    height: 3px;
+    background: -webkit-linear-gradient(315deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%), -webkit-linear-gradient(45deg, transparent, transparent 45%, #953039, transparent 55%, transparent 100%);
+    background-size: 4px 4px;
+    background-repeat: repeat-x;
+  }
+}
+</style>

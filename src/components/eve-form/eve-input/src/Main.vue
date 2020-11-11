@@ -5,7 +5,10 @@
 -->
 <template>
   <div class="eve-input">
-    <el-input :size="size" v-model="curValue" style="width: 100%" :placeholder="placeholder"></el-input>
+    <el-input v-if="!isReadOnly" :size="size" v-model="curValue" style="width: 100%" :disabled="isDisabled" :placeholder="placeholder" />
+    <template v-else>
+      {{ curValue }}
+    </template>
   </div>
 </template>
 <script>

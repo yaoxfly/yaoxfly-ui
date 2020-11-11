@@ -31,9 +31,11 @@ export default {
       editable: false,
       placeholder: '',
       pickerOptions: {},
-      isConfig: true
+      isConfig: true,
+      status: 'enable',
+      clearable: true
     }
-    return h(comp, {
+    return h(comp === 'eve-radio-group' ? 'eve-select' : comp, {
       props: rProps,
       on: {
         input: (v) => {

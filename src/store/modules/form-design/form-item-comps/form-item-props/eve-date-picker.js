@@ -12,12 +12,19 @@ export const datePickerProps = {
     // 今天之后/之前设置之后出现的配置项 （比如说，当前日期之后的3天可选）为0不限制
     rangeDays: 0,
     // 日期比较设置
-    dateCompareConfigs: []
+    dateCompareConfigs: [],
+    // 默认今天
+    defaultToday: false                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
   }
 }
 
 export const datePickerPropsForm = {
   props: {
+    defaultToday: {
+      label: '默认今天(会被默认值配置覆盖)',
+      component: 'ue-switch',
+      mode: 'checkbox'
+    },
     placeholder: {
       configName: '占位显示',
       type: 'String',

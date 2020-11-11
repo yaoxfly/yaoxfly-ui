@@ -6,7 +6,7 @@
     </div>
     <form-render ref="formRender" v-if="show" :form-config="form" />
     <div slot="footer">
-      <el-button type="primary" size="small" @click="setData">数据</el-button>
+      <!-- <el-button type="primary" size="small" @click="setData">数据</el-button> -->
       <el-button type="success" size="small" @click="handleClickValidate">校验</el-button>
       <el-button type="primary" size="small" plain @click="handleOk">关闭</el-button>
     </div>

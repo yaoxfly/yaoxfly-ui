@@ -4,7 +4,9 @@ export const common = {
   fieldShowScript: `\
 function show (data) {
   return true
-}`
+}`,
+  // 状态
+  status: ''
 }
 
 export const commonConfig = {
@@ -21,6 +23,18 @@ export const commonConfig = {
  * 当 s 字段等于 1 时显示当前表单项可以这样写
  * return form.s === 1
  */`
+    },
+    status: {
+      configName: '状态',
+      component: 'ue-select',
+      type: 'String',
+      clearable: true,
+      selections: [
+        { label: '启用', value: 'enable' },
+        { label: '禁用', value: 'disabled' },
+        { label: '只读', value: 'readOnly' },
+        { label: '标记', value: 'sign' },
+      ]
     }
   }
 }

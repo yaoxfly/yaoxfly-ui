@@ -16,6 +16,14 @@
         {{ item.label }}
       </div>
     </vue-draggable>
+    <div class="comps-category-label">
+      其他
+    </div>
+    <vue-draggable tag="div" class="drag-wrapper" v-bind="{ group:{ name: 'formDesign', pull:'clone', put: false }, sort: false, ghostClass: 'ghost' }" :list="otherComps">
+      <div v-for="item in otherComps" :key="item.id" class="item">
+        {{ item.label }}
+      </div>
+    </vue-draggable>
   </div>
 </template>
 
@@ -30,7 +38,8 @@ export default {
   computed: {
     ...mapState({
       commonComps: state => state.FormDesign.commonComps,
-      layoutComps: state => state.FormDesign.layoutComps
+      layoutComps: state => state.FormDesign.layoutComps,
+      otherComps: state => state.FormDesign.otherComps
     })
   }
 }

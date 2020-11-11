@@ -18,19 +18,14 @@ require('script-loader!jsonlint')
 
 export default {
   name: 'JsonEditor',
-  /* eslint-disable vue/require-prop-types */
   props: {
     value: {
-      type: Object,
-      default: () => ({})
+      type: [Object, Array],
+      required: true
     },
     disabled: {
       type: Boolean,
       default: false
-    },
-    mode: {
-      type: String,
-      default: 'application/json'
     }
   },
   data () {
@@ -41,23 +36,29 @@ export default {
   watch: {
     value (value) {
       const editorValue = this.jsonEditor.getValue()
-      if (value !== editorValue) {
-        this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
+      const v = _.isString(value) ? value : JSON.stringify(value, null, 2)
+      if (v !== editorValue) {
+        this.jsonEditor.setValue(v)
       }
+    },
+    disabled () {
+      this.jsonEditor.setOption('readOnly', this.disabled)
     }
   },
   mounted () {
-    // 'text/javascript'
     this.jsonEditor = CodeMirror.fromTextArea(this.$refs.textarea, {
       lineNumbers: true,
-      mode: this.mode,
+      mode: 'application/json',
       gutters: ['CodeMirror-lint-markers'],
       theme: 'eclipse',
       lint: true
     })
-
     this.jsonEditor.setValue(_.isString(this.value) ? this.value : JSON.stringify(this.value, null, 2))
-    this.jsonEditor.setOption('readOnly', true)
+    this.jsonEditor.on('change', cm => {
+      // this.$emit('changed', cm.getValue())
+      this.$emit('input', JSON.parse(cm.getValue()))
+    })
+    this.jsonEditor.setOption('readOnly', this.disabled)
   },
   methods: {
     getValue () {

@@ -23,11 +23,23 @@ export default {
     formData: {
       type: Object,
       default: () => ({})
+    },
+    status: {
+      type: String,
+      default: ''
     }
   },
   data () {
     return {
       curValue: null
+    }
+  },
+  computed: {
+    isDisabled () {
+      return this.disabled || this.status === 'disabled'
+    },
+    isReadOnly () {
+      return this.status === 'readOnly'
     }
   },
   watch: {

@@ -1,4 +1,4 @@
-import { commonComps, layoutComps, formItemPropsForms } from './form-item-comps'
+import { commonComps, layoutComps, formItemPropsForms, otherComps } from './form-item-comps'
 
 export default {
   // 用户点击的项
@@ -11,6 +11,7 @@ export default {
   layoutComps,
   // 各表单项配置表单对象
   formItemPropsForms,
+  otherComps,
   // 全局
   global: null
 }

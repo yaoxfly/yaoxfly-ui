@@ -8,11 +8,15 @@
   <div>
     <el-upload
       class="eve-upload"
-      :class="[isHideAdd && 'eve-upload__none']"
+      :class="isHideAdd && 'eve-upload__none'"
       :action="action"
       :multiple="multiple"
       :show-file-list="showFileList"
+      :headers="headers"
+      :data="data"
       :drag="drag"
+      :name="name"
+      :with-credentials="withCredentials"
       :accept="accept"
       :limit="limit"
       :list-type="listType"
@@ -33,23 +37,33 @@
           <img v-if="imageUrl" :src="imageUrl" class="eve-upload__img" />
           <i v-else class="el-icon-plus eve-upload__icon"></i>
         </section>
+
         <!-- 照片墙,多张图片 -->
         <section v-else-if="uploadType === 'picture-card'">
           <i class="el-icon-plus"></i>
         </section>
+
+        <!-- 拖拽上传 -->
+        <section v-else-if="uploadType === 'drag'">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        </section>
+
         <!-- 其他文件类型 -->
         <el-button type="primary" v-else>点击上传</el-button>
       </slot>
+
       <template #tip>
         <div class="el-upload__tip">
           <!-- 提示说明文字 -->
           <slot name="tip"> {{ tip }} </slot>
         </div>
       </template>
+
       <!-- 触发文件选择框的内容 -->
       <template #trigger> <slot name="trigger"></slot> </template>
 
-      <!-- 文件缩略图 -->
+      <!-- 文件缩略图--黑色框框里的各种按钮 -->
       <template v-slot:file="{ file }">
         <slot name="file" :file="file"></slot>
       </template>
@@ -66,7 +80,6 @@
 export default {
   name: 'EveUpload',
   props: {
-
     /*element-ui属性 */
     //必选参数，上传的地址--上传地址设置为#，选择完自动上传，不会上传到action地址,而是自定义的http-request方法里
     action: {
@@ -74,10 +87,33 @@ export default {
       default: () => '#'
     },
 
+    //设置上传的请求头部
+    headers: {
+      type: Object,
+      default: () => ({})
+    },
     //是否支持多选
     multiple: {
       type: Boolean,
       default: () => true
+    },
+
+    //上传时附带的额外参数
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+
+    //上传的文件字段名
+    name: {
+      type: String,
+      default: () => 'file'
+    },
+
+    //是否支持发送 cookie 凭证信息
+    withCredentials: {
+      type: Boolean,
+      default: () => false
     },
 
     //是否显示已上传文件列表
@@ -85,6 +121,7 @@ export default {
       type: Boolean,
       default: () => true
     },
+
     //是否启用拖拽上传
     drag: {
       type: Boolean,
@@ -96,31 +133,6 @@ export default {
       type: String,
       default: () => ''
     },
-
-    /* 文件列表移除文件时的钩子(回调)
-      * @param  {Object}  file 文件详细信息
-      * @param  {Array}  fileList 文件列表信息(被删除后剩余的列表信息)
-     */
-    onRemove: {
-      type: Function,
-      default: function (file, fileList) {
-        // console.log(file, fileList, 11)
-      }
-    },
-
-
-
-    /*文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
-     * @param  {Object}  file 文件详细信息
-      * @param  {Array}  fileList 文件列表信息(被删除后剩余的列表信息)
-    */
-    // onChange: {
-    //   type: Function,
-    //   default: function (file, fileList) {
-    //     console.log(11)
-    //   }
-    // },
-
 
     //上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传，要去掉列表
     beforeUpload: {
@@ -159,13 +171,13 @@ export default {
     //文件列表的类型(展示用) --text/picture/picture-card
     listType: {
       type: String,
-      default: () => 'picture-card'
+      default: () => 'text'
     },
 
     //是否在选取文件后立即进行上传
     autoUpload: {
       type: Boolean,
-      default: () => true
+      default: () => false
     },
 
     //最大允许上传个数 -- 0是无限制
@@ -199,7 +211,6 @@ export default {
         // }
       ]
     },
-
     /* 自定义属性 */
 
     //提示说明文字
@@ -208,11 +219,13 @@ export default {
       default: '上传提示说明文字，可传属性也可用slot,slot名和属性名一样都是tip (例子：只能上传jpg/png文件，且不超过500kb)'
     },
 
-    //上传文件的类型 --text(按钮)/picture(单张图片)/picture-card(照片墙),当listType为picture-card时,当前值一定也要设置为picture-card，showFileList也要设置为true否则看不见已经添加的图片。
+    //TODO:当 listType为picture-card时上传类型强制为picture-card,当drag开启时上传类型强制为drag
+    //上传类型 --text(按钮)/picture(单张图片)/picture-card(照片墙)/drag(拖拽上传的样式),当listType为picture-card时,当前值一定也要设置为picture-card，showFileList也要设置为true否则看不见已经添加的图片。
     uploadType: {
       type: String,
-      default: 'picture-card'
+      default: 'text'
     }
+
   },
 
   data () {
@@ -225,17 +238,16 @@ export default {
       dialog: {
         imageUrl: '', //图片地址
         visible: false //是否显示
-      }
+      },
+      isHideAdd: false //当uploadType类型是picture-card的时候, 超过限制张数，隐藏新增按钮。
     }
   },
-
 
   created () { },
   mounted () {
     // console.log(this.$attrs)
   },
   methods: {
-
     /** @description    点击文件列表中已上传的文件时的钩子(回调) 
       * @author yx
       * @param  {Object}  file  文件详细信息
@@ -259,13 +271,13 @@ export default {
           this.$emit('update:file-list', this.fileLists)
           this.imageUrl = URL.createObjectURL(file.raw)
         },
+        //上传类型是照片墙的时候
         'picture-card': () => {
-          // return this.fileLists.length >= this.limit
+          this.isHideAdd = fileList.length >= this.limit
         }
 
       }
       KeyMap[this.uploadType] && KeyMap[this.uploadType]()
-      console.log(fileList, this.fileLists)
       this.$emit('on-change', file, fileList)
     },
 
@@ -277,7 +289,18 @@ export default {
      */
     onSuccess (response, file, fileList) {
       this.$emit('on-success', response, file, fileList)
+    },
+
+    /** @description  文件列表移除文件时的钩子(回调)
+       * @author yx
+       * @param  {Object}  file 文件详细信息
+       * @param  {Array}  fileList 文件列表信息(被删除后剩余的列表信息)
+      */
+    onRemove (file, fileList) {
+      this.isHideAdd = false
+      this.$emit('on-remove', file, fileList)
     }
+
   },
 
   watch: {
@@ -288,18 +311,9 @@ export default {
         this.$emit('update:fileList', this.fileLists)
       }
     },
-
   },
-
-  computed: {
-    isHideAdd () {
-      return this.fileLists.length >= this.limit
-    }
-  }
-
 }
 </script>
-
 
 <style lang="scss" scoped>
 .eve-upload {

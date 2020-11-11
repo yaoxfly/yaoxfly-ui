@@ -5,7 +5,9 @@ export const global = {
     // 标签宽度
     labelWidth: 95,
     // 组件大小
-    size: 'medium'
+    size: 'medium',
+    // 全局组件状态
+    globalStatus: ''
   }
 }
 
@@ -49,6 +51,18 @@ export const globalConfigForm = {
         { label: '默认', value: 'medium' },
         { label: '小', value: 'small' },
         { label: 'mini', value: 'mini' }
+      ]
+    },
+    globalStatus: {
+      configName: '全局组件状态',
+      component: 'ue-select',
+      type: 'String',
+      clearable: true,
+      selections: [
+        { label: '启用', value: 'enable' },
+        { label: '禁用', value: 'disabled' },
+        { label: '只读', value: 'readOnly' },
+        { label: '标记', value: 'sign' },
       ]
     }
   }
