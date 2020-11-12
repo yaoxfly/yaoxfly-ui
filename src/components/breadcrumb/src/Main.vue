@@ -291,9 +291,15 @@ export default {
   user-select: none;
   &__text {
     padding-left: 20px;
+    font-size: 16px;
   }
   &__icon {
     cursor: pointer;
+    font-size: 24px;
   }
+}
+
+::v-deep .el-breadcrumb {
+  font-size: 16px;
 }
 </style>

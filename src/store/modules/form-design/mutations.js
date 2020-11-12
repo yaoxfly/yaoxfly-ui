@@ -1,4 +1,4 @@
-import { vueClonedeep, setValue, getPropertyDataFromNestObj, getKey } from '../../../lib/utils'
+import { vueClonedeep, setValue, getPropertyDataFromNestObj, getKey } from '../../../components/form-design/src/lib/utils'
 import Vue from 'vue'
 
 export default {

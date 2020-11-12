@@ -175,11 +175,13 @@ export default {
       type: String,
       default: 'swiper-button-white'
     },
+
     //是否开启滚动
     scroll: {
       type: Boolean,
       default: true
     },
+
     //导航按钮的宽度--如果开启滚动必须固定一个宽度
     navigationWidth: {
       type: String,
@@ -369,6 +371,7 @@ export default {
 <style lang='scss' scoped >
 .eve-header {
   // width: 100%;
+  border-bottom: 0;
   display: flex;
   padding: 0 20px;
   color: white;
@@ -497,6 +500,10 @@ export default {
   &__dialog-footer-button {
     user-select: none;
     cursor: pointer;
+  }
+  //隐藏菜单底下的线
+  ::v-deep .el-menu.el-menu--horizontal {
+    border-bottom: solid 1px transparent;
   }
 }
 

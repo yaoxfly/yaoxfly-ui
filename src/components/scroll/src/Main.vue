@@ -165,6 +165,14 @@ export default {
       padding: 0 10px 10px 10px;
     }
   }
+
+  // 标题选中颜色和线
+  .el-submenu .el-submenu__title {
+    span {
+      padding: 0 10px 10px 10px;
+    }
+  }
+
   //去掉箭头
   .el-submenu__title i {
     color: transparent;
@@ -173,6 +181,11 @@ export default {
   .el-menu-item.is-active {
     span {
       border-bottom: 2px solid blue;
+      padding: 0 10px 10px 10px;
+    }
+  }
+  .el-menu-item {
+    span {
       padding: 0 10px 10px 10px;
     }
   }

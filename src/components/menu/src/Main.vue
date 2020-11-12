@@ -206,11 +206,13 @@ export default {
 
 </script>
 
+
 <style lang='scss' scoped >
 .eve-menu {
   user-select: none;
   overflow: hidden;
   overflow-y: auto;
+  padding-bottom: 28%;
 }
 ::-webkit-scrollbar-track-piece {
   //滚动条凹槽的颜色，还可以设置边框属性
@@ -221,12 +223,14 @@ export default {
   width: 10px;
   height: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
   //滚动条的设置
   background-color: #dddddd;
   background-clip: padding-box;
   min-height: 28px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background-color: #bbb;
 }
@@ -276,6 +280,11 @@ export default {
   -webkit-transition: 0s;
   transition: 0s;
   opacity: 0;
+}
+
+.el-submenu .el-menu-item {
+  min-width: 0;
+  width: 100%;
 }
 </style>
 
