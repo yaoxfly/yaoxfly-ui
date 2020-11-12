@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ModalMixin from '../../../mixins/modal-mixin'
+import ModalMixin from '../mixins/modal-mixin'
 import { mapState } from 'vuex'
 import JsonEditor from './JsonEditor'
 

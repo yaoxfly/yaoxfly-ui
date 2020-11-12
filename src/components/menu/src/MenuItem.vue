@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: 'menuItem',
+  name: 'MenuItem',
   //接收依赖注入的类名
   inject: ['className'],
   props: {

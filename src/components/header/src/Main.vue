@@ -134,7 +134,7 @@
 
 import mixins from '../../scroll/src/mixins'
 export default {
-  name: 'eveHeader',
+  name: 'EveHeader',
   mixins: [mixins],
   props: {
     //logo

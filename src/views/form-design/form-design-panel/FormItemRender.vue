@@ -1,5 +1,10 @@
 <script>
+import FormCompsMixin from '../mixins/form-comps-mixin'
+
 export default {
+  mixins: [
+    FormCompsMixin
+  ],
   // Props 是可选的
   props: {
     formItemConfig: {

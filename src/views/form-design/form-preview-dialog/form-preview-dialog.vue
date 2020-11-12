@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ModalMixin from '../../../mixins/modal-mixin'
+import ModalMixin from '../mixins/modal-mixin'
 import { mapState } from 'vuex'
 import FormRender from './form-render'
 

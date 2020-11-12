@@ -1,7 +1,11 @@
 <script>
 import { visitFormItem, buildRender } from './util'
+import FormCompsMixin from '../../mixins/form-comps-mixin'
 
 export default {
+  mixins: [
+    FormCompsMixin
+  ],
   props: {
     formConfig: {
       type: Object,

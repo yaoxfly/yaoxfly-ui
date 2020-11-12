@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import FormCompsMixin from '../mixins/form-comps-mixin'
 import FormItemRender from './FormItemRender.vue'
 import VueDraggable from 'vuedraggable'
 import { mapMutations, mapState } from 'vuex'
@@ -58,6 +59,9 @@ import { elFormItem, common } from '../common-config'
 
 export default {
   name: 'FormConfigItem',
+  mixins: [
+    FormCompsMixin
+  ],
   components: {
     FormItemRender,
     VueDraggable

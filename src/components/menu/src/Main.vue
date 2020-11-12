@@ -30,7 +30,7 @@
 <script>
 import MenuItem from './MenuItem'
 export default {
-  name: 'eveMenu',
+  name: 'EveMenu',
   provide () {
     return {
       //传一个类名用来改样式，以防和滚动菜单全局污染样式

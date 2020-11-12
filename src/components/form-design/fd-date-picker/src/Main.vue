@@ -21,11 +21,11 @@
   </div>
 </template>
 <script>
-import VModelMixin from '../../eve-form-mixin'
+import VModelMixin from '../../fd-mixin'
 import { formatDateByDateObj } from '../../../../lib/utils'
 
 export default {
-  name: 'EveDatePicker',
+  name: 'FdDatePicker',
   mixins: [
     VModelMixin
   ],

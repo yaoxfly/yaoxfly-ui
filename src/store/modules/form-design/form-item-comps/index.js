@@ -1,13 +1,13 @@
-import { inputCompProps, inputCompPropsForm } from './form-item-props/eve-input-props'
-import { selectProps, selectPropsForm } from './form-item-props/eve-select-props'
+import { inputCompProps, inputCompPropsForm } from './form-item-props/fd-input-props'
+import { selectProps, selectPropsForm } from './form-item-props/fd-select-props'
 import { elRow, elRowFormConfig } from './form-layout-item-props/el-row'
 import { ElTabs, ElTabsFormConfig } from './form-layout-item-props/el-tabs'
-import { checkboxGroupProps, checkboxGroupPropsForm } from './form-item-props/eve-checkbox-group'
-import { radioGroupProps, radioGroupPropsForm } from './form-item-props/eve-radio-group'
-import { datePickerProps, datePickerPropsForm } from './form-item-props/eve-date-picker'
-import { eveDiv, eveDivFormConfig } from './form-layout-item-props/eve-div'
-import { eveLabelFormConfig, eveLabel } from './other-props/eve-label'
-import { cascaderPropsForm, cascaderProps } from './form-item-props/eve-cascader'
+import { checkboxGroupProps, checkboxGroupPropsForm } from './form-item-props/fd-checkbox-group'
+import { radioGroupProps, radioGroupPropsForm } from './form-item-props/fd-radio-group'
+import { datePickerProps, datePickerPropsForm } from './form-item-props/fd-date-picker'
+import { eveDiv, eveDivFormConfig } from './form-layout-item-props/fd-div'
+import { eveLabelFormConfig, eveLabel } from './other-props/fd-label'
+import { cascaderPropsForm, cascaderProps } from './form-item-props/fd-cascader'
 
 /**
  * 普通输入组件
@@ -15,14 +15,14 @@ import { cascaderPropsForm, cascaderProps } from './form-item-props/eve-cascader
 export const commonComps = [
   {
     // 输入框在用户失焦时触发校验
-    comp: 'eve-input',
+    comp: 'fd-input',
     label: '输入框',
     id: '100001',
     category: 'input',
     props: inputCompProps.props
   },
   {
-    comp: 'eve-select',
+    comp: 'fd-select',
     label: '下拉框',
     id: '100002',
     category: 'input',
@@ -30,7 +30,7 @@ export const commonComps = [
     triggerUseChange: true
   },
   {
-    comp: 'eve-checkbox-group',
+    comp: 'fd-checkbox-group',
     label: '多选框组',
     id: '100003',
     category: 'input',
@@ -38,7 +38,7 @@ export const commonComps = [
     triggerUseChange: true
   },
   {
-    comp: 'eve-radio-group',
+    comp: 'fd-radio-group',
     label: '单选框组',
     id: '100004',
     category: 'input',
@@ -47,7 +47,7 @@ export const commonComps = [
     triggerUseChange: true
   },
   {
-    comp: 'eve-date-picker',
+    comp: 'fd-date-picker',
     label: '日期选择器',
     id: '100005',
     category: 'input',
@@ -56,7 +56,7 @@ export const commonComps = [
     triggerUseChange: true
   },
   {
-    comp: 'eve-cascader',
+    comp: 'fd-cascader',
     label: '级联框',
     id: '100006',
     category: 'input',
@@ -85,7 +85,7 @@ export const layoutComps = [
     children: ElTabs.children
   },
   {
-    comp: 'eve-div',
+    comp: 'fd-div',
     label: 'div',
     id: '200004',
     category: 'layout',
@@ -96,7 +96,7 @@ export const layoutComps = [
 // 其他组件 装饰组件没有绑定字段的组件
 export const otherComps = [
   {
-    comp: 'eve-label',
+    comp: 'fd-label',
     label: '标签',
     id: '300001',
     category: 'other',
@@ -104,14 +104,14 @@ export const otherComps = [
   }
 ]
 export const formItemPropsForms = {
-  'eve-input': inputCompPropsForm,
-  'eve-select': selectPropsForm,
+  'fd-input': inputCompPropsForm,
+  'fd-select': selectPropsForm,
   'el-row': elRowFormConfig,
   'el-tabs': ElTabsFormConfig,
-  'eve-radio-group': radioGroupPropsForm,
-  'eve-checkbox-group': checkboxGroupPropsForm,
-  'eve-date-picker': datePickerPropsForm,
-  'eve-div': eveDivFormConfig,
-  'eve-label': eveLabelFormConfig,
-  'eve-cascader': cascaderPropsForm
+  'fd-radio-group': radioGroupPropsForm,
+  'fd-checkbox-group': checkboxGroupPropsForm,
+  'fd-date-picker': datePickerPropsForm,
+  'fd-div': eveDivFormConfig,
+  'fd-label': eveLabelFormConfig,
+  'fd-cascader': cascaderPropsForm
 }

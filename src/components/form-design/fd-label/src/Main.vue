@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'EveLabel',
+  name: 'FdLabel',
   props: {
     label: {
       type: String,

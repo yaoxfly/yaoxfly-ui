@@ -17,10 +17,10 @@
   </div>
 </template>
 <script>
-import VModelMixin from '../../eve-form-mixin'
+import VModelMixin from '../../fd-mixin'
 
 export default {
-  name: 'EveCheckboxGroup',
+  name: 'FdCheckboxGroup',
   mixins: [
     VModelMixin
   ],

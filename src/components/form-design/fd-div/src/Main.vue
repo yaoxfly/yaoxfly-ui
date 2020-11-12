@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: 'EveDiv'
+  name: 'FdDiv'
 }
 </script>

@@ -1,11 +1,11 @@
 <!--
 * @Author: xjd
-* @Description: 级联框的封装
+* @Description: 下拉框的封装
 * @Date: 2020-10-20
 -->
 <template>
-  <div class="eve-cascader">
-    <el-cascader
+  <div class="eve-select">
+    <el-select
       v-if="!isReadOnly"
       v-model="curValue"
       :size="size"
@@ -15,20 +15,24 @@
       :clearable="clearable"
       :multiple="multiple"
       filterable
-      :options="selections"
-      :separator="readOnlySeperator"
-    />
+    >
+      <el-option
+        v-for="(item, index) in selections"
+        :key="`el_ue_option_${index}`"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
     <template v-else>
-      {{ readOnlyValue }}
+      {{ selectionsDic[curValue] }}
     </template>
   </div>
 </template>
 <script>
-import VModelMixin from '../../eve-form-mixin'
-import _ from 'lodash'
+import VModelMixin from '../../fd-mixin'
 
 export default {
-  name: 'EveCascader',
+  name: 'FdSelect',
   mixins: [
     VModelMixin
   ],
@@ -57,40 +61,20 @@ export default {
     multiple: {
       type: Boolean,
       default: false
-    },
-    // 只读分隔符
-    readOnlySeperator: {
-      type: String,
-      default: '/'
     }
   },
   // 选项值到label的映射 isReadOnly 时用
   computed: {
     selectionsDic () {
       const dic = {}
-      this.setDic(this.selections, dic)
-      return dic
-    },
-    readOnlyValue () {
-      const v = []
-      const arr = this.curValue || []
-      arr.forEach(value => {
-        v.push(this.selectionsDic[value])
+      this.selections.forEach(item => {
+        dic[item.value] = item.label
       })
-      return v.join(this.readOnlySeperator)
+      return dic
     }
   },
   methods: {
-    setDic (list, dic) {
-      if (_.isArray(list)) {
-        list.forEach(item => {
-          dic[item.value] = item.label
-          if (item.children) {
-            this.setDic(item.children, dic)
-          }
-        })
-      }
-    }
+    
   }
 }
 </script>

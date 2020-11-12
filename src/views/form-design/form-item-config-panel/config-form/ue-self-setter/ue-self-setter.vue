@@ -3,10 +3,11 @@
  */
 <script>
 import VModelMixin from '../v-model-mixin'
+import FormCompsMixin from '../../../mixins/form-comps-mixin'
 import { mapState } from 'vuex'
 
 export default {
-  mixins: [VModelMixin],
+  mixins: [VModelMixin, FormCompsMixin],
   computed: {
     ...mapState({
       activateItem: state => state.FormDesign.activateItem,
