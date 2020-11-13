@@ -142,6 +142,17 @@ export default {
         })
       }
     },
+    getOtherKeyValue (parentKey) {
+      const _this = this
+      return (key) => {
+        const keys = []
+        if (parentKey) {
+          keys.push(parentKey)
+        }
+        keys.push(key)
+        return _this.form[keys.join('.')]
+      }
+    },
     // 设置用户的选择configKey
     setSelectedConfigKey (configKey, value) {
       this.$set(this.configKeysSelectorValueDic, configKey, `${value}`)

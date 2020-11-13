@@ -13,7 +13,7 @@
   >
     <!--center(中间一整块)布局-->
     <section class="eve-layout__main" v-if="layout === 'center'">
-      <el-scrollbar style="height: 100%">
+      <el-scrollbar style="height: 102%">
         <slot> </slot>
       </el-scrollbar>
     </section>
@@ -21,38 +21,45 @@
     <!-- 左右布局 -->
     <section class="eve-layout__left-right" v-if="layout === 'left-right'">
       <!--左-->
-      <div class="eve-layout__left" :style="{ width: `${span[0] * 10}%` }">
-        <slot name="left"></slot>
+      <div class="eve-layout__left" :style="{ width: `${span[0] * 100}px` }">
+        <el-scrollbar style="height: 100%">
+          <slot name="left"></slot>
+        </el-scrollbar>
       </div>
       <!--右-->
       <div
         class="eve-layout__right"
         :style="{
-          width: `${span[1] * 10}%`,
+          width: `calc(${span[1] * 10}% - ${span[0] * 100} px  )`,
           marginLeft: `${spacing}px`,
         }"
       >
-        <slot name="right"></slot>
+        <el-scrollbar style="height: 100%">
+          <slot name="right"></slot>
+        </el-scrollbar>
       </div>
     </section>
 
-    <!--上下布局-->
+    <!--上下布局 -->
     <section class="eve-layout__up-down" v-if="layout === 'up-down'">
-      <!--上-->
-      <div class="eve-layout__up" :style="{ minHeight: `${span[0] * 10}%` }">
-        <slot name="up"></slot>
-      </div>
-
-      <!--下-->
-      <div
-        class="eve-layout__down"
-        :style="{
-          minHeight: `calc(${span[1] * 10}% - ${spacing}px )`,
-          marginTop: `${spacing}px`,
-        }"
-      >
-        <slot name="down"></slot>
-      </div>
+      <el-scrollbar style="height: 100%">
+        <!--上-->
+        <div class="eve-layout__up" :style="{ minHeight: `${span[0] * 10}vh` }">
+          <slot name="up"></slot>
+        </div>
+        <!--下-->
+        <div
+          class="eve-layout__down"
+          :style="{
+            minHeight: `calc(${
+              span[1] * 10
+            }vh - ${heightDiffer}px - ${spacing}px  )`,
+            marginTop: `${spacing}px`,
+          }"
+        >
+          <slot name="down"></slot>
+        </div>
+      </el-scrollbar>
     </section>
   </div>
 </template>
@@ -80,9 +87,10 @@ export default {
       default: 10
     },
 
-    //占据比例数组(0-10),当左右布局时，左边是数组的第一个值，当上下布局的时候上面是是数组的第一个值。
+    //占据比例数组(0-10);当左右布局时，左边是数组的第一个值,右边可不管根据左边自适应了;当上下布局的时候上面是是数组的第一个值。
     span: {
       type: Array,
+      // default: () => [1.7, 8.3]  [3, 7]
       default: () => [1.7, 8.3]
     }
 
@@ -98,9 +106,8 @@ export default {
 </script>
 <style lang='scss' scoped >
 .eve-layout {
-  overflow: hidden;
-  overflow-y: auto;
-
+  // overflow: hidden;
+  // overflow-y: auto;
   &__main {
     width: 100%;
     height: 100%;
@@ -112,16 +119,21 @@ export default {
     display: flex;
     justify-content: center;
     height: 100%;
+    width: 100%;
   }
 
   &__left {
+    width: 100%;
     padding: 20px 10px;
     background: white;
   }
 
   &__right {
+    width: 100%;
     padding: 20px 10px;
     background: white;
+    overflow: hidden;
+    overflow-x: auto;
   }
 
   &__up-down {
@@ -130,18 +142,49 @@ export default {
   }
 
   &__up {
-    padding: 20px 10px;
+    width: 100%;
     background: white;
+    padding: 20px 10px;
   }
 
   &__down {
+    width: 100%;
     padding: 20px 10px;
     background: white;
   }
 }
+
+//隐藏element-ui静态滚动条的横向滚动条
 ::v-deep .el-scrollbar__wrap {
   overflow-x: hidden;
 }
+::v-deep .el-scrollbar__bar.is-vertical > div {
+  width: 120%;
+}
+::v-deep .el-scrollbar__bar.is-horizontal > div {
+  height: 120%;
+}
+// ::-webkit-scrollbar-track-piece {
+//   //滚动条凹槽的颜色，还可以设置边框属性
+//   background-color: #f8f8f8;
+// }
+// ::-webkit-scrollbar {
+//   //滚动条的宽度
+//   width: 8px;
+//   height: 8px;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//   //滚动条的设置
+//   background-color: rgba(144, 147, 153, 0.5);
+//   background-clip: padding-box;
+//   min-height: 10px;
+//   border-radius: 3px;
+// }
+
+// ::-webkit-scrollbar-thumb:hover {
+//   background-color: rgba(144, 147, 153, 0.5);
+// }
 </style>
 
  

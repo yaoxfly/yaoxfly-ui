@@ -32,6 +32,7 @@ import FormDesignPanel from './form-design-panel/FormDesignPanel'
 import FormItemConfigPanel from './form-item-config-panel'
 import formPreviewDialog from './form-preview-dialog'
 import JsonPreviewDialog from './json-preview-dialog'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'FormDesign',
@@ -49,6 +50,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setFormConfig: 'FormDesign/SET_FORM_CONFIG'
+    }),
     handleClickPreview () {
       this.showPreviewDialog = true
     },

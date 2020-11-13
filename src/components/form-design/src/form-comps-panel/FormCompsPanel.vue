@@ -9,7 +9,7 @@
       </div>
     </vue-draggable>
     <div class="comps-category-label">
-      高级类型
+      布局类型
     </div>
     <vue-draggable tag="div" class="drag-wrapper" v-bind="{ group:{ name: 'formDesign', pull:'clone', put: false }, sort: false, ghostClass: 'ghost' }" :list="layoutComps">
       <div v-for="item in layoutComps" :key="item.id" class="item">

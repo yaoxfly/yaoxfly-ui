@@ -17,7 +17,10 @@ export default {
       form: {},
       rules: {},
       // tab 标签页 保存每个标签页点击页的activeName
-      tabsActiveNameDic: {}
+      tabsActiveNameDic: {},
+      // 各布局组件 key 到 下属字段名称的映射
+      fieldNamesDic: {},
+      remoteDataSetters: []
     }
   },
   computed: {
@@ -30,6 +33,7 @@ export default {
   },
   mounted () {
     // console.log('mounted') // 子组件全部渲染完成后 再输出顺序 3
+    this.$emit('form-render-mounted')
   },
   created () {
     // console.log('create') // 输出顺序 1
@@ -51,9 +55,11 @@ export default {
     init () {
       const form = {}
       const rules = {}
-      visitFormItem(this.formItemConfigs, form, rules, this)
+      const fieldNamesDic = {}
+      visitFormItem(this.formItemConfigs, form, rules, this, null, fieldNamesDic)
       this.form = form
       this.rules = rules
+      this.fieldNamesDic = fieldNamesDic
     },
     // 获取表单实例对象
     getFormInstance () {
@@ -67,7 +73,7 @@ export default {
     handleInput (fieldName, value, params) {
       this.$set(this.form, fieldName, value)
     },
-    // 外部设置表单数据
+    // 设置表单数据
     setFormData (value) {
       this.$nextTick(() => {
         for (const key in value) {
@@ -92,6 +98,33 @@ export default {
     },
     getData () {
       return this.form
+    },
+    setRemoteDataSetter (setter) {
+      this.remoteDataSetters.push(setter)
+    },
+    setRemoteData () {
+      return new Promise((resolve, reject) => {
+        const ps = []
+        this.remoteDataSetters.forEach(setter => {
+          // 当前扩展数据输入域对应的可输入项字段名称
+          ps.push(new Promise(resolve => {
+            setter.setRemoteData().then(data => {
+              // for (const key in rs) {
+              //   this.$set(this.form, key, rs[key])
+              // }
+              this.setFormData(data)
+              resolve()
+            })
+          }))
+        })
+        if (ps.length > 0) {
+          Promise.all(ps).then(rs => {
+            resolve(this.form)
+          })
+        } else {
+          resolve(this.form)
+        }
+      })
     }
   }
 }

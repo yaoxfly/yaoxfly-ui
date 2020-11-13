@@ -77,5 +77,10 @@ export default {
   // 初始化表单全局设置
   INIT_GLOBAL: (state, global) => {
     state.global = vueClonedeep(global)
+  },
+  SET_FORM_CONFIG: (state, config) => {
+    state.global = config.global
+    state.activateItem = null
+    state.formItemConfigs = config.formItemConfigs
   }
 }

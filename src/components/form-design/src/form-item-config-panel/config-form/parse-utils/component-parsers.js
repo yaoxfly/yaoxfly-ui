@@ -272,10 +272,10 @@ function buildFormItemRender (h, instance, formPropertyName, vueNodeConfig, comp
             // eslint-disable-next-line no-eval
             vueNodeConfig.hideFunction = eval(`(false || function () { return ${vueNodeConfig.hideFunction} })()`)
           }
-          vueNodeConfig.hideFunction(value, instance.setFormItemHideStatus(parentKey), instance.curChartConfig)
+          vueNodeConfig.hideFunction(value, instance.setFormItemHideStatus(parentKey), instance.getOtherKeyValue(parentKey))
         }
         // 设置禁用
-        vueNodeConfig.disableOther && vueNodeConfig.disableFunction(value, instance.setFormItemHideStatus(parentKey, true))
+        vueNodeConfig.disableOther && vueNodeConfig.disableFunction(value, instance.setFormItemHideStatus(parentKey, true), instance.getOtherKeyValue(parentKey))
         if (haveToCommitUpdate) {
           // 只有新值与旧值不相等才需要放到撤回栈中
           instance.commitUpdate(formPropertyName, value, oldValue, oldValueNotEqualsValue(oldValue, value))

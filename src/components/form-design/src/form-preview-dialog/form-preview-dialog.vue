@@ -4,7 +4,7 @@
     <div slot="title">
       预览
     </div>
-    <form-render ref="formRender" v-if="show" :form-config="form" />
+    <form-render ref="formRender" @form-render-mounted="setData" v-if="show" :form-config="form" />
     <div slot="footer">
       <!-- <el-button type="primary" size="small" @click="setData">数据</el-button> -->
       <el-button type="success" size="small" @click="handleClickValidate">校验</el-button>
@@ -62,10 +62,15 @@ export default {
       })
     },
     setData () {
-      this.$refs.formRender.setFormData({
-        s1: '123123',
-        s2: '1',
-        form_field_76857: '2020-12-19'
+      this.$refs.formRender.setRemoteData().then(formData => {
+        // setTimeout(() => {
+        //   const data = {}
+        //   const fields = ['s1', 's2', 's4']
+        //   fields.forEach((fieldName, idx) => {
+        //     data[fieldName] = `preview_${idx}`
+        //   })
+        //   this.$refs.formRender.setFormData(data)
+        // }, 3000)
       })
     }
   }

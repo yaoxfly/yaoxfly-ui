@@ -44,12 +44,23 @@ export const buildRender = (h, formItemList, instance, parentLayoutStatus) => {
         )
       })
       const theProps = {
-        ...formItem.props
+        ...formItem.props,
+        fieldNames: instance.fieldNamesDic[formItem.key]
       }
       if (formItem.comp === 'el-tabs') {
         theProps.value = instance.tabsActiveNameDic[formItem.key]
       }
-      renders.push(h(formItem.comp, { props: theProps }, childrenRenders))
+      renders.push(
+        h(formItem.comp, {
+          props: theProps,
+          on: {
+            'remote-data-setter': (setter) => {
+              // 数据回填组件注册
+              instance.setRemoteDataSetter(setter)
+            }
+          }
+        }, childrenRenders)
+      )
     } else if (formItem.category === 'input') {
       /**
        * 非布局组件
@@ -174,8 +185,10 @@ function buildFormItemRender (h, formItem, instance, parentFieldStatus) {
 /**
  * 遍历所有表单项节点 构建表单 以及校验规则
  * @param {*} formItemList 
+ * @param {*} fieldNames 父布局组件下的字段数组
+ * @param {*} fieldNamesDic 布局组件下属子组件字段名称映射 dic
  */
-export const visitFormItem = (formItemList, form, rules, instance) => {
+export const visitFormItem = (formItemList, form, rules, instance, fieldNames, fieldNamesDic) => {
   formItemList.forEach(formItem => {
     /**
      * comp: 组件类型
@@ -185,9 +198,14 @@ export const visitFormItem = (formItemList, form, rules, instance) => {
      */
     if (formItem.category === 'layout') {
       /**
+       * 如果当前布局组件本身也开启了数据回填，
+       * 那么它下属的子组件就不添加到父布局组件中去
+       */
+      const currentLayoutCompFieldNames = []
+      /**
        * children 子组件配置
        */
-      const { children } = formItem
+      const { children, props } = formItem
       if (formItem.comp === 'el-tabs') {
         instance.$set(instance.tabsActiveNameDic, formItem.key, '-')
         if (children.length > 0) {
@@ -202,15 +220,21 @@ export const visitFormItem = (formItemList, form, rules, instance) => {
         /**
          * 递归解析当前子布局组件下的所有组件
          */
-        visitFormItem(comps, form, rules, instance)
+        visitFormItem(comps, form, rules, instance, currentLayoutCompFieldNames, fieldNamesDic)
       })
+      if (props.backfill) {
+        fieldNamesDic[formItem.key] = currentLayoutCompFieldNames
+      } else {
+        if (_.isArray(fieldNames)) {
+          fieldNames.push(...currentLayoutCompFieldNames)
+        }
+      }
     } else {
       /**
        * 非布局组件 字段名称
        */
       const { fieldName, isRequired, formItemLabel, diyValidator, defaultValue } = formItem.elFormItem || {}
       if (fieldName) {
-        // form[fieldName] = getEmpytValue(formItem.props)
         const v = getEmpytValue(formItem.props)
         const trigger = _.isArray(v) || formItem.triggerUseChange ? 'change' : 'blur'
         instance.$set(form, fieldName, defaultValue || v)
@@ -257,6 +281,9 @@ export const visitFormItem = (formItemList, form, rules, instance) => {
           },
           trigger
         })
+        if (_.isArray(fieldNames)) {
+          fieldNames.push(fieldName)
+        }
         instance.$set(rules, fieldName, rulesArr)
       }
     }

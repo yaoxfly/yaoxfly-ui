@@ -233,9 +233,7 @@
             <el-button type="primary" @click="handleSubmit('formValidate')"
               >查 询</el-button
             >
-            <el-button @click="handleReset('formValidate')" class="ml-8"
-              >重 置</el-button
-            >
+            <el-button @click="handleReset('formValidate')">重 置</el-button>
             <span
               class="eve-select-form__pack-up"
               @click="packUp"

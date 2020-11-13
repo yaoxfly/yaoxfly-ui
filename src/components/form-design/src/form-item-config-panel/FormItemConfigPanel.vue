@@ -65,7 +65,7 @@ export default {
       return this.formItemPropsForms[this.activateItem.comp]
     },
     childConfig () {
-      return this.curFormItemPropsConfigForm.childConfig
+      return this.curFormItemPropsConfigForm.childConfig || {}
     }
   },
   watch: {
