@@ -860,6 +860,7 @@ export default {
 .eve-table-pagination {
   margin: 0 24px;
   text-align: center;
+
   &__filters ::v-deep .el-table__column-filter-trigger i {
     display: none;
   }

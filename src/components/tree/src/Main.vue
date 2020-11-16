@@ -4,7 +4,7 @@
 * @Date: 2020-10-19
 -->
 <template>
-  <div class="eve-tree">
+  <div class="eve-tree" :style="{ width: checkString(width) }">
     <div class="eve-tree__filter">
       <el-input placeholder="输入关键字进行过滤" v-model="filterText" clearable>
       </el-input>
@@ -247,6 +247,13 @@ export default {
       }
     },
 
+    /*自定义属性 */
+    //整颗树的宽度，固定宽度有横向滚动条，100%可向外自动扩伸(不出现横向滚动条)
+    width: {
+      type: [String, Number],
+      default: '100%'
+    }
+
   },
 
   mounted () {
@@ -432,6 +439,15 @@ export default {
     },
 
 
+
+    /**@description 判断是否是字符串
+    * @author yx
+    * @param  {String}  str 高度、宽度、left等类型的值
+    */
+    checkString (str) {
+      return typeof str === 'string' ? str : `${str}px`
+    }
+
   },
 
   watch: {
@@ -447,6 +463,7 @@ export default {
 <style lang="scss" scoped>
 .eve-tree {
   user-select: none;
+
   &__custom-tree-node {
     flex: 1;
     display: flex;

@@ -42,7 +42,7 @@
 </template>
 
 <script>
-
+import Bus from '../../../assets/js/bus.js'
 export default {
   name: 'EveBreadcrumb',
   props: {
@@ -173,7 +173,9 @@ export default {
       // 面包屑根据菜单转换用的临时全局数据
       breadcrumb: [],
       // 面包屑用来循环的数据
-      breadcrumbData: []
+      breadcrumbData: [],
+      //左边菜单是否收缩--bus通信用
+      collapse: false
     }
   },
   computed: {},
@@ -184,6 +186,7 @@ export default {
          * @author yx
       */
     iconClick () {
+      this.sendBus()
       this.$emit('icon-click')
     },
 
@@ -259,7 +262,17 @@ export default {
      */
     checkString (str) {
       return typeof str === 'string' ? str : `${str}px`
+    },
+
+
+    /**@description 发送通信
+     * @author yx
+     */
+    sendBus () {
+      this.collapse = !this.collapse
+      Bus.$emit('breadcrumb-container-menu-collapse', this.collapse)
     }
+
   },
 
   watch: {

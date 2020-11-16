@@ -4,7 +4,7 @@
 * @Date: 2020-10-13
 -->
 <template>
-  <div :style="{ width: `${width}px` }">
+  <div :style="{ width: `${tempWidth}px` }">
     <el-scrollbar style="height: 100%">
       <el-menu
         class="eve-menu"
@@ -12,7 +12,7 @@
         :unique-opened="uniqueOpened"
         :default-active="active"
         :mode="mode"
-        :collapse="collapse"
+        :collapse="tempCollapse"
         :background-color="backgroundColor"
         :text-color="textColor"
         :active-text-color="activeTextColor"
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import Bus from '../../../assets/js/bus.js'
 import MenuItem from './MenuItem'
 export default {
   name: 'EveMenu',
@@ -122,7 +123,6 @@ export default {
       type: Number,
       default: 200
     },
-
     // 距离顶部(header)的距离(原本属性是height现在改完top)
     top: {
       type: Number,
@@ -134,11 +134,17 @@ export default {
     return {
       // 当前激活菜单的标识(菜单高亮)--可让子组件改父组件传来的值
       active: '',
+      // 是否水平折叠收起菜单(内部用)
+      tempCollapse: '',
+      // 宽度(内部用)
+      tempWidth: 200
     }
+  },
+  mounted () {
+    this.receiveBus()
   },
 
   methods: {
-
     /**@description  菜单激活回调
       * @author yx
       * @param  {String}  index path 路径
@@ -176,6 +182,19 @@ export default {
       })
       return arr
     },
+
+    /**@description 接收各种兄弟通信
+     * @author yx
+     */
+    receiveBus () {
+      Bus.$on('breadcrumb-container-menu-collapse', collapse => {
+        // console.log(collapse, 'menu')
+        this.tempCollapse = collapse
+        this.tempWidth = this.tempCollapse ? 64 : this.width
+        this.$emit('update:collapse', this.tempCollapse)
+        this.$emit('update:width', this.tempWidth)
+      })
+    }
   },
 
   components: {
@@ -201,6 +220,18 @@ export default {
       immediate: true,
       // 深度观察监听
       // deep: true
+    },
+    collapse: {
+      handler (val) {
+        this.tempCollapse = val
+      },
+      immediate: true,
+    },
+    width: {
+      handler (val) {
+        this.tempWidth = val
+      },
+      immediate: true,
     }
   }
 }

@@ -8,6 +8,7 @@
     class="eve-layout"
     :style="{
       margin: `${spacing}px`,
+      width: `calc(100vw - ${tempLeft}px`,
       height: `calc(100vh - ${heightDiffer}px)`,
     }"
   >
@@ -21,7 +22,10 @@
     <!-- 左右布局 -->
     <section class="eve-layout__left-right" v-if="layout === 'left-right'">
       <!--左-->
-      <div class="eve-layout__left" :style="{ width: `${span[0] * 100}px` }">
+      <div
+        class="eve-layout__left"
+        :style="{ width: `${proportion[0] * 100}px` }"
+      >
         <el-scrollbar style="height: 100%">
           <slot name="left"></slot>
         </el-scrollbar>
@@ -30,7 +34,7 @@
       <div
         class="eve-layout__right"
         :style="{
-          width: `calc(${span[1] * 10}% - ${span[0] * 100} px  )`,
+          width: `calc(${proportion[1] * 10}% - ${proportion[0] * 100} px  )`,
           marginLeft: `${spacing}px`,
         }"
       >
@@ -44,7 +48,10 @@
     <section class="eve-layout__up-down" v-if="layout === 'up-down'">
       <el-scrollbar style="height: 100%">
         <!--上-->
-        <div class="eve-layout__up" :style="{ minHeight: `${span[0] * 10}vh` }">
+        <div
+          class="eve-layout__up"
+          :style="{ minHeight: `${proportion[0] * 10}vh` }"
+        >
           <slot name="up"></slot>
         </div>
         <!--下-->
@@ -52,7 +59,7 @@
           class="eve-layout__down"
           :style="{
             minHeight: `calc(${
-              span[1] * 10
+              proportion[1] * 10
             }vh - ${heightDiffer}px - ${spacing}px  )`,
             marginTop: `${spacing}px`,
           }"
@@ -63,16 +70,15 @@
     </section>
   </div>
 </template>
-
-
 <script>
+import Bus from '../../../assets/js/bus.js'
 export default {
   name: 'EveLayout',
   props: {
     //布局方式,可选值：center(中间一大块)布局、left-right(左右布局)、up-down(上下布局)
     layout: {
       type: String,
-      default: 'left-right'
+      default: 'center'
     },
 
     //高度差 顶部导航+面包屑+两个spacing的高度之和
@@ -90,24 +96,69 @@ export default {
     //占据比例数组(0-10);当左右布局时，左边是数组的第一个值,右边可不管根据左边自适应了;当上下布局的时候上面是是数组的第一个值。
     span: {
       type: Array,
-      // default: () => [1.7, 8.3]  [3, 7]
-      default: () => [1.7, 8.3]
+      default: () => []
+    },
+
+    //距离左边的距离(一般是菜单的宽度)
+    left: {
+      type: Number,
+      default: () => 200
     }
 
   },
   data () {
     return {
-      visible: false // 是否显示
+      visible: false, // 是否显示
+      proportion: [], //占据比例
+      tempLeft: 0 //距离左边的距离(内部用)
     }
   },
-  methods: {}
 
+  mounted () {
+    this.receiveBus()
+  },
+
+  methods: {
+    /**@description 接收各种兄弟通信
+       * @author yx
+       */
+    receiveBus () {
+      Bus.$on('breadcrumb-container-menu-collapse', collapse => {
+        //本来是64,20是间距的距离
+        this.tempLeft = collapse ? 84 : this.left
+        console.log(this.tempLeft, 'layout')
+      })
+    }
+  },
+  watch: {
+    layout: {
+      handler (newValue) {
+        console.log(newValue, 333)
+        this.proportion = newValue === 'left-right' ? [3, 7] : [1.7, 8.3]
+      }
+    },
+    span: {
+      handler (newValue) {
+        // Array.from(newValue).length
+        this.proportion = newValue
+        if (newValue.length === 0) {
+          this.proportion = this.layout === 'left-right' ? [3, 7] : [1.7, 8.3]
+        }
+      },
+      immediate: true
+    },
+    left: {
+      handler (newValue) {
+        this.tempLeft = newValue
+      },
+      immediate: true
+    }
+  }
 }
 </script>
 <style lang='scss' scoped >
 .eve-layout {
-  // overflow: hidden;
-  // overflow-y: auto;
+  min-width: 800px;
   &__main {
     width: 100%;
     height: 100%;
