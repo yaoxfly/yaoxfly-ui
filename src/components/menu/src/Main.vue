@@ -4,7 +4,10 @@
 * @Date: 2020-10-13
 -->
 <template>
-  <div :style="{ width: `${tempWidth}px` }">
+  <div
+    :style="{ width: `${tempWidth}px`, height: `calc(100vh - ${top}px)` }"
+    class="eve-menu__main"
+  >
     <el-scrollbar style="height: 100%">
       <el-menu
         class="eve-menu"
@@ -242,6 +245,10 @@ export default {
 <style lang='scss' scoped >
 .eve-menu {
   user-select: none;
+  padding-bottom: 200px;
+  &__main {
+    background: #fff;
+  }
 }
 
 //隐藏滚动条的横向滚动条
