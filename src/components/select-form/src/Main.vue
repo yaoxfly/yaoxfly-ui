@@ -25,7 +25,14 @@
                 class="eve-select-form__from-lable"
                 :style="{ width: `${getLabelWidth(item.labelWidth)}px` }"
                 :class="[checkHidden(index)]"
-                >{{ item.label }}</label
+              >
+                <span
+                  class="eve-select-form__asterisk"
+                  v-if="checkAsterisk(item.prop, rules)"
+                >
+                  *
+                </span>
+                {{ item.label }}</label
               >
               <el-form-item
                 :prop="item.prop"
@@ -54,7 +61,14 @@
                 class="eve-select-form__from-lable"
                 :style="{ width: `${getLabelWidth(item.labelWidth)}px` }"
                 :class="[checkHidden(index)]"
-                >{{ item.label }}</label
+              >
+                <span
+                  class="eve-select-form__asterisk"
+                  v-if="checkAsterisk(item.prop, rules)"
+                >
+                  *
+                </span>
+                {{ item.label }}</label
               >
 
               <el-form-item
@@ -87,8 +101,15 @@
                 class="eve-select-form__from-lable"
                 :style="{ width: `${getLabelWidth(item.labelWidth)}px` }"
                 :class="[checkHidden(index)]"
-                >{{ item.label }}</label
               >
+                <span
+                  class="eve-select-form__asterisk"
+                  v-if="checkAsterisk(item.prop, rules)"
+                >
+                  *
+                </span>
+                {{ item.label }}
+              </label>
 
               <el-form-item
                 :prop="item.prop"
@@ -121,8 +142,15 @@
                 class="eve-select-form__from-lable"
                 :style="{ width: `${getLabelWidth(item.labelWidth)}px` }"
                 :class="[checkHidden(index)]"
-                >{{ item.label }}</label
               >
+                <span
+                  class="eve-select-form__asterisk"
+                  v-if="checkAsterisk(item.prop, rules)"
+                >
+                  *
+                </span>
+                {{ item.label }}
+              </label>
               <el-form-item
                 :prop="item.prop"
                 class="eve-select-form__formItem"
@@ -159,8 +187,15 @@
                 :style="{ width: `${getLabelWidth(item.labelWidth)}px` }"
                 class="eve-select-form__from-lable"
                 :class="[checkHidden(index)]"
-                >{{ item.label }}</label
               >
+                <span
+                  class="eve-select-form__asterisk"
+                  v-if="checkAsterisk(item.prop, rules)"
+                >
+                  *
+                </span>
+                {{ item.label }}
+              </label>
               <el-form-item
                 :prop="item.prop"
                 class="eve-select-form__formItem"
@@ -192,8 +227,15 @@
                 :style="{ width: `${getLabelWidth(item.labelWidth)}px` }"
                 class="eve-select-form__from-lable"
                 :class="[checkHidden(index)]"
-                >{{ item.label }}</label
               >
+                <span
+                  class="eve-select-form__asterisk"
+                  v-if="checkAsterisk(item.prop, rules)"
+                >
+                  *
+                </span>
+                {{ item.label }}
+              </label>
               <el-form-item
                 :prop="item.prop"
                 class="eve-select-form__formItem"
@@ -382,7 +424,7 @@ export default {
     // 所有左边label的宽度
     labelWidth: {
       type: Number,
-      default: 130 // 1093 
+      default: 140 // 1093 
     },
 
     // 当参数为空时是否过滤参数
@@ -396,7 +438,6 @@ export default {
       type: Boolean,
       default: true
     },
-
     // 距离最左边的宽度,一般指左边菜单栏的宽度--用于自适应计算设置后表单自适应伸缩展开更精确
     leftWidth: {
       type: Number,
@@ -429,8 +470,6 @@ export default {
         if (valid) {
           const model = this.filterParams(this.model)
           this.$emit('handle-submit', model)
-        } else {
-          this.$Message.error('验证不通过')
         }
       })
     },
@@ -544,6 +583,20 @@ export default {
         }
         return KeyMap[pickerType] && KeyMap[pickerType]()
       }
+    },
+
+    //该字段是否必填,显示*号
+    checkAsterisk () {
+      return function (prop, rules) {
+        let flag = false
+        rules[prop] && rules[prop].some(item => {
+          if (item.required) {
+            flag = true
+            return true
+          }
+        })
+        return flag
+      }
     }
   }
 
@@ -597,6 +650,10 @@ export default {
   &__flex {
     display: flex;
     align-items: stretch;
+  }
+
+  &__asterisk {
+    color: red;
   }
 }
 //修改input的宽度

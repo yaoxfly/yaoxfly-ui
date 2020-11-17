@@ -493,7 +493,7 @@ export default {
             console.log(data, 11)
             return data + '我是被转换的数据'
           }
-        }
+        },
       ]
     },
     // 当用户Checkbox时触发的事件, 是否只返回id数组

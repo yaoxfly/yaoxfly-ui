@@ -9,8 +9,9 @@ import tree from './components/tree'
 import scroll from './components/scroll'
 import breadcrumb from './components/breadcrumb'
 import upload from './components/upload'
-import layout from './components/layout'
-const components = [tablePagination, dialog, selectForm, menu, header, richText, tree, scroll, breadcrumb, upload, layout]
+import container from './components/container'
+import main from './components/main'
+const components = [tablePagination, dialog, selectForm, menu, header, richText, tree, scroll, breadcrumb, upload, container, main]
 
 // 定义 install 方法
 const install = function (Vue) {

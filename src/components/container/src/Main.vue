@@ -1,29 +1,28 @@
 <!--
 * @Author: yx
-* @Description: 中间内容布局组件
+* @Description: 中间区域布局组件
 * @Date: 2020-11-11
 -->
 <template>
   <div
-    class="eve-layout"
+    class="eve-container"
     :style="{
-      margin: `${spacing}px`,
-      width: `calc(100vw - ${tempLeft}px`,
       height: `calc(100vh - ${heightDiffer}px)`,
+      background: background,
     }"
   >
     <!--center(中间一整块)布局-->
-    <section class="eve-layout__main" v-if="layout === 'center'">
+    <section class="eve-container__main" v-if="layout === 'center'">
       <el-scrollbar style="height: 102%">
         <slot> </slot>
       </el-scrollbar>
     </section>
 
     <!-- 左右布局 -->
-    <section class="eve-layout__left-right" v-if="layout === 'left-right'">
+    <section class="eve-container__left-right" v-if="layout === 'left-right'">
       <!--左-->
       <div
-        class="eve-layout__left"
+        class="eve-container__left"
         :style="{ width: `${proportion[0] * 100}px` }"
       >
         <el-scrollbar style="height: 100%">
@@ -32,7 +31,7 @@
       </div>
       <!--右-->
       <div
-        class="eve-layout__right"
+        class="eve-container__right"
         :style="{
           width: `calc(${proportion[1] * 10}% - ${proportion[0] * 100} px  )`,
           marginLeft: `${spacing}px`,
@@ -45,22 +44,22 @@
     </section>
 
     <!--上下布局 -->
-    <section class="eve-layout__up-down" v-if="layout === 'up-down'">
+    <section class="eve-container__up-down" v-if="layout === 'up-down'">
       <el-scrollbar style="height: 100%">
         <!--上-->
         <div
-          class="eve-layout__up"
+          class="eve-container__up"
           :style="{ minHeight: `${proportion[0] * 10}vh` }"
         >
           <slot name="up"></slot>
         </div>
         <!--下-->
         <div
-          class="eve-layout__down"
+          class="eve-container__down"
           :style="{
             minHeight: `calc(${
               proportion[1] * 10
-            }vh - ${heightDiffer}px - ${spacing}px  )`,
+            }vh - ${heightDiffer}px - ${spacing}px   )`,
             marginTop: `${spacing}px`,
           }"
         >
@@ -71,70 +70,51 @@
   </div>
 </template>
 <script>
-import Bus from '../../../assets/js/bus.js'
 export default {
-  name: 'EveLayout',
+  name: 'EveContainer',
   props: {
     //布局方式,可选值：center(中间一大块)布局、left-right(左右布局)、up-down(上下布局)
     layout: {
       type: String,
       default: 'center'
     },
-
     //高度差 顶部导航+面包屑+两个spacing的高度之和
     heightDiffer: {
       type: Number,
       default: 125
     },
-
     //各个块间的间距
     spacing: {
       type: Number,
       default: 10
     },
-
     //占据比例数组(0-10);当左右布局时，左边是数组的第一个值,右边可不管根据左边自适应了;当上下布局的时候上面是是数组的第一个值。
     span: {
       type: Array,
       default: () => []
     },
 
-    //距离左边的距离(一般是菜单的宽度)
-    left: {
-      type: Number,
-      default: () => 200
-    }
+    //背景颜色
+    background: {
+      type: String,
+      default: () => '#f5f7fa'
+    },
 
   },
+
   data () {
     return {
-      visible: false, // 是否显示
       proportion: [], //占据比例
-      tempLeft: 0 //距离左边的距离(内部用)
     }
   },
 
-  mounted () {
-    this.receiveBus()
-  },
-
-  methods: {
-    /**@description 接收各种兄弟通信
-       * @author yx
-       */
-    receiveBus () {
-      Bus.$on('breadcrumb-container-menu-collapse', collapse => {
-        //本来是64,20是间距的距离
-        this.tempLeft = collapse ? 84 : this.left
-        console.log(this.tempLeft, 'layout')
-      })
-    }
-  },
+  mounted () { },
+  methods: {},
   watch: {
     layout: {
       handler (newValue) {
         console.log(newValue, 333)
-        this.proportion = newValue === 'left-right' ? [3, 7] : [1.7, 8.3]
+        this.proportion = newValue === 'left-right' ? [3, 7] : [1, 9]
       }
     },
     span: {
@@ -142,30 +122,25 @@ export default {
         // Array.from(newValue).length
         this.proportion = newValue
         if (newValue.length === 0) {
-          this.proportion = this.layout === 'left-right' ? [3, 7] : [1.7, 8.3]
+          this.proportion = this.layout === 'left-right' ? [3, 7] : [1, 9]
         }
       },
       immediate: true
     },
-    left: {
-      handler (newValue) {
-        this.tempLeft = newValue
-      },
-      immediate: true
-    }
+
   }
 }
 </script>
 <style lang='scss' scoped >
-.eve-layout {
-  min-width: 800px;
+.eve-container {
+  min-width: 1020px;
+  width: 100%;
   &__main {
     width: 100%;
     height: 100%;
     padding: 20px 10px;
     background: white;
   }
-
   &__left-right {
     display: flex;
     justify-content: center;
@@ -184,7 +159,7 @@ export default {
     padding: 20px 10px;
     background: white;
     overflow: hidden;
-    overflow-x: auto;
+    min-width: 800px;
   }
 
   &__up-down {
