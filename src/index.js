@@ -11,7 +11,8 @@ import breadcrumb from './components/breadcrumb'
 import upload from './components/upload'
 import container from './components/container'
 import main from './components/main'
-const components = [tablePagination, dialog, selectForm, menu, header, richText, tree, scroll, breadcrumb, upload, container, main]
+import tagViews from './components/tag-views'
+const components = [tablePagination, dialog, selectForm, menu, header, richText, tree, scroll, breadcrumb, upload, container, main, tagViews]
 
 // 定义 install 方法
 const install = function (Vue) {

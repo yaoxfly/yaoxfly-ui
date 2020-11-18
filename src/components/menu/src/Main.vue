@@ -155,11 +155,15 @@ export default {
       * @param  {Array}  data 菜单数据
      */
     select (index, indexPath, data) {
+      const menu = this.findPath(index, data)
+      const value = menu.length > 0 ? menu[0].text : ''
       this.$emit('select', {
         index: index,
         indexPath: indexPath,
-        data: data
+        data: data,
+        value: value
       })
+      this.sendBus({ path: index, value: value })
     },
 
     /**@description  根据路由查找菜单数据中匹配路径的数组
@@ -197,7 +201,15 @@ export default {
         this.$emit('update:collapse', this.tempCollapse)
         this.$emit('update:width', this.tempWidth)
       })
+    },
+
+    /**@description 发送通信
+    * @author yx
+    */
+    sendBus (data) {
+      Bus.$emit('menu-tag-views-data', data)
     }
+
   },
 
   components: {
@@ -215,7 +227,7 @@ export default {
     $route: {
       handler (val) {
         //路由子路由配置中无论是带/还是不带斜杆,路由监听时总是带有斜杆
-        const menu = this.findPath(val.path, this.data, false)
+        const menu = this.findPath(val.path, this.data)
         //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
         this.active = menu.length > 0 ? val.path : val.path.split('/')[1]
         this.$emit('updata:defaultActive', this.active)
