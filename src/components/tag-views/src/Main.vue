@@ -1,6 +1,8 @@
 <!--
 * @Author: yx
-* @Description: 页签组件
+* @Description: 页签组件--已和内部菜单组件做好联动并做好了缓存，不需要传递数据，
+  如果使用第三方菜单组件，可使用内部方法addData添加数据,并做好了缓存,不需要传递数据，
+  或者开启自定义模式，但要传递数据,且需自己做缓存。
 * @Date: 2020-11-18
 -->
 <template>
@@ -41,11 +43,16 @@ export default {
       type: Boolean,
       default: () => false
     },
-    //自定义页签数据(如果有用配套封装的菜单组件可不需要传,内部已经做好数据联动)
+    //是否开启自定义模式(没有使用配套的菜单组件且不想用组件内部封装的方法时，可使用自定义模式)
+    custom: {
+      type: Boolean,
+      default: () => false
+    },
+    //自定义模式的页签数据(开启自定义模式后才能使用)
     data: {
       type: Array,
       default: () => []
-    }
+    },
   },
   data () {
     return {
@@ -65,7 +72,7 @@ export default {
       this.$router.push({
         path: path
       })
-      this.$emit('click', path)
+      this.$emit('click', { path: path, data: this.tempData })
     },
 
     /**@description  关闭页签
@@ -80,12 +87,13 @@ export default {
         }
       })
       this.tempData.splice(index, 1)
-      this.setCacheData()
+      !this.custom && this.cache && this.setCacheData()
       const data = this.tempData[this.tempData.length - 1]
       data && this.$router.push({
         path: data.path
       })
-      this.$emit('close', path)
+      this.$emit('close', { path: path, data: this.tempData })
+      this.$emit('updata:data', this.tempData)
     },
 
     /**@description  从缓存中获取数据
@@ -120,7 +128,7 @@ export default {
      * @author yx
      */
     addData (data) {
-      const { path, value: text } = data || {}
+      const { path, text } = data || {}
       let flag = true
       this.tempData.forEach(item => {
         if (item.path === path) {
@@ -128,14 +136,14 @@ export default {
         }
       })
       flag && this.tempData.push({ text: text, path: path })
-      this.cache && this.setCacheData()
+      !this.custom && this.cache && this.setCacheData()
+      this.$emit('updata:data', this.tempData)
     }
   },
 
   computed: {
     active () {
       return function (path) {
-        // console.log(33)
         let active = false
         if (path.substr(0, 1) === '/') {
           if (this.$route.path === path) {
@@ -150,12 +158,14 @@ export default {
       }
     }
   },
+
   watch: {
     data: {
       handler (val) {
-        // console.log(val, 22)
+        if (!this.custom) return
         this.tempData = val
       },
+      immediate: true
     },
   }
 }

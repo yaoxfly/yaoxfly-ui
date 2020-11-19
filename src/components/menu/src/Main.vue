@@ -161,9 +161,9 @@ export default {
         index: index,
         indexPath: indexPath,
         data: data,
-        value: value
+        text: value
       })
-      this.sendBus({ path: index, value: value })
+      this.sendBus({ path: index, text: value })
     },
 
     /**@description  根据路由查找菜单数据中匹配路径的数组
