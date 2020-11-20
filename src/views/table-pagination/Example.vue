@@ -6,6 +6,8 @@
       :delete-message-box="deleteMessageBox"
       @current-change="currentChange"
       :page-size="pageSize"
+      :columns="columns"
+      :data="data"
     >
       <!-- <el-table-column
         prop="age"
@@ -43,9 +45,153 @@ export default {
         message: '代码是写给人看的，顺便在程序里运行',
         text: '删除'
       },
-      pageSize: 20
+      pageSize: 20,
+      data: [
+        {
+          id: 1,
+          name: 'John Brown',
+          age: 18,
+          address: 'New York No. 1 Lake Park',
+          date: '2016-10-03',
+          children: [{
+            id: 31,
+            name: 'John Brown',
+            age: 200,
+            address: 'New York No. 1 Lake Park',
+            date: '2016-10-03',
+            children: [{
+              id: 313333,
+              name: 'John Brown',
+              age: 200,
+              address: 'New York No. 1 Lake Park',
+              date: '2016-10-03',
+              children: [{
+                id: 3133333333,
+                name: 'John Brown',
+                age: 200,
+                address: 'New York No. 1 Lake Park',
+                date: '2016-10-03',
+              }, {
+                id: 2003344333,
+                name: 'John Brown',
+                age: 18,
+                address: 'New York No. 1 Lake Park',
+                date: '2016-10-03',
+              }]
+            }, {
+              id: 2003344,
+              name: 'John Brown',
+              age: 18,
+              address: 'New York No. 1 Lake Park',
+              date: '2016-10-03',
+            }]
+          }, {
+            id: 200,
+            name: 'John Brown',
+            age: 18,
+            address: 'New York No. 1 Lake Park',
+            date: '2016-10-03',
+          }]
 
-    }
+        },
+        {
+          id: 2,
+          name: 'Jim Green',
+          age: 24,
+          address: 'London No. 1 Lake Park',
+          date: '2016-10-01',
+
+        },
+        {
+          id: 3,
+          name: 'Joe Black',
+          age: 30,
+          address: 'Sydney No. 1 Lake Park',
+          date: '2016-10-02'
+        },
+        {
+          id: 4,
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park',
+          date: '2016-10-04'
+        },
+        {
+          id: 5,
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park',
+          date: '2016-10-04'
+        },
+        {
+          id: 6,
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park',
+          date: '2016-10-04',
+          children: [{
+            id: 3133,
+            name: 'John Brown',
+            age: 200,
+            address: 'New York No. 1 Lake Park',
+            date: '2016-10-03',
+          }, {
+            id: 20033,
+            name: 'John Brown',
+            age: 18,
+            address: 'New York No. 1 Lake Park',
+            date: '2016-10-03',
+          }]
+        },
+        {
+          id: 7,
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park',
+          date: '2016-10-04'
+        },
+        {
+          id: 8,
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park',
+          date: '2016-10-04'
+        },
+      ],
+
+      columns: [
+        {
+          type: 'index', // 序号
+          width: 75,
+          label: '序号',
+        },
+        {
+          label: 'Name',
+          prop: 'name'
+        },
+        {
+          label: 'Age',
+          prop: 'age',
+          sortable: 'custom', // 接受一个Boolean，默认为false,如果需要后端排序，需将sortable设置为custom
+          filters: [{ text: 18, value: 18 }, { text: 19, value: 19 }, { text: 20, value: 20 }]
+        },
+        {
+          label: 'Address',
+          prop: 'address',
+          formatData: (data) => {
+            console.log(data, 11)
+            return data + '我是被转换的数据'
+          }
+        },
+        {
+          label: '操作',
+          type: 'operate',
+          width: 285
+        },
+
+      ]
+
+     }
   },
   methods: {
     // rowClassName ({ row, rowIndex }) {
