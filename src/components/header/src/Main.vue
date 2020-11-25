@@ -341,7 +341,6 @@ export default {
      * @param  {Object}  param 包含导航按钮的路径
      */
     navButton (param) {
-      // console.log(param)
       this.$emit('nav-button', param)
     },
     /**@description  右边部分icon和用户信息等按钮的点击事件

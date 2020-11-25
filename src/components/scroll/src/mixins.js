@@ -149,11 +149,43 @@ export default {
       this.swiper.slideNext()
     },
 
+  
     // 菜单激活回调--可用来做动态面包屑
-    select (index, indexPath) {
-      // console.log(index, indexPath)
-      this.$emit('select', index, indexPath)
-    }
+    select (index, indexPath, data) {
+      const menu = this.findPath(index, data)
+      const value = menu.length > 0 ? menu[0].text : ''
+      this.$emit('select', {
+        index: index,
+        indexPath: indexPath,
+        text: value,
+        currentData: menu.length > 0 ? menu[0] : [],
+        data: data,
+      })
+    },
+    
+    /**@description  根据路由查找菜单数据中匹配路径的数组
+       * @author yx
+       * @param  {String}  path path 路径
+       * @param  {Array}  data 菜单数据
+     */
+    findPath (path, data) {
+      data = Array.from(data)
+      let arr = []
+      data.some(item => {
+        if (item.path === path) {
+          arr.push(item)
+          return true
+        } else if (item.children) {
+          arr = this.findPath(path, item.children)
+          if (arr.length > 0) { //递归退出条件 要不断的退出n个循环递归，否则循环会继续执行，但不会陷入死循环。
+            return true
+          } else {
+            return false
+          }
+        }
+      })
+      return arr
+    },
 
   }
 }

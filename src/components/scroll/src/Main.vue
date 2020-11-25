@@ -8,7 +8,7 @@
     <el-menu
       :default-active="defaultActive"
       mode="horizontal"
-      @select="select"
+      @select="(index, indexPath) => select(index, indexPath, data)"
       class="eve-scroll__menu"
       :background-color="backgroundColor"
       :text-color="textColor"

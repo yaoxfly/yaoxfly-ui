@@ -118,7 +118,6 @@ export default {
           type: 'item',
           text: '开始'
         },
-
       ]
     },
     // 宽度
@@ -161,7 +160,8 @@ export default {
         index: index,
         indexPath: indexPath,
         data: data,
-        text: value
+        text: value,
+        currentData: menu.length > 0 ? menu[0] : [],
       })
       this.sendBus({ path: index, text: value })
     },
