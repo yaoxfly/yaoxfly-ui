@@ -106,6 +106,7 @@ export default {
     },
     setDisableFunc () {
       if (this.isConfig) {
+        // 表单拖拽配置时 不生效
         return
       }
       /**
