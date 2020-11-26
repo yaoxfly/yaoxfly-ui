@@ -24,7 +24,7 @@
 </template>
 <script>
 
-import Bus from '../../../assets/js/bus.js'
+import { receive } from '../../../bus/menu.js'
 export default {
   name: 'EveMain',
   props: {
@@ -75,12 +75,13 @@ export default {
        * @author yx
        */
     receiveBus () {
-      Bus.$on('breadcrumb-container-menu-collapse', collapse => {
+      receive.breadcrumbCollapse(collapse => {
         //本来是64,20是间距的距离
         this.tempLeft = collapse ? 84 : this.left
         console.log(this.tempLeft, 'layout')
       })
     }
+
   },
   watch: {
     left: {

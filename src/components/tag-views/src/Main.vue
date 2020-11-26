@@ -24,7 +24,7 @@
 </template>
 <script>
 
-import Bus from '../../../assets/js/bus.js'
+import { receive } from '../../../bus/tagViews.js'
 export default {
   name: 'EveTagViews',
   props: {
@@ -117,9 +117,8 @@ export default {
      * @author yx
      */
     receiveBus () {
-      Bus.$on('menu-tag-views-data', data => {
+      receive.menuTagViewsData(data => {
         this.addData(data)
-        // console.log(data, '菜单数据')
       })
     },
 

@@ -42,7 +42,8 @@
 </template>
 
 <script>
-import Bus from '../../../assets/js/bus.js'
+
+import { send } from '../../../bus/breadcrumb'
 export default {
   name: 'EveBreadcrumb',
   props: {
@@ -270,7 +271,7 @@ export default {
      */
     sendBus () {
       this.collapse = !this.collapse
-      Bus.$emit('breadcrumb-container-menu-collapse', this.collapse)
+      send.breadcrumbCollapse(this.collapse)
     }
 
   },

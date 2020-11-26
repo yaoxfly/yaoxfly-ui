@@ -325,8 +325,13 @@ export default {
           text: '安全退出'
         }
       ]
-    }
+    },
 
+    //左边菜单数据：联动页签、左边菜单组件，配置后切换顶部菜单，页面默认跳转左侧菜单的第一个，如果存在二级，则跳转到二级菜单的第一个
+    linkageTagMenu: {
+      type: Array,
+      default: () => []
+    }
   },
 
   data () {
@@ -361,7 +366,26 @@ export default {
       // console.log(param)
       this.visible = false
       this.$emit('dialog-operate', param)
+    },
+
+    /**@description  查找最底层的菜单
+      * @author yx
+      * @param  {Aarray}  menu 
+      */
+    findlowestMenu (menu) {
+      let obj = {}
+      menu.some(element => {
+        obj = { text: element.text, path: element.path }
+        if (element.children) {
+          obj = this.findlowestMenu(element.children)
+          return true
+        } else {
+          return true
+        }
+      })
+      return obj
     }
+
 
   }
 }

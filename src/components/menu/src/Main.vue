@@ -19,6 +19,7 @@
         :background-color="backgroundColor"
         :text-color="textColor"
         :active-text-color="activeTextColor"
+        :key="key"
         @select="(index, indexPath) => select(index, indexPath, data)"
         :style="{ height: `calc(100vh - ${top}px)` }"
       >
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import Bus from '../../../assets/js/bus.js'
+import { receive, send } from '../../../bus/menu.js'
 import MenuItem from './MenuItem'
 export default {
   name: 'EveMenu',
@@ -94,6 +95,8 @@ export default {
       default: false
     },
 
+
+
     /* 自定义的属性 */
 
     // 菜单数据
@@ -139,7 +142,8 @@ export default {
       // 是否水平折叠收起菜单(内部用)
       tempCollapse: '',
       // 宽度(内部用)
-      tempWidth: 200
+      tempWidth: 200,
+      key: 0
     }
   },
   mounted () {
@@ -163,7 +167,7 @@ export default {
         text: value,
         currentData: menu.length > 0 ? menu[0] : [],
       })
-      this.sendBus({ path: index, text: value })
+      send.menuTagViewsData({ path: index, text: value })
     },
 
     /**@description  根据路由查找菜单数据中匹配路径的数组
@@ -194,7 +198,7 @@ export default {
      * @author yx
      */
     receiveBus () {
-      Bus.$on('breadcrumb-container-menu-collapse', collapse => {
+      receive.breadcrumbCollapse(collapse => {
         // console.log(collapse, 'menu')
         this.tempCollapse = collapse
         this.tempWidth = this.tempCollapse ? 64 : this.width
@@ -203,13 +207,14 @@ export default {
       })
     },
 
-    /**@description 发送通信
-    * @author yx
-    */
-    sendBus (data) {
-      Bus.$emit('menu-tag-views-data', data)
+    /**@description 更新组件
+      * @author yx
+     */
+    update () {
+      setTimeout(() => {
+        this.key++
+      }, 200)
     }
-
   },
 
   components: {
@@ -231,6 +236,7 @@ export default {
         //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
         this.active = menu.length > 0 ? val.path : val.path.split('/')[1]
         this.$emit('updata:defaultActive', this.active)
+        console.log(val, 22)
       },
       immediate: true,
       // 深度观察监听
