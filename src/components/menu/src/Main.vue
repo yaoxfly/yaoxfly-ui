@@ -41,12 +41,12 @@ export default {
   provide () {
     return {
       //传一个类名用来改样式，以防和滚动菜单全局污染样式
-      className: 'eve-menu__menu-item'
+      className: 'eve-menu__menu-item',
+      config: this.tempConfig
     }
   },
   props: {
     /* element-ui的属性 */
-
     // 模式  horizontal / vertical
     mode: {
       type: String,
@@ -95,8 +95,6 @@ export default {
       default: false
     },
 
-
-
     /* 自定义的属性 */
 
     // 菜单数据
@@ -132,8 +130,16 @@ export default {
     top: {
       type: Number,
       default: 55
-    }
-
+    },
+    // 配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认
+    config: {
+      type: Object,
+      default: () => ({
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      })
+    },
   },
   data () {
     return {
@@ -143,7 +149,14 @@ export default {
       tempCollapse: '',
       // 宽度(内部用)
       tempWidth: 200,
-      key: 0
+      //唯一标识
+      key: 0,
+      //key默认配置--配置菜单、面包屑数据的text、path、children等key值(内部用可被config覆盖)
+      tempConfig: {
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      },
     }
   },
   mounted () {
@@ -159,7 +172,7 @@ export default {
      */
     select (index, indexPath, data) {
       const menu = this.findPath(index, data)
-      const value = menu.length > 0 ? menu[0].text : ''
+      const value = menu.length > 0 ? menu[0][this.tempConfig.text] : ''
       this.$emit('select', {
         index: index,
         indexPath: indexPath,
@@ -179,11 +192,11 @@ export default {
       data = Array.from(data)
       let arr = []
       data.some(item => {
-        if (item.path === path) {
+        if (item[this.tempConfig.path] === path) {
           arr.push(item)
           return true
-        } else if (item.children) {
-          arr = this.findPath(path, item.children)
+        } else if (item[this.tempConfig.children]) {
+          arr = this.findPath(path, item[this.tempConfig.children])
           if (arr.length > 0) { //递归退出条件 要不断的退出n个循环递归，否则循环会继续执行，但不会陷入死循环。
             return true
           } else {
@@ -214,7 +227,7 @@ export default {
       setTimeout(() => {
         this.key++
       }, 200)
-    }
+    },
   },
 
   components: {
@@ -229,6 +242,16 @@ export default {
       },
       immediate: true
     },
+
+
+    config: {
+      handler (val) {
+        Object.assign(this.tempConfig, val)
+        // console.log(111, this.tempConfig, val)
+      },
+      immediate: true,
+    },
+
     $route: {
       handler (val) {
         //路由子路由配置中无论是带/还是不带斜杆,路由监听时总是带有斜杆

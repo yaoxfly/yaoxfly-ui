@@ -9,25 +9,30 @@
     <!--子菜单-可能有孩子的菜单-->
     <el-submenu
       v-if="menuData.type == 'submenu'"
-      :index="menuData.path ? menuData.path : getMathFloor()"
+      :index="menuData[config.path] ? menuData[config.path] : getMathFloor()"
     >
       <template slot="title">
         <i :class="menuData.icon"></i>
-        <span slot="title">{{ menuData.text }}</span>
+        <span slot="title">{{ menuData[config.text] }}</span>
       </template>
-      <template v-if="menuData.children && menuData.children.length > 0">
+      <template
+        v-if="menuData[config.children] && menuData[config.children].length > 0"
+      >
         <!--递归组件-->
         <menu-item
-          v-for="(item, index) in menuData.children"
+          v-for="(item, index) in menuData[config.children]"
           :key="`menu-item${index}`"
           :menuData="item"
         ></menu-item>
       </template>
     </el-submenu>
     <!--最底层的菜单-->
-    <el-menu-item v-else-if="menuData.type == 'item'" :index="menuData.path">
+    <el-menu-item
+      v-else-if="menuData.type == 'item'"
+      :index="menuData[config.path]"
+    >
       <i :class="menuData.icon"></i>
-      <span slot="title">{{ menuData.text }}</span>
+      <span slot="title">{{ menuData[config.text] }}</span>
     </el-menu-item>
   </div>
 </template>
@@ -36,7 +41,14 @@
 export default {
   name: 'MenuItem',
   //接收依赖注入的类名
-  inject: ['className'],
+  inject: {
+    className: {
+      default: ''
+    },
+    config: {
+      default: {}
+    }
+  },
   props: {
     // 菜单数组
     menuData: {
@@ -45,8 +57,11 @@ export default {
     },
   },
 
-  methods: {
+  mounted () {
+    console.log(this.config, 111)
+  },
 
+  methods: {
     /** @description 获取随机树
       * @author yx
       */

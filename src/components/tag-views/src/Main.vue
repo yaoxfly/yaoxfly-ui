@@ -53,7 +53,7 @@ export default {
       type: Boolean,
       default: () => false
     },
-    //是否开启自定义模式(没有使用配套的菜单组件且不想用组件内部封装的方法时，可使用自定义模式)
+    //是否开启自定义模式(没有使用配套的菜单组件且不想用当前组件内部封装的添加方法时，可使用自定义模式)
     custom: {
       type: Boolean,
       default: () => false
@@ -71,13 +71,11 @@ export default {
         shrink: 'el-icon-s-unfold' //收缩
       })
     },
-
     //是否显示图标
     icon: {
       type: Boolean,
       default: () => true
     },
-
     // 图标、图片等离左边的距离
     iconLeft: {
       type: [Number, String],
@@ -88,6 +86,7 @@ export default {
       type: [Number, String],
       default: () => 50
     }
+
   },
   data () {
     return {

@@ -22,14 +22,14 @@
       <el-breadcrumb :separator="separator" :separator-class="separatorClass">
         <template v-for="(item, index) in breadcrumbData">
           <el-breadcrumb-item
-            v-if="item.path"
-            :to="{ path: item.path }"
+            v-if="item[tempConfig.path]"
+            :to="{ path: item[tempConfig.path] }"
             :key="`eve-breadcrumb${index}`"
           >
-            <span> {{ item.text }}</span></el-breadcrumb-item
+            <span> {{ item[tempConfig.text] }}</span></el-breadcrumb-item
           >
           <el-breadcrumb-item v-else :key="`eve-breadcrumb${index}`">
-            <span class=""> {{ item.text }}</span>
+            <span class=""> {{ item[tempConfig.text] }}</span>
           </el-breadcrumb-item>
         </template>
       </el-breadcrumb>
@@ -37,8 +37,6 @@
   </div>
 </template>
 <script>
-
-
 import BreadcrumbIcon from './BreadcrumbIcon.vue'
 export default {
   name: 'EveBreadcrumb',
@@ -62,7 +60,7 @@ export default {
 
     /*自定义属性 */
 
-    //自定义面包屑数据--自己转换或者从菜单那边获得转换而来的数据，如有传菜单数据会替换掉这个数据
+    //自定义面包屑数据--自己转换而来的数据，如有传菜单数据会替换掉这个数据
     data: {
       type: Array,
       default: () => [{
@@ -71,7 +69,7 @@ export default {
       }]
     },
 
-    //菜单数据--内置了转换方法可自动转换成面包屑数据
+    //菜单数据--内置了转换方法可自动转换成面包屑数据(推荐)
     menu: {
       type: Array,
       default: () => [
@@ -169,15 +167,31 @@ export default {
     iconLeft: {
       type: [Number, String],
       default: () => 10
-    }
+    },
+
+    // 配置菜单、面包屑数据的text、path、children等key值--支持只修改某个key值,其他配置默认
+    config: {
+      type: Object,
+      default: () => ({
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      })
+    },
   },
 
   data () {
     return {
-      // 面包屑根据菜单转换用的临时全局数据
+      // 根据菜单查找的临时全局数据
       breadcrumb: [],
-      // 面包屑用来循环的数据
+      // 用来循环渲染面包屑的最终数据
       breadcrumbData: [],
+      //配置菜单、面包屑数据的text、path、children等key值(内部用)
+      tempConfig: {
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      },
     }
   },
   computed: {},
@@ -218,13 +232,13 @@ export default {
       data = Array.from(data)
       let arr = []
       data.some(item => {
-        if (item.path === path) {
+        if (item[this.tempConfig.path] === path) {
           arr.push(item)
           save && this.breadcrumb.push(item)
           return true
-        } else if (item.children) {
+        } else if (item[this.tempConfig.children]) {
           save && this.breadcrumb.push(item)
-          arr = this.findBreadcrumb(path, item.children)
+          arr = this.findBreadcrumb(path, item[this.tempConfig.children])
           if (arr.length > 0) { //递归退出条件 要不断的退出n个循环递归，否则循环会继续执行，但不会陷入死循环。
             return true
           } else {
@@ -249,8 +263,8 @@ export default {
       const arr = []
       this.breadcrumb.forEach(item => {
         arr.push({
-          path: item.path,
-          text: item.text
+          [this.tempConfig.path]: item[this.tempConfig.path],
+          [this.tempConfig.text]: item[this.tempConfig.text]
         })
       })
       return arr
@@ -263,7 +277,6 @@ export default {
     checkString (str) {
       return typeof str === 'string' ? str : `${str}px`
     },
-
   },
 
   watch: {
@@ -273,6 +286,15 @@ export default {
       },
       immediate: true,
     },
+    config: {
+      handler (val) {
+        Object.assign(this.tempConfig, val)
+        // console.log(111, this.tempConfig, val)
+      },
+      immediate: true,
+    },
+
+    //放最后,放在前面刷新面包屑就没有了
     $route: {
       handler (val, oldVal) {
         if (this.menu <= 0) return
