@@ -236,7 +236,7 @@ export default {
         //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
         this.active = menu.length > 0 ? val.path : val.path.split('/')[1]
         this.$emit('updata:defaultActive', this.active)
-        console.log(val, 22)
+        // console.log(val, 22)
       },
       immediate: true,
       // 深度观察监听

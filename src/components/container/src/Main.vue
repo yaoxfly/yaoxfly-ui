@@ -113,7 +113,7 @@ export default {
   watch: {
     layout: {
       handler (newValue) {
-        console.log(newValue, 333)
+        // console.log(newValue, 333)
         this.proportion = newValue === 'left-right' ? [3, 7] : [1, 9]
       }
     },

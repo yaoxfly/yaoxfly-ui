@@ -6,7 +6,13 @@
 * @Date: 2020-11-18
 -->
 <template>
-  <div class="eve-tag-views">
+  <div class="eve-tag-views" :style="{ height: checkString(height) }">
+    <div :style="{ paddingLeft: checkString(iconLeft) }" v-if="icon">
+      <slot name="left">
+        <BreadcrumbIcon @icon-click="iconClick" :icon-class="iconClass" />
+      </slot>
+    </div>
+
     <el-tag
       v-for="item in tempData"
       :key="item.text"
@@ -25,8 +31,12 @@
 <script>
 
 import { receive } from '../../../bus/tagViews.js'
+import BreadcrumbIcon from '../../breadcrumb/src/BreadcrumbIcon.vue'
 export default {
   name: 'EveTagViews',
+  components: {
+    BreadcrumbIcon
+  },
   props: {
     // 是否开启缓存
     cache: {
@@ -53,6 +63,31 @@ export default {
       type: Array,
       default: () => []
     },
+    // 左边字体图标类
+    iconClass: {
+      type: Object,
+      default: () => ({
+        expand: 'el-icon-s-fold', //展开
+        shrink: 'el-icon-s-unfold' //收缩
+      })
+    },
+
+    //是否显示图标
+    icon: {
+      type: Boolean,
+      default: () => true
+    },
+
+    // 图标、图片等离左边的距离
+    iconLeft: {
+      type: [Number, String],
+      default: () => 10
+    },
+    // 页签高度
+    height: {
+      type: [Number, String],
+      default: () => 50
+    }
   },
   data () {
     return {
@@ -64,6 +99,13 @@ export default {
   },
 
   methods: {
+    /** @description 左边图标的点击事件，主要用来做左边菜单收缩功能的
+        * @author yx
+     */
+    iconClick () {
+      this.$emit('icon-click')
+    },
+
     /**@description  路由跳转
      * @param  {String}  path 路径名称
      * @author yx
@@ -137,7 +179,15 @@ export default {
       flag && this.tempData.push({ text: text, path: path })
       !this.custom && this.cache && this.setCacheData()
       this.$emit('updata:data', this.tempData)
-    }
+    },
+
+    /**@description 判断是否是字符串
+        * @author yx
+        * @param  {String}  str 高度、宽度、left等类型的值
+    */
+    checkString (str) {
+      return typeof str === 'string' ? str : `${str}px`
+    },
   },
 
   computed: {
@@ -172,7 +222,6 @@ export default {
 
 <style lang="scss" scoped>
 .eve-tag-views {
-  height: 50px;
   background: #fff;
   display: flex;
   align-items: center;
@@ -182,5 +231,10 @@ export default {
     cursor: pointer;
     margin-left: 20px;
   }
+}
+
+::v-deep.el-tag {
+  height: 28px;
+  line-height: 26px;
 }
 </style>

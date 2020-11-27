@@ -244,7 +244,7 @@ export default {
 
     /**@description  设置当前选中(高亮)的节点
      * @author yx
-     * @param  {minix}  key //节点的key一般是id
+     * @param  {mixins}  key //节点的key一般是id
      */
     setCurrentKey (key) {
       this.$refs.tree ? this.$refs.tree.setCurrentKey(key) : this.$nextTick(() => {

@@ -78,7 +78,7 @@ export default {
       receive.breadcrumbCollapse(collapse => {
         //本来是64,20是间距的距离
         this.tempLeft = collapse ? 84 : this.left
-        console.log(this.tempLeft, 'layout')
+        // console.log(this.tempLeft, 'layout')
       })
     }
 

@@ -14,11 +14,7 @@
   >
     <div :style="{ paddingLeft: checkString(iconLeft) }" v-if="icon">
       <slot name="left">
-        <i
-          :class="iconClass"
-          @click="iconClick"
-          class="eve-breadcrumb__icon"
-        ></i>
+        <BreadcrumbIcon @icon-click="iconClick" :icon-class="iconClass" />
       </slot>
     </div>
 
@@ -40,12 +36,15 @@
     </section>
   </div>
 </template>
-
 <script>
 
-import { send } from '../../../bus/breadcrumb'
+
+import BreadcrumbIcon from './BreadcrumbIcon.vue'
 export default {
   name: 'EveBreadcrumb',
+  components: {
+    BreadcrumbIcon
+  },
   props: {
     /*饿了么自带属性 */
 
@@ -153,8 +152,11 @@ export default {
 
     // 左边字体图标类
     iconClass: {
-      type: String,
-      default: () => 'el-icon-s-fold'
+      type: Object,
+      default: () => ({
+        expand: 'el-icon-s-fold', //展开
+        shrink: 'el-icon-s-unfold' //收缩
+      })
     },
 
     //是否显示图标
@@ -162,6 +164,7 @@ export default {
       type: Boolean,
       default: () => true
     },
+
     // 图标、图片等离左边的距离
     iconLeft: {
       type: [Number, String],
@@ -175,8 +178,6 @@ export default {
       breadcrumb: [],
       // 面包屑用来循环的数据
       breadcrumbData: [],
-      //左边菜单是否收缩--bus通信用
-      collapse: false
     }
   },
   computed: {},
@@ -187,7 +188,6 @@ export default {
          * @author yx
       */
     iconClick () {
-      this.sendBus()
       this.$emit('icon-click')
     },
 
@@ -256,7 +256,6 @@ export default {
       return arr
     },
 
-
     /**@description 判断是否是字符串
      * @author yx
      * @param  {String}  str 高度、宽度、left等类型的值
@@ -264,15 +263,6 @@ export default {
     checkString (str) {
       return typeof str === 'string' ? str : `${str}px`
     },
-
-
-    /**@description 发送通信
-     * @author yx
-     */
-    sendBus () {
-      this.collapse = !this.collapse
-      send.breadcrumbCollapse(this.collapse)
-    }
 
   },
 
