@@ -15,16 +15,16 @@
 
     <el-tag
       v-for="item in tempData"
-      :key="item.text"
-      :closable="active(item.path)"
+      :key="item[tempConfig.text]"
+      :closable="active(item[tempConfig.path])"
       :type="item.type"
       class="eve-tag-views__button"
-      :effect="active(item.path) ? 'dark' : 'plain'"
-      @click="jump(item.path)"
-      @close="close(item.path)"
+      :effect="active(item[tempConfig.path]) ? 'dark' : 'plain'"
+      @click="jump(item[tempConfig.path])"
+      @close="close(item[tempConfig.path])"
       :disable-transitions="disableTransitions"
     >
-      <span> {{ item.text }} </span>
+      <span> {{ item[tempConfig.text] }} </span>
     </el-tag>
   </div>
 </template>
@@ -85,12 +85,26 @@ export default {
     height: {
       type: [Number, String],
       default: () => 50
+    },
+    // 配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认
+    config: {
+      type: Object,
+      default: () => ({
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      })
     }
-
   },
   data () {
     return {
-      tempData: this.getCacheData() //内部页签数据
+      tempData: this.getCacheData(), //内部页签数据
+      //key默认配置--配置菜单、面包屑数据的text、path、children等key值(内部用可被config覆盖)
+      tempConfig: {
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      },
     }
   },
   mounted () {
@@ -123,7 +137,7 @@ export default {
     close (path) {
       let index = ''
       this.tempData.forEach((item, idx) => {
-        if (item.path === path) {
+        if (item[this.tempConfig.path] === path) {
           index = idx
         }
       })
@@ -131,7 +145,7 @@ export default {
       !this.custom && this.cache && this.setCacheData()
       const data = this.tempData[this.tempData.length - 1]
       data && this.$router.push({
-        path: data.path
+        path: data[[this.tempConfig.path]]
       })
       this.$emit('close', { path: path, data: this.tempData })
       this.$emit('updata:data', this.tempData)
@@ -164,18 +178,17 @@ export default {
     },
 
     /**@description 添加页签数据
-     * @param  {String}  data 单个页签数据
+     * @param  {String}  data 单个页签数据 模式格式{text:"",path:""}
      * @author yx
      */
     addData (data) {
-      const { path, text } = data || {}
       let flag = true
       this.tempData.forEach(item => {
-        if (item.path === path) {
+        if (item[this.tempConfig.path] === data[this.tempConfig.path]) {
           flag = false
         }
       })
-      flag && this.tempData.push({ text: text, path: path })
+      flag && this.tempData.push({ [this.tempConfig.text]: data[this.tempConfig.text], [this.tempConfig.path]: data[this.tempConfig.path] })
       !this.custom && this.cache && this.setCacheData()
       this.$emit('updata:data', this.tempData)
     },
@@ -214,6 +227,13 @@ export default {
         this.tempData = val
       },
       immediate: true
+    },
+    config: {
+      handler (val) {
+        Object.assign(this.tempConfig, val)
+        // console.log(111, this.tempConfig, val)
+      },
+      immediate: true,
     },
   }
 }

@@ -43,7 +43,7 @@ export default {
   //接收依赖注入的类名
   inject: {
     className: {
-      default: ''
+      default: 'eve-menu__menu-item'
     },
     config: {
       default: {}
@@ -58,7 +58,7 @@ export default {
   },
 
   mounted () {
-    console.log(this.config, 111)
+    // console.log(this.config, 111)
   },
 
   methods: {

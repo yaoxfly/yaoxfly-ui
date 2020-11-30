@@ -10,6 +10,7 @@
       mode="horizontal"
       @select="(index, indexPath) => select(index, indexPath, data)"
       class="eve-scroll__menu"
+      :class="className"
       :background-color="backgroundColor"
       :text-color="textColor"
       :active-text-color="activeTextColor"
@@ -22,7 +23,10 @@
         v-if="scroll"
       >
         <template v-for="item in data">
-          <swiper-slide :key="item.path" class="eve-scroll__content">
+          <swiper-slide
+            :key="item[tempConfig.path]"
+            class="eve-scroll__content"
+          >
             <menu-item :menu-data="item"></menu-item>
           </swiper-slide>
         </template>
@@ -44,7 +48,7 @@
 
       <div class="eve-scroll__item" v-else>
         <template v-for="item in data">
-          <div :key="item.path">
+          <div :key="item[tempConfig.path]">
             <menu-item :menu-data="item"></menu-item>
           </div>
         </template>
@@ -61,10 +65,27 @@ import mixins from './mixins' // 参数和方法
 export default {
   name: 'EveScroll',
   mixins: [mixins],
+  inject: {
+    className: {
+      default: 'eve-scroll__menu-item'
+    }
+  },
+  props: {
+    // 配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认
+    config: {
+      type: Object,
+      default: () => ({
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      })
+    },
+  },
   provide () {
     return {
-      ////传一个类名用来改样式，以防全局污染样式
-      className: 'eve-scroll__menu-item'
+      //传一个类名用来改样式，以防全局污染样式
+      className: this.className,
+      config: this.tempConfig
     }
   },
   components: {
@@ -102,98 +123,34 @@ export default {
         //显示的个数
         slidesPerView: this.slidesPerView
       },
+      //key默认配置--配置菜单、面包屑数据的text、path、children等key值(内部用可被config覆盖)
+      tempConfig: {
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      },
     }
   },
+  watch: {
+    config: {
+      handler (val) {
+        Object.assign(this.tempConfig, val)
+        // console.log(111, this.tempConfig, val)
+      },
+      immediate: true,
+    },
+  }
 }
 </script>
 
+
 <style lang="scss" scoped>
-.eve-scroll {
-  width: 100%;
-  &__content {
-    text-align: center;
-  }
-  &__swiper {
-    //防止鼠标右击出现border
-    outline: none;
-  }
-  &__menu {
-    width: 100%;
-  }
-  &__item {
-    outline: none;
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-  }
-}
-
-::v-deep .eve-scroll__swiper {
-  .swiper-button-prev:after,
-  .swiper-button-next:after {
-    font-size: 14px;
-  }
-
-  .swiper-button-next,
-  .swiper-container-rtl .swiper-button-prev {
-    // color: white;
-    right: -10px;
-  }
-  .swiper-button-prev,
-  .swiper-container-rtl .swiper-button-next {
-    // color: white;
-    left: -10px;
-  }
-}
-
-::v-deep.eve-scroll__menu {
-  user-select: none;
-  .el-menu.el-menu--horizontal {
-    border-bottom: solid 1px transparent;
-  }
-  /* 菜单的标题 */
-  .el-submenu__title {
-    color: white;
-  }
-  // 标题选中颜色和线
-  .el-submenu.is-active .el-submenu__title {
-    span {
-      border-bottom: 2px solid blue;
-      padding: 0 10px 10px 10px;
-    }
-  }
-
-  // 标题选中颜色和线
-  .el-submenu .el-submenu__title {
-    span {
-      padding: 0 10px 10px 10px;
-    }
-  }
-
-  //去掉箭头
-  .el-submenu__title i {
-    color: transparent;
-  }
-
-  .el-menu-item.is-active {
-    span {
-      border-bottom: 2px solid blue;
-      padding: 0 10px 10px 10px;
-    }
-  }
-  .el-menu-item {
-    span {
-      padding: 0 10px 10px 10px;
-    }
-  }
-}
+@import './scroll.scss';
 </style>
 
-<style  lang="scss">
-.eve-scroll__menu-item {
+<style  lang="scss"  >
+/*header组件的菜单样式 */
+.eve-header__menu-item {
   .el-submenu__title:focus,
   .el-submenu__title:hover {
     background-color: transparent !important;
@@ -202,7 +159,7 @@ export default {
 }
 
 /*里面最底层孩子项的颜色 */
-.eve-scroll__menu-item {
+.eve-header__menu-item {
   .el-menu-item:focus,
   .el-menu-item:hover {
     background-color: transparent !important;
@@ -211,10 +168,47 @@ export default {
 }
 
 ul[role='menu'] {
+  .eve-header__menu-item {
+    .el-menu-item {
+      background-color: #409eff !important;
+    }
+    .el-submenu__title {
+      background-color: #409eff !important;
+    }
+    .el-submenu__title i {
+      color: #fff;
+    }
+  }
+}
+
+/*纯粹的scroll组件的菜单样式 */
+.eve-scroll__menu-item {
+  .el-submenu__title:focus,
+  .el-submenu__title:hover {
+    background-color: transparent !important;
+    color: #409eff !important;
+  }
+}
+
+/*里面最底层孩子项的颜色 */
+.eve-scroll__menu-item {
+  .el-menu-item:focus,
+  .el-menu-item:hover {
+    background-color: transparent !important;
+    color: #409eff !important;
+  }
+}
+
+ul[role='menu'] {
   .eve-scroll__menu-item {
     .el-menu-item {
-      background-color: rgb(64, 158, 255) !important;
+      background-color: #fff !important;
     }
+    .el-submenu__title {
+      background-color: #fff !important;
+    }
+    // .el-submenu__title i {
+    // }
   }
 }
 </style>

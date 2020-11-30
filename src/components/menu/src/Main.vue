@@ -180,7 +180,7 @@ export default {
         text: value,
         currentData: menu.length > 0 ? menu[0] : [],
       })
-      send.menuTagViewsData({ path: index, text: value })
+      send.menuTagViewsData({ [this.tempConfig.path]: index, [this.tempConfig.text]: value })
     },
 
     /**@description  根据路由查找菜单数据中匹配路径的数组

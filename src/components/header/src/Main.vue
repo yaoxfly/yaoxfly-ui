@@ -39,6 +39,7 @@
               :textColor="textColor"
               :activeTextColor="activeTextColor"
               :swiperButtoColor="swiperButtoColor"
+              :config="tempConfig"
               @select="navButton"
             ></eve-scroll>
           </div>
@@ -138,6 +139,7 @@ export default {
   mixins: [mixins],
   provide () {
     return {
+      className: 'eve-header__menu-item',
       config: this.tempConfig
     }
   },
