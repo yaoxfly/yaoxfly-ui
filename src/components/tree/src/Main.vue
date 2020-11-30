@@ -40,14 +40,17 @@
           <span>{{ node.label }}</span>
           <span>
             <el-button type="text" size="mini" @click="append(data)">
-              Append
+              <el-icon class="el-icon-circle-plus-outline"></el-icon>
             </el-button>
             <el-button
               type="text"
               size="mini"
               @click="() => remove(node, data)"
             >
-              Delete
+              <el-icon class="el-icon-remove-outline"></el-icon>
+            </el-button>
+            <el-button type="text" size="mini" @click="() => edit(node, data)">
+              <el-icon class="el-icon-edit"></el-icon>
             </el-button>
           </span>
         </slot>
@@ -253,13 +256,8 @@ export default {
       type: [String, Number],
       default: '100%'
     }
-
   },
-
-  mounted () {
-
-  },
-
+  mounted () { },
   data () {
     return {
       filterText: ''
@@ -326,36 +324,6 @@ export default {
     resetChecked () {
       this.$refs.tree.setCheckedKeys([])
       // this.$refs.tree.setCheckedNodes([])
-    },
-
-    /**@description 添加节点
-      * @author yx
-      * @param  {Object}  data 当前节点的数据
-     */
-    append (data) {
-      /*
-       label: 指定节点标签为节点对象的某个属性值
-       children: 指定子树为节点对象的某个属性值
-       */
-      const { label, children } = this.props || {}
-      const newChild = { [label]: '新增的节点', [children]: [] }
-      //初始化孩子数组，防止没有孩子数组无法新增节点
-      !data[children] && this.$set(data, [children], [])
-      data[children].push(newChild)
-      this.$emit('append', { data: data, label: label, children: children })
-    },
-
-    /**@description  删除节点
-     * @author yx
-     * @param  {String}  node 当前节点的 Node 对象
-     * @param  {Object}  data 当前节点的数据
-     */
-    remove (node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(item => item.id === data.id)
-      children.splice(index, 1)
-      this.$emit('remove', { node: node, data: data })
     },
 
     /**@description  关键字进行过滤--根据节点名称
@@ -425,7 +393,6 @@ export default {
       this.$emit('node-drag-end', draggingNode, dropNode, dropType, ev)
     },
 
-
     /**@description 拖拽成功完成时触发的事件
       * @author yx
       * @param  {Object}  draggingNode 被拖拽节点对应的 Node
@@ -438,7 +405,7 @@ export default {
       this.$emit('node-drop', draggingNode, dropNode, dropType, ev)
     },
 
-
+    /*自定义的方法 */
 
     /**@description 判断是否是字符串
     * @author yx
@@ -446,12 +413,59 @@ export default {
     */
     checkString (str) {
       return typeof str === 'string' ? str : `${str}px`
-    }
+    },
+
+    /**@description 点击添加节点图标
+       * @author yx
+       * @param  {Object}  data 当前节点的数据
+      */
+    append (data) {
+      this.addNode(data)
+      this.$emit('append', data)
+    },
+
+    /**@description  删除节点图标
+     * @author yx
+     * @param  {Object}  node 当前节点的 Node 对象
+     * @param  {Object}  data 当前节点的数据
+     */
+    remove (node, data) {
+      const parent = node.parent
+      const children = parent.data.children || parent.data
+      const index = children.findIndex(item => item.id === data.id)
+      children.splice(index, 1)
+      this.$emit('remove', { node: node, data: data })
+    },
+
+    /**@description  修改节点图标
+      * @author yx
+      * @param  {Object}  node 当前节点的 Node 对象
+      * @param  {Object}  data 当前节点的数据
+      */
+    edit (node, data) {
+      this.$emit('edit', { node: node, data: data })
+    },
+
+    /**@description 添加节点数据--外部添加节点数据(默认添加孩子节点数据)
+       * @author yx
+       * @param  {Object}  data 当前节点的数据
+       * @param  {Object}  newChild 新的节点数据 格式 {label:'',children:''}
+    */
+    addNode (data, newChild = '') {
+      /*
+          label: 指定节点标签为节点对象的某个属性值
+          children: 指定子树为节点对象的某个属性值
+      */
+      const { label, children } = this.props || {}
+      newChild = newChild || { [label]: '新增的节点', [children]: [] }
+      //初始化孩子数组，防止没有孩子数组无法新增节点
+      !data[children] && this.$set(data, [children], [])
+      data[children].push(newChild)
+    },
 
   },
 
   watch: {
-
     filterText (val) {
       this.$refs.tree.filter(val)
     }
@@ -463,7 +477,6 @@ export default {
 <style lang="scss" scoped>
 .eve-tree {
   user-select: none;
-
   &__custom-tree-node {
     flex: 1;
     display: flex;
@@ -475,5 +488,15 @@ export default {
   &__filter {
     margin-bottom: 28px;
   }
+}
+
+.el-icon-circle-plus-outline:before {
+  font-size: 22px;
+}
+.el-icon-remove-outline:before {
+  font-size: 22px;
+}
+.el-icon-edit:before {
+  font-size: 22px;
 }
 </style>
