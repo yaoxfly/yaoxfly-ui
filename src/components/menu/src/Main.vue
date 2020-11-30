@@ -220,7 +220,7 @@ export default {
       })
     },
 
-    /**@description 更新组件
+    /**@description 更新组件--配合header联动用
       * @author yx
      */
     update () {

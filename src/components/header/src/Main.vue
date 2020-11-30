@@ -136,6 +136,11 @@ import mixins from '../../scroll/src/mixins'
 export default {
   name: 'EveHeader',
   mixins: [mixins],
+  provide () {
+    return {
+      config: this.tempConfig
+    }
+  },
   props: {
     //logo
     logo: {
@@ -331,12 +336,26 @@ export default {
     linkageTagMenu: {
       type: Array,
       default: () => []
-    }
+    },
+
+    // 配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认
+    config: {
+      text: 'text', //文本
+      path: 'path', // 路径
+      children: 'children' //树结构数据的孩子节点
+    },
+
   },
 
   data () {
     return {
-      visible: false // 是否显示
+      visible: false, // 是否显示
+      //key默认配置--配置菜单、面包屑数据的text、path、children等key值(内部用可被config覆盖)
+      tempConfig: {
+        text: 'text', //文本
+        path: 'path', // 路径
+        children: 'children' //树结构数据的孩子节点
+      },
     }
   },
 
@@ -368,16 +387,16 @@ export default {
       this.$emit('dialog-operate', param)
     },
 
-    /**@description  查找最底层的菜单
+    /**@description  查找最底层的菜单--配合linkageTagMenu联动用
       * @author yx
       * @param  {Aarray}  menu 
       */
     findlowestMenu (menu) {
       let obj = {}
       menu.some(element => {
-        obj = { text: element.text, path: element.path }
-        if (element.children) {
-          obj = this.findlowestMenu(element.children)
+        obj = { [this.tempConfig.text]: element[this.tempConfig.text], [this.tempConfig.path]: element[this.tempConfig.path] }
+        if (element[this.tempConfig.children]) {
+          obj = this.findlowestMenu(element[this.tempConfig.children])
           return true
         } else {
           return true
@@ -385,10 +404,21 @@ export default {
       })
       return obj
     }
+  },
 
+  watch: {
+    config: {
+      handler (val) {
+        Object.assign(this.tempConfig, val)
+        // console.log(111, this.tempConfig, val)
+      },
+      immediate: true,
+    },
 
   }
 }
+
+
 
 </script>
 <style lang='scss' scoped >

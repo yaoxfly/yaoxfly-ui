@@ -17,9 +17,11 @@
     </el-container>
     <form-preview-dialog v-model="showPreviewDialog"/>
     <json-preview-dialog v-model="showJsonDialog"/>
+    <vue-preview-dialog v-model="previewVue"/>
     <el-footer class="eve-form-design-footer">
       <el-button size="small" @click="handleClickPreview" type="success">表单预览</el-button>
       <el-button size="small" @click="handleClickPreviewJson" type="info">JSON文件预览</el-button>
+      <el-button size="small" @click="handleClickPreviewVue" type="info" plain>页面代码预览</el-button>
       <el-button size="small" type="primary">保存</el-button>
       <el-button size="small" type="warning" plain>取消</el-button>
     </el-footer>
@@ -32,6 +34,7 @@ import FormDesignPanel from './form-design-panel/FormDesignPanel'
 import FormItemConfigPanel from './form-item-config-panel'
 import formPreviewDialog from './form-preview-dialog'
 import JsonPreviewDialog from './json-preview-dialog'
+import VuePreviewDialog from './vue-preview-dialog'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -41,12 +44,14 @@ export default {
     FormDesignPanel,
     FormItemConfigPanel,
     formPreviewDialog,
-    JsonPreviewDialog
+    JsonPreviewDialog,
+    VuePreviewDialog
   },
   data () {
     return {
       showPreviewDialog: false,
-      showJsonDialog: false
+      showJsonDialog: false,
+      previewVue: false
     }
   },
   methods: {
@@ -58,6 +63,9 @@ export default {
     },
     handleClickPreviewJson () {
       this.showJsonDialog = true
+    },
+    handleClickPreviewVue () {
+      this.previewVue = true
     }
   }
 }

@@ -43,6 +43,11 @@ const routes = [
     path: '/form_design',
     name: 'FormDesign',
     component: () => import('../views/form-design/FormDesign.vue')
+  },
+  {
+    path: '/test_page',
+    name: 'coder',
+    component: () => import('../views/form-design/test-page.vue')
   }
 
 ]

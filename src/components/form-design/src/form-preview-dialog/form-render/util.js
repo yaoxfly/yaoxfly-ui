@@ -222,6 +222,7 @@ export const visitFormItem = (formItemList, form, rules, instance, fieldNames, f
          */
         visitFormItem(comps, form, rules, instance, currentLayoutCompFieldNames, fieldNamesDic)
       })
+      // 是否开启回填
       if (props.backfill) {
         fieldNamesDic[formItem.key] = currentLayoutCompFieldNames
       } else {
