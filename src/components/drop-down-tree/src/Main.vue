@@ -435,6 +435,13 @@ export default {
 
 ::v-deep .eve-drop-down-tree__item {
   user-select: none;
+  .el-tree-node:focus > .el-tree-node__content {
+    background: transparent;
+  }
+  // // 去掉hover背景色
+  // .el-tree-node:hover > .el-tree-node__content {
+  //   background-color: transparent;
+  // }
 }
 
 //全部

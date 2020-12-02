@@ -11,6 +11,8 @@
     </div>
     <el-tree
       ref="tree"
+      class="eve-tree"
+      :class="[!onlyLeaf && 'eve-tree__is-active']"
       :props="props"
       :data="data"
       :load="load"
@@ -26,6 +28,7 @@
       :allow-drop="allowDrop"
       :allow-drag="allowDrag"
       :draggable="draggable"
+      :highlight-current="highlightCurrent"
       @node-drag-start="nodeDragStart"
       @node-drag-enter="nodeDragEnter"
       @node-drag-leave="nodeDragLeave"
@@ -35,26 +38,51 @@
       @check-change="checkChange"
       @node-click="nodeClick"
     >
-      <span class="eve-tree__custom-tree-node" slot-scope="{ node, data }">
+      <div
+        class="eve-tree__custom-tree-node"
+        :class="[
+          onlyLeaf ? 'eve-tree__custom-leaf-tree' : 'eve-tree__custom-tree',
+        ]"
+        slot-scope="{ node, data }"
+      >
         <slot :node="node" :data="data">
-          <span>{{ node.label }}</span>
-          <span>
-            <el-button type="text" size="mini" @click="append(data)">
-              <el-icon class="el-icon-circle-plus-outline"></el-icon>
-            </el-button>
-            <el-button
-              type="text"
-              size="mini"
-              @click="() => remove(node, data)"
-            >
-              <el-icon class="el-icon-remove-outline"></el-icon>
-            </el-button>
-            <el-button type="text" size="mini" @click="() => edit(node, data)">
-              <el-icon class="el-icon-edit"></el-icon>
-            </el-button>
-          </span>
+          <span :class="[!showCheckbox && 'eve-tree__custom-tree-label']">{{
+            node.label
+          }}</span>
+          <div class="eve-tree__custom-tree-button" v-show="operate">
+            <span>
+              <el-button type="text" size="mini" @click.stop="append(data)">
+                <el-icon
+                  class="el-icon-circle-plus-outline"
+                  :style="{ color: operateColor }"
+                ></el-icon>
+              </el-button>
+
+              <el-button
+                type="text"
+                size="mini"
+                @click.stop="() => edit(node, data)"
+              >
+                <el-icon
+                  class="el-icon-edit"
+                  :style="{ color: operateColor }"
+                ></el-icon>
+              </el-button>
+
+              <el-button
+                type="text"
+                size="mini"
+                @click.stop="() => remove(node, data)"
+              >
+                <el-icon
+                  class="el-icon-remove-outline"
+                  :style="{ color: operateColor }"
+                ></el-icon>
+              </el-button>
+            </span>
+          </div>
         </slot>
-      </span>
+      </div>
     </el-tree>
   </div>
 </template>
@@ -130,7 +158,7 @@ export default {
     //节点是否可被选择
     showCheckbox: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     //是否懒加载子节点，需与load方法结合使用 --当同时有data和lazy的情况下，lazy优先级更高，会覆盖data的配置
@@ -240,7 +268,6 @@ export default {
         return true
       }
     },
-
     //拖拽时判定目标节点能否被放置
     allowDrag: {
       type: Function,
@@ -249,18 +276,41 @@ export default {
         return true
       }
     },
+    //是否高亮当前选中节点
+    highlightCurrent: {
+      type: Boolean,
+      default: true
+    },
 
     /*自定义属性 */
     //整颗树的宽度，固定宽度有横向滚动条，100%可向外自动扩伸(不出现横向滚动条)
     width: {
       type: [String, Number],
       default: '100%'
-    }
+    },
+    //是否只选中、高亮、编辑叶子节点(最底层的节点)
+    onlyLeaf: {
+      type: Boolean,
+      default: () => true
+    },
+    //是否显示 添加、删除、编辑等按钮
+    operate: {
+      type: Boolean,
+      default: () => true
+    },
+
+    //设置添加、删除、编辑等按钮的颜色
+    operateColor: {
+      type: String,
+      default: () => ''
+    },
+
   },
   mounted () { },
   data () {
     return {
-      filterText: ''
+      filterText: '', //关键字过滤文本
+      id: '', //被选中节点的id或者唯一值
     }
   },
 
@@ -284,6 +334,13 @@ export default {
      * @param  {Object}  indeterminate 节点组件本身
      */
     nodeClick (data, node, indeterminate) {
+      if (this.showCheckbox) return
+      this.setCurrentKey(this.id) //onlyLeaf为true时,在点击父亲爷爷的时候也只高亮叶子节点
+      if (this.onlyLeaf && data[this.props.children]) return
+      this.id = data[this.nodeKey]
+      this.label = data[this.props.label]
+      this.tempValue = data[this.nodeKey]
+      this.setCurrentKey(this.id)
       console.log(data, node, indeterminate, 111111)
       this.$emit('node-click', data, node, indeterminate)
     },
@@ -292,14 +349,14 @@ export default {
      * @author yx
      */
     getCheckedNodes () {
-      this.$refs.tree.getCheckedNodes()
+      return this.$refs.tree.getCheckedNodes()
     },
 
     /**@description  通过key获取节点
      * @author yx
      */
     getCheckedKeys () {
-      this.$refs.tree.getCheckedKeys()
+      return this.$refs.tree.getCheckedKeys()
     },
 
     /**@description  通过node设置节点
@@ -401,8 +458,18 @@ export default {
       * @param  {Object}  ev event
     */
     nodeDrop (draggingNode, dropNode, dropType, ev) {
-      // console.log('tree drop: ', dropNode.label, dropType)
+      console.log('tree drop: ', dropNode.label, dropType)
       this.$emit('node-drop', draggingNode, dropNode, dropType, ev)
+    },
+
+    /**@description  设置当前选中(高亮)的节点
+     * @author yx
+     * @param  {mixins}  key //节点的key一般是id
+     */
+    setCurrentKey (key) {
+      this.$refs.tree ? this.$refs.tree.setCurrentKey(key) : this.$nextTick(() => {
+        this.$refs.tree.setCurrentKey(key)
+      })
     },
 
     /*自定义的方法 */
@@ -420,7 +487,7 @@ export default {
        * @param  {Object}  data 当前节点的数据
       */
     append (data) {
-      this.addNode(data)
+      // this.addNode(data)
       this.$emit('append', data)
     },
 
@@ -430,11 +497,19 @@ export default {
      * @param  {Object}  data 当前节点的数据
      */
     remove (node, data) {
-      const parent = node.parent
-      const children = parent.data.children || parent.data
-      const index = children.findIndex(item => item.id === data.id)
-      children.splice(index, 1)
-      this.$emit('remove', { node: node, data: data })
+      this.$confirm('确定要删除该节点吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: false,
+        closeOnPressEscape: false,
+        type: 'warning'
+      }).then(() => {
+        const parent = node.parent
+        const children = parent.data.children || parent.data
+        const index = children.findIndex(item => item.id === data.id)
+        children.splice(index, 1)
+        this.$emit('remove', { node: node, data: data })
+      }).catch(error => { console.log(error) })
     },
 
     /**@description  修改节点图标
@@ -462,14 +537,12 @@ export default {
       !data[children] && this.$set(data, [children], [])
       data[children].push(newChild)
     },
-
   },
 
   watch: {
     filterText (val) {
       this.$refs.tree.filter(val)
     }
-
   }
 }
 </script>
@@ -488,6 +561,12 @@ export default {
   &__filter {
     margin-bottom: 28px;
   }
+  &__custom-tree-button {
+    display: none;
+  }
+  &__custom-tree-label {
+    cursor: pointer;
+  }
 }
 
 .el-icon-circle-plus-outline:before {
@@ -499,4 +578,51 @@ export default {
 .el-icon-edit:before {
   font-size: 22px;
 }
+
+::v-deep .el-tree-node__content:hover {
+  cursor: default;
+  // background: transparent;
+}
+
+//全部
+.eve-tree__is-active::v-deep.el-tree--highlight-current {
+  .el-tree-node.is-current > .el-tree-node__content {
+    background-color: transparent;
+    color: #409eff;
+  }
+}
+//only叶子
+::v-deep.el-tree--highlight-current {
+  .el-tree-node.is-current > .el-tree-node__content {
+    background-color: transparent;
+    .is-leaf + .eve-tree__custom-tree-node {
+      .eve-tree__custom-tree-label {
+        color: #409eff !important;
+      }
+    }
+  }
+}
+
+::v-deep.eve-tree {
+  .el-tree-node:focus > .el-tree-node__content {
+    background: transparent;
+  }
+  // // 去掉hover背景色
+  // .el-tree-node:hover > .el-tree-node__content {
+  //   background-color: transparent;
+  // }
+}
+
+.eve-tree__custom-tree:hover {
+  .eve-tree__custom-tree-button {
+    display: block;
+  }
+}
+
+.is-leaf + .eve-tree__custom-leaf-tree:hover {
+  .eve-tree__custom-tree-button {
+    display: block;
+  }
+}
 </style>
+
