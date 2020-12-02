@@ -134,7 +134,7 @@ const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
         }
         const curInputFormItemCodeArr = [`\n${getIndents(level)}<el-form-item ${parseProps(formItemProps)}>`]
         if (formItemLabel) {
-          curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<div class="diy-el-item-label" slot="label">${formItemLabel}</div>`)
+          curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<span class="diy-el-item-label" slot="label">${formItemLabel}</span>`)
         }
         // 组件的props
         const inputCompProps = {

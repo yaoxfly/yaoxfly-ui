@@ -8,6 +8,7 @@ import { datePickerProps, datePickerPropsForm } from './form-item-props/fd-date-
 import { eveDiv, eveDivFormConfig } from './form-layout-item-props/fd-div'
 import { eveLabelFormConfig, eveLabel } from './other-props/fd-label'
 import { cascaderPropsForm, cascaderProps } from './form-item-props/fd-cascader'
+import { fdCard, fdCardFormConfig } from './form-layout-item-props/fd-card'
 
 /**
  * 普通输入组件
@@ -62,7 +63,7 @@ export const commonComps = [
     category: 'input',
     props: cascaderProps.props,
     triggerUseChange: true
-  },
+  }
 ]
 /**
  * 布局组件
@@ -91,6 +92,14 @@ export const layoutComps = [
     category: 'layout',
     props: eveDiv.props,
     children: eveDiv.children
+  },
+  {
+    comp: 'fd-card',
+    label: '卡片',
+    id: '200005',
+    category: 'layout',
+    props: fdCard.props,
+    children: fdCard.children
   }
 ]
 // 其他组件 装饰组件没有绑定字段的组件
@@ -113,5 +122,6 @@ export const formItemPropsForms = {
   'fd-date-picker': datePickerPropsForm,
   'fd-div': eveDivFormConfig,
   'fd-label': eveLabelFormConfig,
-  'fd-cascader': cascaderPropsForm
+  'fd-cascader': cascaderPropsForm,
+  'fd-card': fdCardFormConfig
 }

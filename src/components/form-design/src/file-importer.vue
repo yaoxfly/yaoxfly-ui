@@ -4,14 +4,15 @@
     <!-- // 上传一个文件 -->
     <!-- // action此处链接随便填写 -->
     <el-upload
-      :limit="1"
-      action="https://jsonplaceholder.typicode.com/posts/"
       ref="upload"
+      :limit="1"
+      action="#"
       accept=".json"
       :file-list="fileList"
       :show-file-list="false"
-      :on-success="onSuccess"
-      :on-remove="onRemove">
+      :before-upload="beforeUpload"
+      :on-remove="onRemove"
+    >
       <el-button size="small" type="info" plain>导入json配置</el-button>
     </el-upload>
   </div>
@@ -26,10 +27,10 @@ export default {
     }
   },
   methods: {
-    onSuccess (res, file, fileList) {
+    beforeUpload (file) {
       const that = this
       const reader = new FileReader()
-      reader.readAsText(file.raw)
+      reader.readAsText(file)
       reader.onload = (e) => {
         that.uploadData = []
         that.uploadData = JSON.parse(e.target.result)

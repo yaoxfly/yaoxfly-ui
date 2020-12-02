@@ -7,6 +7,7 @@ import FdRadioGroup from './fd-radio-group'
 import FdDiv from './fd-div'
 import FdLabel from './fd-label'
 import FdCascader from './fd-cascader'
+import FdCard from './fd-card'
 
 const components = [
   FdCascader,
@@ -15,8 +16,9 @@ const components = [
   FdSelect,
   FdDatePicker,
   FdDiv,
-  FdRadioGroup, 
-  FdInput
+  FdRadioGroup,
+  FdInput,
+  FdCard
 ]
 
 const dic = {}
