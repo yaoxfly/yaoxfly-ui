@@ -20,6 +20,7 @@
     "codemirror": "^5.58.2",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
+    "file-saver": "^2.0.5",
     "github-markdown-css": "^4.0.0",
     "highlight.js": "^10.2.1",
     "jsonlint": "^1.6.3",

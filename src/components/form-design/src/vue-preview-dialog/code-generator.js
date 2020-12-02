@@ -1,27 +1,28 @@
 import _ from 'lodash'
 
 export default function ({ formItemConfigs, global }) {
-  const { labelPosition, labelWidth, size } = global.common
+  const { labelPosition, labelWidth, size, globalStatus } = global.common
   // console.log('p p', formItemConfigs, size, 12)
   const vuePageConfig = { tabsDic: [], pageCodes: [], formData: [], formRules: [], formItemOptionsDic: [] }
-  visitFormItem(formItemConfigs, 2, vuePageConfig, { globalSize: size })
+  visitFormItem(formItemConfigs, 2, vuePageConfig, { globalSize: size, globalStatus })
   const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = vuePageConfig
 
   return '<template>' +
 `\n  <el-form ref="form" :model="formData" :rules="formRules" label-position="${labelPosition}" label-width="${labelWidth}px"> ` +
 pageCodes.join('') +
-'\n    <el-form-item>' +
+'\n    <el-form-item class="form-foot-btns">' +
 '\n      <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>' +
 '\n      <el-button size="small" @click="handleReset" style="margin-left: 8px">Reset</el-button>' +
 '\n    </el-form-item>' + 
 '\n  </el-form>' +
 '\n</template>\n' +
 '\n<script>' +
-`\nimport formCompsMixin from '@/components/form-design/src/mixins/form-comps-mixin'${''}\n` +
+`\nimport formCompsMixin from '@/mixins/comps'${''}\n` +
 '\nexport default {' +
 '\n  mixins: [formCompsMixin],' +
 '\n  data () {' +
 '\n    return {' +
+`\n      globalStatus: '${globalStatus}',` +
 `\n      formRules: {${formRules.length > 0 ? `${formRules.join(',')}\n      ` : ''}},` +
 `\n      formData: {${formData.join(',')}\n      },` +
 `${tabsDic.length > 0 ? `\n      tabsDic: {${tabsDic.join(',')}\n      },` : ''}` +
@@ -29,11 +30,14 @@ pageCodes.join('') +
 '\n    }' +
 '\n  },' +
 '\n  methods: {' +
-'\n    handleSubmit () {},' +
-'\n    handleReset () {}' +
+'\n    handleSubmit () { this.$refs.form.validate(valid => {}) },' +
+'\n    handleReset () { this.$refs.form.resetFields() },' +
+'\n    validate (callback) {' + 
+'\n      this.$refs.form.validate(valid => callback(valid))' +
+'\n    }' +
 '\n  }' +
 '\n}' +
-'\n</script>'
+'\n</script>\n'
 }
 
 const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
@@ -102,6 +106,7 @@ const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
        * 非布局组件 字段名称
        * diyValidator 自定义校验函数
        */
+      const { status } = formItem.common || {}
       const { fieldName, isRequired, formItemLabel, defaultValue, size, labelWidth } = formItem.elFormItem || {}
       if (fieldName) {
         const v = getEmpytValue(formItem.props)
@@ -128,10 +133,19 @@ const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
           }
         }
         const curInputFormItemCodeArr = [`\n${getIndents(level)}<el-form-item ${parseProps(formItemProps)}>`]
+        if (formItemLabel) {
+          curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<div class="diy-el-item-label" slot="label">${formItemLabel}</div>`)
+        }
         // 组件的props
         const inputCompProps = {
           ...formItem.props,
-          size: size || globalSize
+          size: size || globalSize,
+          status
+        }
+        let statusStr = ''
+        if (!inputCompProps.status) {
+          delete inputCompProps.status
+          statusStr = ' :status="globalStatus"'
         }
         // 解析带可选项的组件的选项
         let selectionsStr = ''
@@ -143,12 +157,15 @@ const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
               `\n${getIndents(4)}]`)
           }
         }
-        curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<${formItem.comp} v-model="formData.${fieldName}"${selectionsStr} ${parseProps(inputCompProps)}>`)
+        curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<${formItem.comp} v-model="formData.${fieldName}"${selectionsStr}${statusStr} ${parseProps(inputCompProps)}>`)
         // 可以在这里设置options
         curInputFormItemCodeArr.push(`</${formItem.comp}>`)
         curInputFormItemCodeArr.push(`\n${getIndents(level)}</el-form-item>`)
         pageCodes.push(curInputFormItemCodeArr.join(''))
       }
+    } else {
+      // 其他类型的组件
+      pageCodes.push(`\n${getIndents(level)}<${formItem.comp} ${parseProps(formItem.props)}/>`)
     }
   })
 }

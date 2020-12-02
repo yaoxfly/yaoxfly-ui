@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import _ from 'lodash'
+import Ele from 'element-ui'
+import FileSaver from 'file-saver'
 /**
  * 自定义数据响应克隆方法
  * @param {*} original
@@ -108,4 +110,17 @@ export function formatDateByDateObj (date, { format }) {
     }
   }
   return rs
+}
+
+// 文件下载
+export const downloadFileFromBlob = (data, sufix) => {
+  Ele.MessageBox.prompt('请输入文件名', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+  }).then(({ value }) => {
+    const blob = new Blob([data], { type: '' })
+    FileSaver.saveAs(blob, value + '.' + sufix)
+  }).catch(() => {
+    //  
+  })
 }

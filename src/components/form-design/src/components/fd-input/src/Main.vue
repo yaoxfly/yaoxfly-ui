@@ -5,10 +5,22 @@
 -->
 <template>
   <div class="eve-input">
-    <el-input v-if="!isReadOnly" :size="size" v-model="curValue" style="width: 100%" :disabled="isDisabled" :placeholder="placeholder" />
-    <template v-else>
-      {{ curValue }}
+    <template v-if="!isReadOnly">
+      <el-input v-if="inputType !== 'number'" :rows="rows" :type="inputType" :size="size" v-model="curValue" style="width: 100%" :disabled="isDisabled" :placeholder="placeholder" />
+      <el-input-number
+        v-else
+        v-model="curValue"
+        style="width: 100%"
+        :size="size"
+        :disabled="isDisabled"
+        :min="min"
+        :max="max"
+        :step="step"
+        :precision="precision"
+        :placeholder="placeholder"
+      />
     </template>
+    <div v-else v-html="curValue" />
   </div>
 </template>
 <script>
@@ -23,6 +35,34 @@ export default {
     placeholder: {
       type: String,
       default: ''
+    },
+    inputType: {
+      type: String,
+      default: 'text'
+    },
+    rows: {
+      type: Number,
+      default: 1
+    },
+    min: {
+      type: Number,
+      default: null
+    },
+    max: {
+      type: Number,
+      default: null
+    },
+    step: {
+      type: Number,
+      default: 1
+    },
+    precision: {
+      type: Number,
+      default: 0
+    },
+    maxlength: {
+      type: Number,
+      default: 50
     }
   },
 

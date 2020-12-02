@@ -44,6 +44,12 @@
         </el-tabs>
       </el-col>
     </el-row>
+    <el-form-item label="下拉框" prop="form_field_72820">
+      <fd-select v-model="formData.form_field_72820" :selections="formItemOptionsDic.form_field_72820" :multiple="false" :clearable="true" size="medium" :isRemote="false"></fd-select>
+    </el-form-item>
+    <el-form-item label="日期选择器" prop="form_field_70608">
+      <fd-date-picker v-model="formData.form_field_70608" placeholder="请选择" type="date" valueFormat="yyyy-MM-dd" :optionBeforeToday="false" :optionAfterToday="false" :includeToday="false" :rangeDays="0" :dateCompareConfigs="[]" :defaultToday="false" size="medium"></fd-date-picker>
+    </el-form-item>
     <el-form-item>
       <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>
       <el-button size="small" @click="handleReset" style="margin-left: 8px">Reset</el-button>
@@ -67,7 +73,9 @@ export default {
         form_field_26046: null,
         form_field_89641: null,
         form_field_72153: null,
-        form_field_65218: null
+        form_field_65218: null,
+        form_field_72820: null,
+        form_field_70608: null
       },
       tabsDic: {
         layout_form_field_21912: 'tab1'
@@ -172,6 +180,16 @@ export default {
           }
         ],
         form_field_65218: [
+          {
+            label: '选项1',
+            value: '1'
+          },
+          {
+            label: '选项2',
+            value: '2'
+          }
+        ],
+        form_field_72820: [
           {
             label: '选项1',
             value: '1'

@@ -22,8 +22,11 @@
       <el-button size="small" @click="handleClickPreview" type="success">表单预览</el-button>
       <el-button size="small" @click="handleClickPreviewJson" type="info">JSON文件预览</el-button>
       <el-button size="small" @click="handleClickPreviewVue" type="info" plain>页面代码预览</el-button>
+      <el-button size="small" @click="handleExportJson" type="info" plain>导出json配置</el-button>
+      <file-importer @upload-parent="handleUploadJson"></file-importer>
       <el-button size="small" type="primary">保存</el-button>
       <el-button size="small" type="warning" plain>取消</el-button>
+      <!-- <el-button size="small" @click="handleImportJson" type="info" plain>导入json配置</el-button> -->
     </el-footer>
   </el-container>
 </template>
@@ -35,7 +38,9 @@ import FormItemConfigPanel from './form-item-config-panel'
 import formPreviewDialog from './form-preview-dialog'
 import JsonPreviewDialog from './json-preview-dialog'
 import VuePreviewDialog from './vue-preview-dialog'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
+import { downloadFileFromBlob } from './lib/utils'
+import FileImporter from './file-importer'
 
 export default {
   name: 'FormDesign',
@@ -45,7 +50,8 @@ export default {
     FormItemConfigPanel,
     formPreviewDialog,
     JsonPreviewDialog,
-    VuePreviewDialog
+    VuePreviewDialog,
+    FileImporter
   },
   data () {
     return {
@@ -53,6 +59,12 @@ export default {
       showJsonDialog: false,
       previewVue: false
     }
+  },
+  computed: {
+    ...mapState({
+      formItemConfigs: state => state.FormDesign.formItemConfigs,
+      global: state => state.FormDesign.global
+    })
   },
   methods: {
     ...mapMutations({
@@ -66,6 +78,17 @@ export default {
     },
     handleClickPreviewVue () {
       this.previewVue = true
+    },
+    handleExportJson () {
+      try {
+        downloadFileFromBlob(JSON.stringify({ global: this.global, formItemConfigs: this.formItemConfigs }), 'json')
+      } catch (e) {
+        console.error('文件导出 ', e)
+      }
+    },
+    handleUploadJson (data) {
+      console.log('d ', data)
+      this.setFormConfig(data)
     }
   }
 }
