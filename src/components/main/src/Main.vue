@@ -8,7 +8,7 @@
     class="eve-main"
     :style="{
       margin: `${spacing}px`,
-      width: `calc(100vw - ${tempLeft}px`,
+      width: `calc(100vw - ${tempLeft + 2 * spacing}px`,
       height: `calc(100vh - ${heightDiffer}px)`,
     }"
   >
@@ -28,14 +28,13 @@ import { receive } from '../../../bus/menu.js'
 export default {
   name: 'EveMain',
   props: {
-
     //高度差 顶部导航+面包屑+两个spacing的高度之和
     heightDiffer: {
       type: Number,
       default: 125
     },
 
-    //各个块间的间距(最好还是10或者小于10比较好)
+    //各个块间的间距
     spacing: {
       type: Number,
       default: 10
@@ -76,8 +75,7 @@ export default {
        */
     receiveBus () {
       receive.breadcrumbCollapse(collapse => {
-        //本来是64,20是间距的距离
-        this.tempLeft = collapse ? 84 : this.left
+        this.tempLeft = collapse ? 64 : this.left
         // console.log(this.tempLeft, 'layout')
       })
     }

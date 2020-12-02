@@ -83,7 +83,7 @@ export default {
       type: Number,
       default: 125
     },
-    //各个块间的间距
+    //内部各个块的间距
     spacing: {
       type: Number,
       default: 10
@@ -93,13 +93,11 @@ export default {
       type: Array,
       default: () => []
     },
-
     //背景颜色
     background: {
       type: String,
       default: () => '#f5f7fa'
     },
-
   },
 
   data () {

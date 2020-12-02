@@ -4,10 +4,7 @@
 * @Date: 2020-10-13
 -->
 <template>
-  <div
-    :style="{ width: `${tempWidth}px`, height: `calc(100vh - ${top}px)` }"
-    class="eve-menu__main"
-  >
+  <div class="eve-menu__main">
     <el-scrollbar style="height: 100%">
       <el-menu
         class="eve-menu"
@@ -21,7 +18,7 @@
         :active-text-color="activeTextColor"
         :key="key"
         @select="(index, indexPath) => select(index, indexPath, data)"
-        :style="{ height: `calc(100vh - ${top}px)` }"
+        :style="{ height: `calc(100vh - ${top}px)`, width: `${tempWidth}px` }"
       >
         <menu-item
           v-for="(item, index) in data"
@@ -349,7 +346,6 @@ export default {
   transition: 0s;
   opacity: 0;
 }
-
 .el-submenu .el-menu-item {
   min-width: 0;
   width: 100%;
