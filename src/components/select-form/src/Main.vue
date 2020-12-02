@@ -85,6 +85,9 @@
                     :value-format="
                       pickerFormat(item.valueFormat, item.pickerType, item.type)
                     "
+                    :format="
+                      pickerFormat(item.format, item.pickerType, item.type)
+                    "
                   ></el-date-picker>
                 </slot>
               </el-form-item>
@@ -124,6 +127,9 @@
                     :placeholder="item.placeholder || '选择时间'"
                     :value-format="
                       pickerFormat(item.valueFormat, item.pickerType, item.type)
+                    "
+                    :format="
+                      pickerFormat(item.format, item.pickerType, item.type)
                     "
                   >
                   </el-time-picker>
@@ -364,13 +370,16 @@ export default {
           prop: 'date',
           type: 'date',
           pickerType: 'datetime', //类型可选为:date、datetime
-          // valueFormat: 'yyyy-MM-dd HH:mm:ss' //可以传进去自定义输出格式
+          // valueFormat: 'yyyy-MM HH:mm:ss', //输出值的格式转换
+          // format: 'yyyy-MM HH:mm:ss'//选择框里的值的格式转换
         },
         {
           label: '时间：',
           prop: 'time',
           type: 'time',
-          pickerOptions: { selectableRange: '15:30:00 - 20:30:00' }
+          pickerOptions: { selectableRange: '15:30:00 - 20:30:00' },
+          // valueFormat: 'mm:ss', //输出值的格式转换
+          // format: 'mm:ss'//选择框里的值的格式转换
         }
       ]
     },
