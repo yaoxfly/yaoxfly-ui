@@ -51,25 +51,31 @@ export default {
    * 添加表单项后对表单项进行初始设置
    */
   COMMIT_FORM_ITEM_INIT: (state, { element, index, list, elFormItem, common }) => {
-    // 添加新的配置项
-    const newFormItem = vueClonedeep(element)
-    // 每一项的唯一编号，根据这个编号进行表单项的配置定位
-    let key = `form_field_${(Math.random() * 10 ** 5).toFixed(0)}`
-    // 对于高级组件（大部分是布局组件）会加一个layout前缀
-    if (newFormItem.category === 'layout') {
-      key = 'layout_' + key
+    if (element.key) {
+      // 这个是从布局组件中拖出来到其他布局中的元素会有key
+      Vue.set(list, index, element)
+      state.activateItem = element
     } else {
-      // newFormItem.fieldName = key
-      const theElFormItem = vueClonedeep(elFormItem)
-      theElFormItem.formItemLabel = newFormItem.label
-      theElFormItem.fieldName = key
-      Vue.set(newFormItem, 'elFormItem', theElFormItem)
+      // 添加新的配置项
+      const newFormItem = vueClonedeep(element)
+      // 每一项的唯一编号，根据这个编号进行表单项的配置定位
+      let key = `form_field_${(Math.random() * 10 ** 5).toFixed(0)}`
+      // 对于高级组件（大部分是布局组件）会加一个layout前缀
+      if (newFormItem.category === 'layout') {
+        key = 'layout_' + key
+      } else {
+        // newFormItem.fieldName = key
+        const theElFormItem = vueClonedeep(elFormItem)
+        theElFormItem.formItemLabel = newFormItem.label
+        theElFormItem.fieldName = key
+        Vue.set(newFormItem, 'elFormItem', theElFormItem)
+      }
+      const theCommon = vueClonedeep(common)
+      Vue.set(newFormItem, 'common', theCommon)
+      Vue.set(newFormItem, 'key', key)
+      Vue.set(list, index, newFormItem)
+      state.activateItem = newFormItem
     }
-    const theCommon = vueClonedeep(common)
-    Vue.set(newFormItem, 'common', theCommon)
-    Vue.set(newFormItem, 'key', key)
-    Vue.set(list, index, newFormItem)
-    state.activateItem = newFormItem
   },
   COMMIT_USER_ACTIVE_ITEM: (state, formItem) => {
     state.activateItem = formItem
