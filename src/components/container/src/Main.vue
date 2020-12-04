@@ -33,7 +33,7 @@
       <div
         class="eve-container__right"
         :style="{
-          width: `calc(${proportion[1] * 10}% - ${proportion[0] * 100} px  )`,
+          width: `calc(100% - ${proportion[0] * 100}px  )`,
           marginLeft: `${spacing}px`,
         }"
       >
@@ -105,7 +105,6 @@ export default {
       proportion: [], //占据比例
     }
   },
-
   mounted () { },
   methods: {},
   watch: {

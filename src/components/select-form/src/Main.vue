@@ -370,8 +370,8 @@ export default {
           prop: 'date',
           type: 'date',
           pickerType: 'datetime', //类型可选为:date、datetime
-          // valueFormat: 'yyyy-MM HH:mm:ss', //输出值的格式转换
-          // format: 'yyyy-MM HH:mm:ss'//选择框里的值的格式转换
+          // valueFormat: 'yyyy-MM', //输出值的格式转换
+          // format: 'yyyy-MM'//选择框里的值的格式转换
         },
         {
           label: '时间：',

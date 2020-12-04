@@ -16,6 +16,9 @@
       @clear="clear"
       @visible-change="visibleChange"
       @remove-tag="removeTag"
+      class="eve-select"
+      :class="[this.number && 'eve-select__number']"
+      :number="`+${this.number}`"
     >
       <el-option
         :label="label"
@@ -179,7 +182,7 @@ export default {
       default: () => true
     },
 
-    //多选时是否将选中值按文字的形式展示
+    //多选时是否将选中值按文字的形式展示(是否添加+number)
     collapseTags: {
       type: Boolean,
       default: () => false
@@ -188,7 +191,7 @@ export default {
     //select宽度
     width: {
       type: [String, Number],
-      default: () => 250
+      default: () => 300
     },
 
     //option高度
@@ -218,10 +221,12 @@ export default {
       filterText: '', //过滤的值
       option: [], //多选时选中的lable和key组合的数组
       showCheckbox: this.multiple, //节点是否可被选择--多选默认可选择
-      defaultExpandedKeys: [] //默认展开的节点的 key 的数组
-
+      defaultExpandedKeys: [], //默认展开的节点的 key 的数组
+      tagsHeight: '', // 页签列表的高度
+      number: '' //未在select中显示的tags转换成个数
     }
   },
+
   mounted () { },
   methods: {
     /**@description  节点被点击时的回调
@@ -403,6 +408,26 @@ export default {
           })
         }
         this.multiple ? checkbox() : radio()
+        setTimeout(() => {
+          //TODO:添加随机数,多个组件时不影响
+          this.tagsHeight = this.tagsHeight || document.querySelector('.el-select__tags').offsetHeight
+          document.querySelector('.el-select__tags').style.height = this.tagsHeight + 'px'
+          console.log(document.querySelector('.el-select__tags').offsetWidth)
+          let itemWidth = 0
+          let num = 0
+          this.number = 0
+          Array.from(document.querySelectorAll('.eve-select .el-tag')).some(itme => {
+            console.log(itme.offsetWidth)
+            itemWidth += itme.offsetWidth
+            if (document.querySelector('.el-select__tags').offsetWidth < itemWidth) {
+              this.number = this.tempValue.length - num
+              return
+            } else {
+              num++
+            }
+          })
+          console.log(this.number, 'fff')
+        }, 200)
       },
       immediate: true
     },
@@ -443,7 +468,6 @@ export default {
   //   background-color: transparent;
   // }
 }
-
 //全部
 .eve-drop-down-tree__is-active::v-deep.el-tree--highlight-current {
   .el-tree-node.is-current > .el-tree-node__content {
@@ -451,7 +475,6 @@ export default {
     color: #409eff;
   }
 }
-
 //only叶子
 ::v-deep.el-tree--highlight-current {
   .el-tree-node.is-current > .el-tree-node__content {
@@ -461,7 +484,6 @@ export default {
     }
   }
 }
-
 ::v-deep.el-select-dropdown__item.is-disabled {
   cursor: default;
   padding: 0;
@@ -473,7 +495,65 @@ export default {
 ::v-deep .el-scrollbar__bar.is-vertical > div {
   width: 120%;
 }
-:v-deep .el-scrollbar__bar.is-horizontal > div {
+::v-deep .el-scrollbar__bar.is-horizontal > div {
   height: 120%;
 }
+::v-deep .el-select__tags {
+  overflow: hidden;
+  &::before {
+    content: 11;
+    width: 100px;
+    height: 100px;
+  }
+}
+::v-deep.el-select__tags {
+  position: relative;
+  &::after {
+    position: absolute;
+    content: '1';
+    // right: 0;
+    // left: 20px;
+    // top: 0;
+  }
+}
+::v-deep .el-icon-close {
+  position: relative;
+  // &::after {
+  //   position: absolute;
+  //   content: '1';
+  //   right: 0;
+  //   left: 20px;
+  //   top: 0;
+  // }
+}
+::v-deep .el-tag .el-icon-close {
+  // width: 12px !important;
+}
+
+::v-deep .el-select .el-tag {
+  margin: 2px 0 2px 3px;
+}
+::v-deep .el-input__icon {
+  width: auto;
+}
+.eve-select__number {
+  position: relative;
+  &::after {
+    position: absolute;
+    content: attr(number);
+    right: 0;
+    top: 8px;
+    z-index: 99;
+    color: #909399;
+    width: 20px;
+    height: 24px;
+    background-color: #f4f4f0;
+    text-align: center;
+    line-height: 26px;
+    font-size: 12px;
+    margin-right: 19px;
+  }
+}
 </style>
+
+

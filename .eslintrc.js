@@ -27,6 +27,7 @@ module.exports = {
     "Strings must use singlequote": 'off',
     "Extra semicolon": "off",
     // "quotes":[0,"single"] //去掉单引号的限制
-    "space-before-function-paren": 'off'
+    "space-before-function-paren": 'off',
+    "no-useless-return": 'off'
   }
 }

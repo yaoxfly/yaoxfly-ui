@@ -315,7 +315,6 @@ export default {
   },
 
   methods: {
-
     /**@description  节点选中状态发生变化时的回调
      * @author yx
      * @param  {Object}  data  传递给data属性的数组中该节点所对应的对象
@@ -570,13 +569,13 @@ export default {
 }
 
 .el-icon-circle-plus-outline:before {
-  font-size: 22px;
+  font-size: 16px;
 }
 .el-icon-remove-outline:before {
-  font-size: 22px;
+  font-size: 16px;
 }
 .el-icon-edit:before {
-  font-size: 22px;
+  font-size: 16px;
 }
 
 ::v-deep .el-tree-node__content:hover {
