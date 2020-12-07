@@ -4,7 +4,7 @@
 * @Date: 2020-11-19
 -->
 <template>
-  <div>
+  <div class="eve-drop-down-tree">
     <el-select
       v-model="tempValue"
       placeholder="请选择"
@@ -12,13 +12,14 @@
       clearable
       :multiple="multiple"
       :collapse-tags="collapseTags"
-      ref="select"
+      ref="eveDropDownTreeSelect"
       @clear="clear"
       @visible-change="visibleChange"
       @remove-tag="removeTag"
-      class="eve-select"
-      :class="[this.number && 'eve-select__number']"
-      :number="`+${this.number}`"
+      :class="[
+        `eve-drop-down-tree__select${random}`,
+        columnCollapseTags && 'eve-drop-down-tree__column-collapse-tags',
+      ]"
     >
       <el-option
         :label="label"
@@ -72,6 +73,13 @@
         </template>
       </div>
     </el-select>
+    <div
+      class="eve-drop-down-tree__number"
+      v-show="number"
+      :style="{ left: `${numberLeft}px`, marginLeft: `${spacing}px` }"
+    >
+      {{ `+${this.number}` }}
+    </div>
   </div>
 </template>
 <script>
@@ -182,7 +190,7 @@ export default {
       default: () => true
     },
 
-    //多选时是否将选中值按文字的形式展示(是否添加+number)
+    //多选时是否将选中值按文字的形式展示(是否添加+number)--注意：这个属性设置true会覆盖columnCollapseTags属性
     collapseTags: {
       type: Boolean,
       default: () => false
@@ -210,6 +218,12 @@ export default {
     autoExpandParent: {
       type: Boolean,
       default: () => true
+    },
+
+    //(推荐)多选时是否将选中值按文字的形式自适应展示(是否自适应添加+number),collapseTag非自适应展示,只展示一个页签后面就跟着一个number
+    columnCollapseTags: {
+      type: Boolean,
+      default: () => true
     }
   },
 
@@ -223,11 +237,16 @@ export default {
       showCheckbox: this.multiple, //节点是否可被选择--多选默认可选择
       defaultExpandedKeys: [], //默认展开的节点的 key 的数组
       tagsHeight: '', // 页签列表的高度
-      number: '' //未在select中显示的tags转换成个数
+      tagsWidth: '', //页签列表的宽度--只修改一次
+      number: '', //未在select中显示的tags转换成个数
+      numberLeft: '', //数字的偏移量
+      spacing: 6, //相邻两个页签的间距
+      random: this.getGenerateMixed(32) //随机数防止页面调用多个当前组件样式冲突
     }
   },
+  mounted () {
 
-  mounted () { },
+  },
   methods: {
     /**@description  节点被点击时的回调
       * @author yx
@@ -243,7 +262,7 @@ export default {
       this.label = data[this.props.label]
       this.tempValue = data[this.nodeKey]
       this.setCurrentKey(this.id)
-      this.$refs.select.blur() //自动收缩
+      this.$refs.eveDropDownTreeSelect.blur() //自动收缩
       this.$emit('node-click', data, node, indeterminate)
     },
 
@@ -373,8 +392,49 @@ export default {
     checkString (str) {
       return typeof str === 'string' ? str : `${str}px`
     },
-  },
+    /**@description  获取随机数
+    * @author yx
+    * @param  {Number}  num 
+    */
+    getGenerateMixed (num) {
+      const chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+      let res = ''
+      for (let i = 0; i < num; i++) {
+        const id = Math.ceil(Math.random() * 35)
+        res += chars[id]
+      }
+      return res
+    },
 
+    /**@description  自适应的number
+     * @author yx
+     */
+    selfAdaption () {
+      this.tagsHeight = this.tagsHeight || document.querySelector(`.eve-drop-down-tree__select${this.random} .el-select__tags`).offsetHeight
+      this.tagsWidth = this.tagsWidth || document.querySelector(`.eve-drop-down-tree__select${this.random} .el-select__tags`).offsetWidth - 30
+      let itemWidth = 0 //number 宽
+      let num = 0
+      this.number = 0
+      const arr = []
+      document.querySelector(`.eve-drop-down-tree__select${this.random} .el-select__tags`).style.height = this.tagsHeight + 'px'
+      document.querySelector(`.eve-drop-down-tree__select${this.random} .el-select__tags`).style.maxWidth = this.tagsWidth + 'px'
+      Array.from(document.querySelectorAll(`.eve-drop-down-tree__select${this.random} .el-tag`)).some(itme => {
+        itemWidth += itme.offsetWidth + this.spacing
+        arr.push(itme.offsetWidth + this.spacing)
+        if (this.tagsWidth <= itemWidth) {
+          this.number = this.tempValue.length - num
+          arr.pop()
+          this.numberLeft = arr.reduce((prev, curr) => {
+            return prev + curr
+          })
+          // console.log(arr, this.numberLeft, this.tagsWidth, itemWidth, '11')
+          return
+        } else {
+          num++
+        }
+      })
+    }
+  },
   watch: {
     // v-model绑定的值(select)--父修改-子接收
     value: {
@@ -408,26 +468,7 @@ export default {
           })
         }
         this.multiple ? checkbox() : radio()
-        setTimeout(() => {
-          //TODO:添加随机数,多个组件时不影响
-          this.tagsHeight = this.tagsHeight || document.querySelector('.el-select__tags').offsetHeight
-          document.querySelector('.el-select__tags').style.height = this.tagsHeight + 'px'
-          console.log(document.querySelector('.el-select__tags').offsetWidth)
-          let itemWidth = 0
-          let num = 0
-          this.number = 0
-          Array.from(document.querySelectorAll('.eve-select .el-tag')).some(itme => {
-            console.log(itme.offsetWidth)
-            itemWidth += itme.offsetWidth
-            if (document.querySelector('.el-select__tags').offsetWidth < itemWidth) {
-              this.number = this.tempValue.length - num
-              return
-            } else {
-              num++
-            }
-          })
-          console.log(this.number, 'fff')
-        }, 200)
+        setTimeout(() => { this.columnCollapseTags && this.selfAdaption() }, 200)
       },
       immediate: true
     },
@@ -436,7 +477,6 @@ export default {
       //获取值
       this.$emit('change', newValue)
     },
-
     filterText (val) {
       //对树节点进行筛选操作
       this.$refs.tree.filter(val)
@@ -447,6 +487,9 @@ export default {
 
 <style lang='scss' scoped >
 .eve-drop-down-tree {
+  position: relative;
+  display: flex;
+  align-items: center;
   &__select-input {
     margin: 10px 0;
   }
@@ -498,61 +541,24 @@ export default {
 ::v-deep .el-scrollbar__bar.is-horizontal > div {
   height: 120%;
 }
-::v-deep .el-select__tags {
-  overflow: hidden;
-  &::before {
-    content: 11;
-    width: 100px;
-    height: 100px;
+
+::v-deep .eve-drop-down-tree__column-collapse-tags {
+  .el-select__tags {
+    overflow: hidden;
   }
-}
-::v-deep.el-select__tags {
-  position: relative;
-  &::after {
-    position: absolute;
-    content: '1';
-    // right: 0;
-    // left: 20px;
-    // top: 0;
-  }
-}
-::v-deep .el-icon-close {
-  position: relative;
-  // &::after {
-  //   position: absolute;
-  //   content: '1';
-  //   right: 0;
-  //   left: 20px;
-  //   top: 0;
-  // }
-}
-::v-deep .el-tag .el-icon-close {
-  // width: 12px !important;
 }
 
-::v-deep .el-select .el-tag {
-  margin: 2px 0 2px 3px;
-}
-::v-deep .el-input__icon {
-  width: auto;
-}
-.eve-select__number {
-  position: relative;
-  &::after {
-    position: absolute;
-    content: attr(number);
-    right: 0;
-    top: 8px;
-    z-index: 99;
-    color: #909399;
-    width: 20px;
-    height: 24px;
-    background-color: #f4f4f0;
-    text-align: center;
-    line-height: 26px;
-    font-size: 12px;
-    margin-right: 19px;
-  }
+.eve-drop-down-tree__number {
+  position: absolute;
+  left: 0;
+  z-index: 99;
+  color: #909399;
+  width: 30px;
+  height: 24px;
+  background-color: #f4f4f0;
+  text-align: center;
+  line-height: 26px;
+  font-size: 12px;
 }
 </style>
 
