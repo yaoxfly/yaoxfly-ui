@@ -8,20 +8,19 @@ export default {
   // Props 是可选的
   props: {
     formItemConfig: {
-      type: Object
-    },
-    index: {
-      type: Number
+      type: Object,
+      required: true
     },
     global: {
-      type: Object
+      type: Object,
+      required: true
     },
     isLayoutChild: {
       type: Boolean,
       default: false
     }
   },
-  data () {
+  data() {
     return {
       activeName: '-'
     }
@@ -29,16 +28,16 @@ export default {
   watch: {
     formItemConfig: {
       deep: true,
-      handler: function () {
+      handler: function() {
         this.setActiveName()
       }
     }
   },
-  created () {
+  created() {
     this.setActiveName()
   },
   methods: {
-    setActiveName () {
+    setActiveName() {
       if (this.formItemConfig.comp === 'el-tabs') {
         const children = this.formItemConfig.children
         if (children.length > 0) {
@@ -47,17 +46,18 @@ export default {
       }
     }
   },
-  render: function (h) {
+  render: function(h) {
     // ...
     const { comp, props, category } = this.formItemConfig
     const rProps = {
       ...props,
-      notRequest: true
+      notRequest: true,
+      inConfigPanel: true
     }
     if (category === 'input' && !this.isLayoutChild) {
       // 组件用通用设置
       const { size } = this.formItemConfig.elFormItem || {}
-    // const props = formItem.props
+      // const props = formItem.props
       if (size) {
         rProps.size = size
       } else {

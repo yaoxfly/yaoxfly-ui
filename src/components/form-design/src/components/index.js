@@ -8,6 +8,7 @@ import FdDiv from './fd-div'
 import FdLabel from './fd-label'
 import FdCascader from './fd-cascader'
 import FdCard from './fd-card'
+import FdDialog from './fd-dialog'
 
 const components = [
   FdCascader,
@@ -18,7 +19,8 @@ const components = [
   FdDiv,
   FdRadioGroup,
   FdInput,
-  FdCard
+  FdCard,
+  FdDialog
 ]
 
 const dic = {}

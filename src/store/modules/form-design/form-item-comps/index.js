@@ -9,6 +9,7 @@ import { eveDiv, eveDivFormConfig } from './form-layout-item-props/fd-div'
 import { eveLabelFormConfig, eveLabel } from './other-props/fd-label'
 import { cascaderPropsForm, cascaderProps } from './form-item-props/fd-cascader'
 import { fdCard, fdCardFormConfig } from './form-layout-item-props/fd-card'
+import { fdDialog, fdDialogFormConfig } from './form-layout-item-props/fd-dialog'
 
 /**
  * 普通输入组件
@@ -100,6 +101,14 @@ export const layoutComps = [
     category: 'layout',
     props: fdCard.props,
     children: fdCard.children
+  },
+  {
+    comp: 'fd-dialog',
+    label: '对话框',
+    id: '200006',
+    category: 'layout',
+    props: fdDialog.props,
+    children: fdDialog.children
   }
 ]
 // 其他组件 装饰组件没有绑定字段的组件
@@ -123,5 +132,6 @@ export const formItemPropsForms = {
   'fd-div': eveDivFormConfig,
   'fd-label': eveLabelFormConfig,
   'fd-cascader': cascaderPropsForm,
-  'fd-card': fdCardFormConfig
+  'fd-card': fdCardFormConfig,
+  'fd-dialog': fdDialogFormConfig
 }

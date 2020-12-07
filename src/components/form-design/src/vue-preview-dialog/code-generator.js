@@ -1,45 +1,98 @@
 import _ from 'lodash'
 
 export default function ({ formItemConfigs, global }) {
-  const { labelPosition, labelWidth, size, globalStatus } = global.common
+  const { size, globalStatus } = global.common
   // console.log('p p', formItemConfigs, size, 12)
   const vuePageConfig = { tabsDic: [], pageCodes: [], formData: [], formRules: [], formItemOptionsDic: [] }
-  visitFormItem(formItemConfigs, 2, vuePageConfig, { globalSize: size, globalStatus })
-  const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = vuePageConfig
-
-  return '<template>' +
-`\n  <el-form ref="form" :model="formData" :rules="formRules" label-position="${labelPosition}" label-width="${labelWidth}px"> ` +
-pageCodes.join('') +
-'\n    <el-form-item class="form-foot-btns">' +
-'\n      <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>' +
-'\n      <el-button size="small" @click="handleReset" style="margin-left: 8px">Reset</el-button>' +
-'\n    </el-form-item>' + 
-'\n  </el-form>' +
-'\n</template>\n' +
-'\n<script>' +
-`\nimport formCompsMixin from '@/mixins/comps'${''}\n` +
-'\nexport default {' +
-'\n  mixins: [formCompsMixin],' +
-'\n  data () {' +
-'\n    return {' +
-`\n      globalStatus: '${globalStatus}',` +
-`\n      formRules: {${formRules.length > 0 ? `${formRules.join(',')}\n      ` : ''}},` +
-`\n      formData: {${formData.join(',')}\n      },` +
-`${tabsDic.length > 0 ? `\n      tabsDic: {${tabsDic.join(',')}\n      },` : ''}` +
-`${formItemOptionsDic.length > 0 ? `\n      formItemOptionsDic: {${formItemOptionsDic.join(',')}\n      },` : ''}` +
-'\n    }' +
-'\n  },' +
-'\n  methods: {' +
-'\n    handleSubmit () { this.$refs.form.validate(valid => {}) },' +
-'\n    handleReset () { this.$refs.form.resetFields() },' +
-'\n    validate (callback) {' + 
-'\n      this.$refs.form.validate(valid => callback(valid))' +
-'\n    }' +
-'\n  }' +
-'\n}' +
-'\n</script>\n'
+  if (formItemConfigs.length === 1 && formItemConfigs[0].comp === 'fd-dialog') {
+    visitFormItem(formItemConfigs[0].children[0].comps, 3, vuePageConfig, { globalSize: size, globalStatus })
+    return generateFormDialog(formItemConfigs[0].props, global.common, vuePageConfig)
+  } else {
+    visitFormItem(formItemConfigs, 4, vuePageConfig, { globalSize: size, globalStatus })
+    return generateCommomFormPage(global.common, vuePageConfig)
+  }
 }
 
+// 返回普通表单页面
+function generateCommomFormPage(globalCommon, vuePageConfig) {
+  // labelPosition, labelWidth, globalStatus, tabsDic, pageCodes, formData, formRules, formItemOptionsDic
+  const { globalStatus, labelPosition, labelWidth } = globalCommon
+  const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = vuePageConfig
+  return '<template>' +
+  `\n  <el-form ref="form" :model="formData" :rules="formRules" label-position="${labelPosition}" label-width="${labelWidth}px"> ` +
+  pageCodes.join('') +
+  '\n    <el-form-item class="form-foot-btns">' +
+  '\n      <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>' +
+  '\n      <el-button size="small" @click="handleReset" style="margin-left: 8px">Reset</el-button>' +
+  '\n    </el-form-item>' + 
+  '\n  </el-form>' +
+  '\n</template>\n' +
+  '\n<script>' +
+  `\nimport formCompsMixin from '@/mixins/comps'${''}\n` +
+  '\nexport default {' +
+  '\n  mixins: [formCompsMixin],' +
+  '\n  data () {' +
+  '\n    return {' +
+  `\n      globalStatus: '${globalStatus}',` +
+  `\n      formRules: {${formRules.length > 0 ? `${formRules.join(',')}\n      ` : ''}},` +
+  `\n      formData: {${formData.join(',')}\n      },` +
+  `${tabsDic.length > 0 ? `\n      tabsDic: {${tabsDic.join(',')}\n      },` : ''}` +
+  `${formItemOptionsDic.length > 0 ? `\n      formItemOptionsDic: {${formItemOptionsDic.join(',')}\n      },` : ''}` +
+  '\n    }' +
+  '\n  },' +
+  '\n  methods: {' +
+  '\n    handleSubmit () { this.$refs.form.validate(valid => {}) },' +
+  '\n    handleReset () { this.$refs.form.resetFields() },' +
+  '\n    validate (callback) {' + 
+  '\n      this.$refs.form.validate(valid => callback(valid))' +
+  '\n    }' +
+  '\n  }' +
+  '\n}' +
+  '\n</script>\n'
+}
+
+// 对话框表单页
+function generateFormDialog(dialogProps, globalCommon, vuePageConfig) {
+  const { globalStatus, labelPosition, labelWidth } = globalCommon
+  const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = vuePageConfig
+  return '<template>' +
+  `\n  <fd-dialog ${parseProps(dialogProps)} @open-dialog="handleOpenDialog" @close-dialog="handleCloseDialog">` +
+  `\n    <el-form ref="form" :model="formData" :rules="formRules" label-position="${labelPosition}" label-width="${labelWidth}px"> ` +
+  pageCodes.join('') +
+  '\n    </el-form>' +
+  '\n    <div slot="footer">' +
+  '\n      <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>' +
+  '\n      <el-button size="small" style="margin-left: 8px" @click="handleReset">Reset</el-button>' +
+  '\n    </div>' +
+  '\n  </fd-dialog>' +
+  '\n</template>\n' +
+  '\n<script>' +
+  `\nimport formCompsMixin from '@/mixins/comps'${''}\n` +
+  '\nexport default {' +
+  '\n  mixins: [formCompsMixin],' +
+  '\n  data () {' +
+  '\n    return {' +
+  `\n      globalStatus: '${globalStatus}',` +
+  `\n      formRules: {${formRules.length > 0 ? `${formRules.join(',')}\n      ` : ''}},` +
+  `\n      formData: {${formData.join(',')}\n      },` +
+  `${tabsDic.length > 0 ? `\n      tabsDic: {${tabsDic.join(',')}\n      },` : ''}` +
+  `${formItemOptionsDic.length > 0 ? `\n      formItemOptionsDic: {${formItemOptionsDic.join(',')}\n      },` : ''}` +
+  '\n    }' +
+  '\n  },' +
+  '\n  methods: {' +
+  '\n    handleSubmit() { this.$refs.form.validate(valid => {}) },' +
+  '\n    handleReset() { this.$refs.form.resetFields() },' +
+  '\n    validate(callback) {' +
+  '\n      this.$refs.form.validate(valid => callback(valid))' +
+  '\n    },' +
+  '\n    handleOpenDialog() {},' +
+  '\n    handleCloseDialog() {' +
+  '\n      this.$refs.form.resetFields()' +
+  '\n    }' +
+  '\n  }' +
+  '\n}' +
+  '\n</script>\n'
+}
 const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
   const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = parentConfig
   const { globalSize } = globalConfig
