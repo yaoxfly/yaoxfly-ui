@@ -40,12 +40,14 @@ export default {
   name: 'Home',
   data () {
     return {
+      //删除提示
       deleteMessageBox: {
-        center: false,
-        message: '代码是写给人看的，顺便在程序里运行',
-        text: '删除'
+        center: false, //是否居中
+        message: '代码是写给人看的，顺便在程序里运行', //消息
+        text: '删除' //删除提示框的标识，当与表格的删除按钮的文本一致时,会弹出提示框
       },
-      pageSize: 20,
+      pageSize: 20, //一页显示几条
+      //表格数据
       data: [
         {
           id: 1,
@@ -159,6 +161,7 @@ export default {
         },
       ],
 
+      //表头 prop 对应着表格数据的key，序号和操作默认都有可不需添加。
       columns: [
         {
           type: 'index', // 序号
@@ -172,27 +175,39 @@ export default {
         {
           label: 'Age',
           prop: 'age',
-          sortable: 'custom', // 接受一个Boolean，默认为false,如果需要后端排序，需将sortable设置为custom
-          filters: [{ text: 18, value: 18 }, { text: 19, value: 19 }, { text: 20, value: 20 }]
         },
         {
           label: 'Address',
           prop: 'address',
-          formatData: (data) => {
-            console.log(data, 11)
-            return data + '我是被转换的数据'
-          }
+          render: (h, data) => {
+            console.log(h, data)
+            const { row: { address } = {} } = data
+            return h('div', {
+              //和`v-bind:style`一样的 API
+              style: {
+                fontSize: '14px'
+              },
+              // DOM 属性
+              domProps: {
+                innerHTML: address + '我是被转换的数据1'
+              },
+            })
+          },
+          // formatData: (data) => {
+          //   console.log(data, 11)
+          //   return data + '我是被转换的数据1'
+          // }
         },
         {
           label: '操作',
           type: 'operate',
           width: 285
         },
-
       ]
 
-     }
+    }
   },
+
   methods: {
     // rowClassName ({ row, rowIndex }) {
     //   if (rowIndex === 1) {
@@ -207,17 +222,19 @@ export default {
     //     return 'yellow'
     //   }
     // }
-    filterHandler (value, row, column) {
-      console.log(column.property, value, row)
-      const property = column.property
-      return row[property] === value
-    },
+    // filterHandler (value, row, column) {
+    //   console.log(column.property, value, row)
+    //   const property = column.property
+    //   return row[property] === value
+    // },
 
+    //操作按钮  
     btnOperate (emit) {
       console.log(emit)
       // this.visible = !this.visible
     },
 
+    //页面切换
     currentChange (emit) {
       console.log(emit)
     }
@@ -229,7 +246,7 @@ export default {
 <style lang='scss' scoped>
 ::v-deep .home-table-pagination {
   .warning-row {
-    background: yellow;
+    // background: yellow;
   }
   // .yellow {
   //   background: yellow;
@@ -237,10 +254,3 @@ export default {
 }
 </style>
 
-<style lang='scss' >
-.markdown-body {
-  table {
-    margin-bottom: 0px;
-  }
-}
-</style>

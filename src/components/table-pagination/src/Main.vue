@@ -490,7 +490,7 @@ export default {
           label: 'Address',
           prop: 'address',
           formatData: (data) => {
-            console.log(data, 11)
+            // console.log(data, 11)
             return data + '我是被转换的数据'
           }
         },
@@ -621,9 +621,7 @@ export default {
     return {}
   },
 
-  mounted () {
-    console.log(this.tableData, 33)
-  },
+  mounted () { },
 
   components: {
     //render组件
@@ -858,9 +856,8 @@ export default {
 
 <style  lang='scss' scoped>
 .eve-table-pagination {
-  margin: 0 24px;
+  // margin: 0 24px;
   text-align: center;
-
   &__filters ::v-deep .el-table__column-filter-trigger i {
     display: none;
   }

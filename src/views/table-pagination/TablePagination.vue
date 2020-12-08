@@ -1,6 +1,6 @@
 <template>
   <div>
-   <div class="markdown-body">
+    <div class="markdown-body">
       <Md></Md>
     </div>
   </div>

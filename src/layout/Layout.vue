@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <eve-menu :data="data" :top='0'></eve-menu>
+    <eve-menu :data="data" :top="0"></eve-menu>
     <div class="layout__router-in-main">
       <router-view class="layout__router" />
     </div>
@@ -37,8 +37,6 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-
-
 .layout {
   width: 100%;
   display: flex;
@@ -47,15 +45,14 @@ export default {
   overflow: hidden;
   height: 100%;
   &__router-in-main {
-    width: calc(100% - 50px);
+    width: calc(100% - 200px);
     height: 100vh;
-    padding-bottom:30px ;
+    padding-bottom: 30px;
     overflow: hidden;
     overflow-y: auto;
   }
   &__router {
-    margin-left: 50px;
-    margin-top: 10px;
+    margin: 20px;
   }
 }
 </style>
