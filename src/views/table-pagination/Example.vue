@@ -8,6 +8,7 @@
       :page-size="pageSize"
       :columns="columns"
       :data="data"
+      :button="button"
     >
       <!-- <el-table-column
         prop="age"
@@ -37,7 +38,6 @@
 <script>
 // @ is an alias to /src
 export default {
-  name: 'Home',
   data () {
     return {
       //删除提示
@@ -180,7 +180,6 @@ export default {
           label: 'Address',
           prop: 'address',
           render: (h, data) => {
-            console.log(h, data)
             const { row: { address } = {} } = data
             return h('div', {
               //和`v-bind:style`一样的 API
@@ -203,8 +202,29 @@ export default {
           type: 'operate',
           width: 285
         },
-      ]
+      ],
 
+      //按钮--组件内部已经内置了这四个按钮,而且样式统一,以下只是范例,需要修改文本、颜色时再传这个数组
+      button: [
+        {
+          value: '新增',
+          type: 'text'
+        },
+        {
+          value: '查看',
+          type: 'primary'
+        },
+
+        {
+          value: '修改',
+          plain: true
+        },
+        {
+          value: '删除',
+          round: true,
+          type: 'success'
+        }
+      ]
     }
   },
 

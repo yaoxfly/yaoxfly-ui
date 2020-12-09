@@ -15,27 +15,23 @@ const routes = [
       {
         path: '/use',
         name: 'Use',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/install/Install')
+        component: () => import('../views/install/Install')
       },
 
       {
         path: '/dialog',
         name: 'Dialog',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/dialog/Dialog.vue')
+        component: () => import('../views/dialog/Dialog.vue')
       },
       {
         path: '/tablePagination',
         name: 'TablePagination',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/table-pagination/TablePagination.vue')
+        component: () => import('../views/table-pagination/TablePagination.vue')
+      },
+      {
+        path: '/selectForm',
+        name: 'SelectForm',
+        component: () => import('../views/select-form/SelectForm.vue')
       }
     ]
   },
@@ -58,4 +54,5 @@ const router = new VueRouter({
   routes
 })
 
+export { routes }
 export default router

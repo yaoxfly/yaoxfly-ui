@@ -101,9 +101,9 @@
                     <el-button
                       v-else
                       :key="`eve-table-pagination-button${index}`"
-                      :type="element.type"
-                      :plain="element.plain"
-                      :round="element.round"
+                      :type="element.type ? element.type : 'primary'"
+                      :plain="element.plain ? element.plain : false"
+                      :round="element.round ? element.round : false"
                       :icon="element.icon"
                       @click.stop="
                         btnOperate({
@@ -186,7 +186,7 @@
   </div>
 </template>
 <script>
-
+import render from './render.js'
 export default {
   name: 'EveTablePagination',
   props: {
@@ -396,7 +396,29 @@ export default {
       default: () => '暂无数据'
     },
 
-    // fixed固定左右列  sortable排序
+    // 行数据的 Key，用来优化 Table 的渲染--一般传主键值，在使用 reserve-selection 功能与显示树形数据时，该属性是必填的
+    rowKey: {
+      type: [String, Function],
+      default: () => 'id'
+    },
+
+    //渲染嵌套数据(树)的配置选项,hasChildren用来懒加了
+    treeProps: {
+      type: Object,
+      default: () => ({ children: 'children', hasChildren: 'hasChildren' })
+    },
+
+    //是否懒加载子节点数据
+    lazy: {
+      type: Boolean,
+      default: () => false
+    },
+
+    // 加载子节点数据的函数,lazy为true时生效,函数第二个参数包含了节点的层级信息--树懒加载用
+    load: {
+      type: Function,
+      default: () => { }
+    },
 
     // 分页-布局属性
     layout: {
@@ -439,29 +461,6 @@ export default {
       default: () => false
     },
 
-    // 行数据的 Key，用来优化 Table 的渲染--一般传主键值，在使用 reserve-selection 功能与显示树形数据时，该属性是必填的
-    rowKey: {
-      type: [String, Function],
-      default: () => 'id'
-    },
-
-    //渲染嵌套数据(树)的配置选项,hasChildren用来懒加了
-    treeProps: {
-      type: Object,
-      default: () => ({ children: 'children', hasChildren: 'hasChildren' })
-    },
-
-    //是否懒加载子节点数据
-    lazy: {
-      type: Boolean,
-      default: () => false
-    },
-
-    // 加载子节点数据的函数,lazy为true时生效,函数第二个参数包含了节点的层级信息--树懒加载用
-    load: {
-      type: Function,
-      default: () => { }
-    },
 
     /* ----------自定义属性----------- */
     // 后端返回的数据的id的key,默认是id
@@ -513,31 +512,31 @@ export default {
       type: Array,
       default: () => [{
         value: '查看',
-        type: 'primary',
-        plain: false,
-        round: false,
-        icon: ''
+        // type: 'primary',
+        // plain: false,
+        // round: false,
+        // icon: ''
       },
       {
         value: '新增',
-        type: 'primary',
-        plain: false,
-        round: false,
-        icon: ''
+        // type: 'primary',
+        // plain: false,
+        // round: false,
+        // icon: ''
       },
       {
         value: '修改',
-        type: 'primary',
-        plain: false,
-        round: false,
-        icon: ''
+        // type: 'primary',
+        // plain: false,
+        // round: false,
+        // icon: ''
       },
       {
         value: '删除',
-        type: 'primary',
-        plain: false,
-        round: false,
-        icon: ''
+        // type: 'primary',
+        // plain: false,
+        // round: false,
+        // icon: ''
       }]
     },
 
@@ -624,37 +623,15 @@ export default {
   mounted () { },
 
   components: {
-    //render组件
-    render: {
-      functional: true,
-      props: {
-        row: Object, // 表格的某一行数据
-        render: Function, //render方法
-        index: Number, //下标
-        item: {
-          type: Object,
-          default: null
-        },
-        data: Array //表格里所有数据
-      },
-      render: (h, ctx) => {
-        const params = {
-          row: ctx.props.row,
-          index: ctx.props.index,
-          data: ctx.props.data
-        }
-        if (ctx.props.item) params.item = ctx.props.item
-        return ctx.props.render(h, params)
-      }
-    }
+    render: render
   },
 
   methods: {
     /* ---------饿了么回调的函数----------- */
     // 选中当前行,饿了么自带方法，自定义包装，防止和下面的分页的方法冲突
-    currentRowChange (val) {
+    currentRowChange (currentRow, oldCurrentRow) {
       // console.log(val)
-      this.$emit('current-row-change', val)
+      this.$emit('current-row-change', currentRow, oldCurrentRow)
     },
     // 排序回调
     sortChange (emit) {

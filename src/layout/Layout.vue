@@ -9,32 +9,31 @@
 
 <script>
 // @ is an alias to /src
+import { routes } from '../router/index'
 export default {
   name: 'Layout',
   data () {
     return {
-      data: [
-
-        {
-          path: 'use',
-          type: 'item',
-          text: '安装'
-        },
-        {
-          path: 'dialog',
-          type: 'item',
-          text: 'Dialog'
-        },
-        {
-          path: 'tablePagination',
-          type: 'item',
-          text: 'TablePagination'
-        }
-      ]
+      data: []
+    }
+  },
+  mounted () {
+    this.getMenu()
+  },
+  methods: {
+    getMenu () {
+      const arr = routes.filter(item => item.name === 'Layout')
+      const route = JSON.parse(JSON.stringify(arr[0].children))
+      route.forEach(element => {
+        element.text = element.name === 'Use' ? '安装' : element.name
+        element.type = 'item'
+      })
+      this.data = route
     }
   }
 }
 </script>
+ 
 
 <style lang='scss' scoped>
 .layout {
@@ -45,7 +44,7 @@ export default {
   overflow: hidden;
   height: 100%;
   &__router-in-main {
-    width: calc(100% - 200px);
+    width: calc(100vw - 400px);
     height: 100vh;
     padding-bottom: 30px;
     overflow: hidden;

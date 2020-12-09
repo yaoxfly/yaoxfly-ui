@@ -154,6 +154,8 @@ export default {
         path: 'path', // 路径
         children: 'children' //树结构数据的孩子节点
       },
+      //当前路由
+      route: ''
     }
   },
   mounted () {
@@ -225,6 +227,17 @@ export default {
         this.key++
       }, 200)
     },
+
+    /**@description 设置菜单高亮
+     * @author yx
+     */
+    setActive (path, data) {
+      //路由子路由配置中无论是带/还是不带斜杆,路由监听时总是带有斜杆
+      const menu = this.findPath(path, data)
+      //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
+      this.active = menu.length > 0 ? path : path.split('/')[1]
+      this.$emit('updata:defaultActive', this.active)
+    }
   },
 
   components: {
@@ -239,8 +252,6 @@ export default {
       },
       immediate: true
     },
-
-
     config: {
       handler (val) {
         Object.assign(this.tempConfig, val)
@@ -248,20 +259,22 @@ export default {
       },
       immediate: true,
     },
-
     $route: {
       handler (val) {
-        //路由子路由配置中无论是带/还是不带斜杆,路由监听时总是带有斜杆
-        const menu = this.findPath(val.path, this.data)
-        //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
-        this.active = menu.length > 0 ? val.path : val.path.split('/')[1]
-        this.$emit('updata:defaultActive', this.active)
-        // console.log(val, 22)
+        this.route = val.path
       },
       immediate: true,
-      // 深度观察监听
-      // deep: true
     },
+    //有用到$route变化的值，一定要放在$route后
+    data: {
+      handler (val) {
+        console.log(val, this.route, '菜单')
+        // this.route = val.path
+        val.length > 0 && this.setActive(this.route, val)
+      },
+      immediate: true,
+    },
+
     collapse: {
       handler (val) {
         this.tempCollapse = val

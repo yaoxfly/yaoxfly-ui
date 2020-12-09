@@ -49,11 +49,11 @@ export default {
     },
 
     close () {
-      console.log('Dialog关闭前回调')
+      // console.log('Dialog关闭前回调')
     },
 
     closed () {
-      console.log('Dialog关闭后回调')
+      // console.log('Dialog关闭后回调')
     }
 
   }

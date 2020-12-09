@@ -34,6 +34,7 @@ export default {
       :page-size="pageSize"
       :columns="columns"
       :data="data"
+      :button="button"
     >
     </eve-table-pagination>
   </div>
@@ -185,7 +186,6 @@ export default {
           label: 'Address',
           prop: 'address',
           render: (h, data) => {
-            console.log(h, data)
             const { row: { address } = {} } = data
             return h('div', {
               //和`v-bind:style`一样的 API
@@ -208,13 +208,33 @@ export default {
           type: 'operate',
           width: 285
         },
-      ]
+      ],
 
+      //按钮--组件内部已经内置了这四个按钮,而且样式统一,以下只是范例,需要修改文本、颜色时再传这个数组
+      button: [
+        {
+          value: '新增',
+          type: 'text'
+        },
+        {
+          value: '查看',
+          type: 'primary'
+        },
+
+        {
+          value: '修改',
+          plain: true
+        },
+        {
+          value: '删除',
+          round: true,
+          type: 'success'
+        }
+      ]
     }
   },
 
   methods: {
-   
     //操作按钮  
     btnOperate (emit) {
       console.log(emit)
@@ -227,7 +247,6 @@ export default {
     }
   }
 }
-
 </script>
 ```
 
@@ -248,34 +267,38 @@ export default {
 | cell-class-name  | 给某一列指定一个样式 | Function({row, column, rowIndex, columnIndex})/String | —  |— |
 | header-row-class-name  | 表头行的 className 的回调方法   | Function({row, rowIndex})/String   | — | —  |
 | empty-text  | 空数据时显示的文本内容，也可以通过 slot="empty" 设置 | string  | —  | 暂无数据  |
-
-         
+| row-key   | 行数据的 Key，用来优化 Table 的渲染--一般传主键值，在使用 reserve-selection 功能与显示树形数据时，该属性是必填的   | String, Function | — | id  |
+| tree-props   | 渲染嵌套数据(树)的配置选项,hasChildren用来懒加载   | Object | — | { children: 'children', hasChildren: 'hasChildren' }  |
+| lazy   | 是否懒加载子节点数据   | Boolean | — | false |
+| load   | 加载子节点数据的函数,lazy为true时生效,函数第二个参数包含了节点的层级信息--树懒加载用   | Function | — | — |
 
 ###  Table  Attributes (自定义)
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ----| ----| --- | ---- | ----- |
-| id  | 后端返回的数据的 id 的 key, 默认是 id  | string  | —   | id   |
 | columns  | 通过给列 columns 设置字段，表格数据渲染，详细参数看下表  | array  | —   | []  |
+| button   | 增删改查等，按钮数组，详细参数看下表  | array  | —   | []   |
+| id  | 后端返回的数据的 id 的 key, 默认是 id  | string  | —   | id   |
 | is-only-get-id-arr  | 当用户 Checkbox 时触发的事件, 是否只返回 id 数组 | boolean | —  | true  |
 | is-only-get-id   | 当用户点击按钮的时候触发的事件, 是否只返回 id        | boolean  | —  | false  |
-| button   | 增删改查等，按钮数组  | array  | —   | []   |
-| delete-message-box    | 删除弹出框设置, 该属性较多，看下表  | object | —  | []  |
+| delete-message-box    | 删除弹出框设置, 该属性较多，看下表  | object | —  | {  message: '此操作将永久删除该条记录, 是否继续?',title: '提示',confirmButtonText: '确定',cancelButtonText: '取消',text: '删除'isCanclePrompt: true,showClose: true,closeOnClickModal: false,closeOnPressEscape: false,center: false } |
 | is-show-index  | 是否显示默认的序号 |boolean| — |true|
 | is-show-selection  | 是否显示默认多选框/选择框(checkbox) |boolean| — |false|
 | is-show-operate  | 是否显示默认的操作(增删改查等按钮) |boolean| — |true|
 | z-index | 代表数据在第n层，当传进来的数据是树结构时，并开启了表格数据转换时要配置的一个属性，默认是zIndex | string| — |zIndex|
 | is-format-data | 是否开启表格数据转换，主要用于树结构数据添加zIndex时用 | boolean| — |false|
 
-
 ###  Pagination Attributes
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ----| ----| --- | ---- | ----- |
-| layout   | 组件布局，子组件名用逗号分隔  | sizes, prev, pager, next, jumper, ->, total, slot |—|— |
-| small  | 在空间有限的情况下，可以使用简单的小型分页  | boolean  | —   | false   |
+| current-page    | 当前页数，支持 .sync 修饰符      | number   | —  | 1  |
 | page-sizes    | 每页显示个数选择器的选项设置  | number[]   | —  | [10, 20, 30, 40, 50, 100] |
 | page-size    | 每页显示条目个数，支持 .sync 修饰符  | number   | — | 10 |
-| current-page    | 当前页数，支持 .sync 修饰符      | number   | —  | 1  |
+| total    | 总条目数  | number   | — | — |
+| layout   | 组件布局，子组件名用逗号分隔  | string |sizes, prev, pager, next, jumper, ->, total, slot|total,prev,pager,next,sizes,jumper |
+| small  | 在空间有限的情况下，可以使用简单的小型分页  | boolean  | —   | false   |
 | hide-on-single-page   | 只有一页时是否隐藏   | boolean | — | true  |
+
+
 
 
 ###  Pagination Attributes(自定义)
@@ -284,7 +307,6 @@ export default {
 | is-show-pagination  | 是否显示分页  | boolean  |— | true |
 | top  | 分页距离表格的距离   | number | — | 24  |
 | align  | 分页的位置   | string | center、left、right | center  |
-
 
 
 ### Column Attributes
@@ -296,8 +318,21 @@ export default {
 | fixed  | 列是否固定在左侧或者右侧，true 表示固定在左侧   | string, boolean | true, left, right | — |
 | type   | 列的类型 | string |  selection(选择框)、index(序号)、operate(操作)、tree(下拉树)  | 普通内容 |
 | show-overflow-tooltip  | 当内容过长被隐藏时显示 tooltip   | boolean |  — | true  |
-| formatData  | 简单改变单前列的文本值,复杂用render或者插槽   | Function(data) |  — | —  |
-| formatData  | 简单改变单前列的文本值,复杂用render或者插槽   | Function(data) |  — | —  |
+| formatData | 简单改变当前列的文本值,复杂用render或者插槽    | Function(data) |  — | —  |
+| render  |  使用render函数自定义内容 |  Function(h,data)  | — | —  |
+
+>  表头配置属性, 其中 `formatData` 方法只对`type`是普通内容列有效 ,`render`只对普通内容和操作列有效
+
+###  Button  Attributes
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| ----| ----| --- | ---- | ----- |
+| value  | 文本 |string| — | 查看、新增、修改、删除|
+| type  |  类型 |string| text、primary、success、info、warning、danger | primary |
+| plain  | 是否朴素按钮 |boolean| — | false|
+| round  | 是否圆角按钮 |boolean| — | false|
+| icon  |  图标类名 |string| — | — |
+
+>  操作列的按钮配置, `type`属性中,除了`text`是文本类型的按钮，其他都是普通按钮类型,不同参数分别代表不同颜色。
 
 ###  Delete-Message-Box Attributes
 
@@ -314,6 +349,24 @@ export default {
 | closeOnPressEscape   | 点击Esc隐藏对话框 |   boolean | —  | false |
 | center  | 居中 | boolean | —  |false |
 
+
+###  Table Event
+| 事件名称 | 说明 | 回调参数 | 
+| ----| ----| --- | 
+| btn-operate  |当用户手动勾选全选 Checkbox 时触发的事件 | [] (id数组或者当前行数据的数组) |
+| select  |当用户手动勾选数据行的 Checkbox 时触发的事件 | [] (id数组或者当前行数据的数组) |
+| select-all  |当用户手动勾选全选 Checkbox 时触发的事件 | [] (id数组或者当前行数据的数组) |
+| current-row-change  | 当表格的当前行发生变化的时候会触发该事件，如果要高亮当前行，请打开表格的 highlight-current-row 属性 |currentRow, oldCurrentRow|
+| sortChange  |当表格的排序条件发生变化的时候会触发该事件 |{ column, prop, order }|
+
+
+###  Pagination Event
+| 事件名称 | 说明 | 回调参数 | 
+| ----| ----| --- | 
+| current-change  |当前页切换 | 当前页 |
+| size-change | 每页显示的条数切换  | 页面切换的条数 |
+
+
 ###  Slot
 | name                 | 说明                       |
 | -------------------- | ---------------------------|
@@ -324,5 +377,3 @@ export default {
 | name                 | 说明                       
 | -------------------- | ---------------------------|
 | prop                  |表格数据要渲染的key,表头数据的prop,动态的插槽名,参数为 {name,row,data} |
-
-

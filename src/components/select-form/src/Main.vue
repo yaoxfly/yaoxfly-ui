@@ -447,11 +447,6 @@ export default {
       type: Boolean,
       default: true
     },
-    // 距离最左边的宽度,一般指左边菜单栏的宽度--用于自适应计算设置后表单自适应伸缩展开更精确
-    leftWidth: {
-      type: Number,
-      default: 250
-    }
 
   },
 
@@ -487,9 +482,12 @@ export default {
      *  @author yx
      */
     getNum (param) {
-      const { winWidth, formWidth, labelWidth } = param || {}
+      const {
+        winWidth, formWidth, labelWidth,
+        leftWidth = this.$refs.formValidate.$el.offsetLeft
+      } = param || {}
       // 250是左边导航的宽度  230:右边查询重置收起等按钮的宽度  288:formWidth 120:label   1366-250-200/408=2.24 Math.floor()
-      return Math.floor((winWidth - this.leftWidth - 230) / (formWidth + labelWidth))
+      return Math.floor((winWidth - leftWidth - 230) / (formWidth + labelWidth))
     },
 
     /** @description 表单重置

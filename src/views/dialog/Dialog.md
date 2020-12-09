@@ -75,7 +75,7 @@ export default {
   }
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
   .dialog-example {
     margin: 20px 0;
   }
