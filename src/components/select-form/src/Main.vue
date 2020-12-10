@@ -49,6 +49,7 @@
                 </slot>
               </el-form-item>
               <slot name="input"></slot>
+              <slot :name="`input-${item.prop}`"></slot>
             </section>
 
             <!--date-picker -->
@@ -91,7 +92,8 @@
                   ></el-date-picker>
                 </slot>
               </el-form-item>
-              <slot name="datePicker"></slot>
+              <slot name="date-picker"></slot>
+              <slot :name="`date-picker-${item.prop}`"></slot>
             </section>
 
             <!--time-picker -->
@@ -135,7 +137,8 @@
                   </el-time-picker>
                 </slot>
               </el-form-item>
-              <slot name="timePicker"></slot>
+              <slot name="time-picker"></slot>
+              <slot :name="`time-picker-${item.prop}`"></slot>
             </section>
 
             <!-- select-->
@@ -181,6 +184,7 @@
                 </slot>
               </el-form-item>
               <slot name="select"></slot>
+              <slot :name="`select-${item.prop}`"></slot>
             </section>
 
             <!--radio-->
@@ -221,6 +225,7 @@
                 </slot>
               </el-form-item>
               <slot name="radio"></slot>
+              <slot :name="`radio-${item.prop}`"></slot>
             </section>
 
             <!--checkbox-->
@@ -264,6 +269,7 @@
                 </slot>
               </el-form-item>
               <slot name="checkbox"></slot>
+              <slot :name="`checkbox-${item.prop}`"></slot>
             </section>
           </template>
 
@@ -277,12 +283,18 @@
 
         <!--按钮的值-->
         <el-form-item class="eve-select-form__form">
-          <slot name="rightButton">
-            <el-button type="primary" @click="handleSubmit('formValidate')"
+          <slot name="right-button">
+            <el-button
+              type="primary"
+              ref="search"
+              @click="handleSubmit('formValidate')"
               >查 询</el-button
             >
-            <el-button @click="handleReset('formValidate')">重 置</el-button>
+            <el-button ref="reset" @click="handleReset('formValidate')"
+              >重 置</el-button
+            >
             <span
+              ref="packUp"
               class="eve-select-form__pack-up"
               @click="packUp"
               v-if="isShowExpand"
@@ -348,7 +360,7 @@ export default {
         },
         {
           label: '地址：',
-          prop: 'userName',
+          prop: 'address',
           type: 'radio',
           option: [
             {
@@ -371,7 +383,7 @@ export default {
           type: 'date',
           pickerType: 'datetime', //类型可选为:date、datetime
           // valueFormat: 'yyyy-MM', //输出值的格式转换
-          // format: 'yyyy-MM'//选择框里的值的格式转换
+          // format: 'yyyy-MM'//显示在输入框中的格式 
         },
         {
           label: '时间：',
@@ -379,7 +391,7 @@ export default {
           type: 'time',
           pickerOptions: { selectableRange: '15:30:00 - 20:30:00' },
           // valueFormat: 'mm:ss', //输出值的格式转换
-          // format: 'mm:ss'//选择框里的值的格式转换
+          // format: 'mm:ss'// 显示在输入框中的格式 
         }
       ]
     },
@@ -391,8 +403,9 @@ export default {
         name: '',
         department: '',
         status: [], //checkbox是多选的时候，声明时一定要写成数组形式，否则会出现选一个全部勾选情况。
-        userName: '',
+        address: '',
         date: '',
+        time: '',
       })
     },
 
@@ -448,6 +461,12 @@ export default {
       default: true
     },
 
+    // 右边查询、重置等按钮的宽度,有用插槽、样式等方式改变了右边这个宽度需要手动设置--自适应收缩展开时用
+    rightButtonWidth: {
+      type: Number,
+      default: 230
+    }
+
   },
 
   data () {
@@ -463,9 +482,8 @@ export default {
     this.getWidth()
   },
 
-
   methods: {
-    /** @description 表单验证
+    /** @description 表单验证并传值
      *  @author yx
      *  @param  {String}  name 表单的ref名称
      */
@@ -487,7 +505,7 @@ export default {
         leftWidth = this.$refs.formValidate.$el.offsetLeft
       } = param || {}
       // 250是左边导航的宽度  230:右边查询重置收起等按钮的宽度  288:formWidth 120:label   1366-250-200/408=2.24 Math.floor()
-      return Math.floor((winWidth - leftWidth - 230) / (formWidth + labelWidth))
+      return Math.floor((winWidth - leftWidth - this.rightButtonWidth) / (formWidth + labelWidth))
     },
 
     /** @description 表单重置
@@ -504,10 +522,10 @@ export default {
      */
     packUp () {
       this.isHidden = !this.isHidden
-      this.$emit('pack-up')
+      this.$emit('pack-up', this.isHidden)
     },
 
-    /** @description  获取宽度
+    /** @description  获取当前内容区域的宽度
      * @author yx
      */
     getWidth () {
@@ -539,7 +557,9 @@ export default {
         }
       })
       return model
-    }
+    },
+
+
   },
 
   computed: {
@@ -626,6 +646,7 @@ export default {
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
 
   &__pack-up {

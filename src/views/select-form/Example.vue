@@ -1,7 +1,14 @@
 <template>
   <div>
-    <!--TODO：自动计算右边button的宽度-->
-    <eve-select-form :rules="rules" @handle-submit="handleSubmit">
+    <eve-select-form
+      :rules="rules"
+      :model="model"
+      :data="data"
+      @handle-submit="handleSubmit"
+    >
+      <template #input>
+        <span class="eve-select-form__demo">追加内容</span>
+      </template>
     </eve-select-form>
   </div>
 </template>
@@ -10,6 +17,7 @@
 export default {
   data () {
     return {
+      //表单数据
       data:
         [
           {
@@ -17,6 +25,7 @@ export default {
             prop: 'name',
             type: 'input',
           },
+
           {
             label: '所属部门：',
             prop: 'department',
@@ -57,7 +66,7 @@ export default {
           },
           {
             label: '地址：',
-            prop: 'userName',
+            prop: 'address',
             type: 'radio',
             option: [
               {
@@ -86,48 +95,40 @@ export default {
             label: '时间：',
             prop: 'time',
             type: 'time',
-            pickerOptions: { selectableRange: '15:30:00 - 20:30:00' },
             // valueFormat: 'mm:ss', //输出值的格式转换
             // format: 'mm:ss'//选择框里的值的格式转换
           }
         ],
 
-
-      // 表单双向绑定(prop)--点击查询按钮时获取值-重置验证时也要用到
+      //表单双向绑定(prop)--点击查询按钮时获取值-重置验证时也要用到
       model: {
         name: '',
         department: '',
         status: [], //checkbox是多选的时候，声明时一定要写成数组形式，否则会出现选一个全部勾选情况。
-        userName: '',
+        address: '',
         date: '',
+        time: ''
       },
+
+      //规则
       rules: {
         name: [
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         department: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         status: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
-        userName: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 32, message: '长度在 3 到 32 个字符', trigger: 'blur' }
         ],
         date: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
           { min: 3, max: 32, message: '长度在 3 到 32 个字符', trigger: 'blur' }
         ],
-        time: [
-          { min: 3, max: 32, message: '长度在 3 到 32 个字符', trigger: 'blur' }
-        ],
       }
-
     }
   },
+
   methods: {
     handleSubmit (emit) {
       console.log(emit)
@@ -136,17 +137,11 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
-::v-deep .home-table-pagination {
-  .warning-row {
-    // background: yellow;
-  }
-  // .yellow {
-  //   background: yellow;
-  // }
-}
-.m {
-  margin-left: 200px;
+
+<style  scoped>
+.eve-select-form__demo {
+  position: absolute;
+  right: -60px;
+  top: 10px;
 }
 </style>
-
