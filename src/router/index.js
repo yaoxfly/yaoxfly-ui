@@ -32,6 +32,16 @@ const routes = [
         path: '/selectForm',
         name: 'SelectForm',
         component: () => import('../views/select-form/SelectForm.vue')
+      },
+      {
+        path: '/tree',
+        name: 'Tree',
+        component: () => import('../views/tree/Tree.vue')
+      },
+      {
+        path: '/dropDownTree',
+        name: 'DropDownTree',
+        component: () => import('../views/drop-down-tree/DropDownTree.vue')
       }
     ]
   },

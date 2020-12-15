@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="eve-tree" :style="{ width: checkString(width) }">
-    <div class="eve-tree__filter">
+    <div class="eve-tree__filter" v-if="isShowfilter">
       <el-input placeholder="输入关键字进行过滤" v-model="filterText" clearable>
       </el-input>
     </div>
@@ -23,7 +23,7 @@
       :default-checked-keys="defaultCheckedKeys"
       :default-expand-all="defaultExpandAll"
       :expand-on-click-node="expandOnClickNode"
-      :filter-node-method="filterNodeMethod"
+      :filter-node-method="filterNodeMethods"
       :accordion="accordion"
       :allow-drop="allowDrop"
       :allow-drag="allowDrag"
@@ -51,18 +51,18 @@
           }}</span>
           <div class="eve-tree__custom-tree-button" v-show="operate">
             <span>
-              <el-button type="text" size="mini" @click.stop="append(data)">
+              <el-button
+                type="text"
+                size="mini"
+                @click.stop="append(node, data)"
+              >
                 <el-icon
                   class="el-icon-circle-plus-outline"
                   :style="{ color: operateColor }"
                 ></el-icon>
               </el-button>
 
-              <el-button
-                type="text"
-                size="mini"
-                @click.stop="() => edit(node, data)"
-              >
+              <el-button type="text" size="mini" @click.stop="edit(node, data)">
                 <el-icon
                   class="el-icon-edit"
                   :style="{ color: operateColor }"
@@ -72,7 +72,7 @@
               <el-button
                 type="text"
                 size="mini"
-                @click.stop="() => remove(node, data)"
+                @click.stop="remove(node, data)"
               >
                 <el-icon
                   class="el-icon-remove-outline"
@@ -93,57 +93,7 @@ export default {
     // 展示数据
     data: {
       type: Array,
-      default: () => [{
-        id: 1,
-        label: '一级 1',
-        disabled: true, //设置某个节点不能被选择
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1',
-          children: [{
-            id: 6,
-            label: '三级 2-1-1',
-
-          }]
-        }, {
-          id: 3,
-          label: '二级 2-2',
-
-          children: [{
-            id: 7,
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        id: 8,
-        children: [{
-          id: 10,
-          label: '二级 3-1',
-          children: [{
-            id: 11,
-            label: '三级 3-1-1'
-          }]
-        }, {
-          label: '二级 3-2',
-          id: 12,
-          children: [{
-            id: 13,
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
+      default: () => [],
     },
     //配置选项
     props: {
@@ -220,12 +170,12 @@ export default {
       type: String,
       default: 'id'
     },
-    //默认勾选的节点的 key 的数组--要设置nodeKey
+    //默认展开的节点的key的数组--要设置nodeKey
     defaultExpandedKeys: {
       type: Array,
       default: () => [1, 2]
     },
-    //默认勾选的节点的 key 的数组--要设置nodeKey
+    //默认勾选的节点的key的数组--要设置nodeKey
     defaultCheckedKeys: {
       type: Array,
       default: () => [1, 2, 3, 4]
@@ -255,7 +205,7 @@ export default {
       default: false
     },
 
-    //判断节点能否被拖拽
+    // 拖拽时判定目标节点能否被放置。type 参数有三种情况：'prev'、'inner' 和 'next'，分别表示放置在目标节点前、插入至目标节点和放置在目标节点后
     allowDrop: {
       type: Function,
       default: (draggingNode, dropNode, type) => {
@@ -268,7 +218,7 @@ export default {
         return true
       }
     },
-    //拖拽时判定目标节点能否被放置
+    //判断节点能否被拖拽
     allowDrag: {
       type: Function,
       default: (draggingNode) => {
@@ -305,6 +255,22 @@ export default {
       default: () => ''
     },
 
+    //是否开启节点过滤
+    isShowfilter: {
+      type: Boolean,
+      default: () => true
+    },
+
+    //对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏
+    filterNodeMethod: {
+      type: Function,
+      default: (value, data, node, props) => {
+        const { label } = props || {}
+        if (!value) return true
+        return data[label].indexOf(value) !== -1
+      }
+    }
+
   },
   mounted () { },
   data () {
@@ -322,7 +288,7 @@ export default {
      * @param  {Boolean}  isChecked 节点的子树中是否有被选中的节点
      */
     checkChange (data, checked, isChecked) {
-      console.log(data, checked, isChecked)
+      // console.log(data, checked, isChecked)
       this.$emit('check-change', data, checked, isChecked)
     },
 
@@ -340,58 +306,59 @@ export default {
       this.label = data[this.props.label]
       this.tempValue = data[this.nodeKey]
       this.setCurrentKey(this.id)
-      console.log(data, node, indeterminate, 111111)
+      // console.log(data, node, indeterminate, 111111)
       this.$emit('node-click', data, node, indeterminate)
     },
 
     /**@description  通过node获取节点
      * @author yx
      */
-    getCheckedNodes () {
-      return this.$refs.tree.getCheckedNodes()
+    getCheckedNodes (leafOnly = false, includeHalfChecked = false) {
+      return this.$refs.tree.getCheckedNodes(leafOnly, includeHalfChecked)
     },
 
     /**@description  通过key获取节点
+     * @param  {Boolean}  leafOnly 是否仅返回被选中的叶子节点的 keys
      * @author yx
      */
-    getCheckedKeys () {
-      return this.$refs.tree.getCheckedKeys()
+    getCheckedKeys (leafOnly = false) {
+      return this.$refs.tree.getCheckedKeys(leafOnly)
     },
 
     /**@description  通过node设置节点
-     * @param  {Array}  param 设置节点的参数
+     * @param  {Array}  nodes 勾选节点数据的数组
      * @author yx
      */
-    setCheckedNodes (param) {
-      this.$refs.tree.setCheckedNodes(param)
+    setCheckedNodes (nodes = []) {
+      this.$refs.tree.setCheckedNodes(nodes)
     },
 
-    /**@description  通过key设置节点
-      * @param  {Array}  param 设置节点的参数
+    /**@description  通过 keys 设置目前勾选的节点，使用此方法必须设置 node-key 属性
+      * @param  {Array}  keys  勾选节点的 key 的数组 
+      * @param  {Boolean }  leafOnly 是否仅设置叶子节点的选中状态
       * @author yx
     */
-    setCheckedKeys (param) {
-      this.$refs.tree.setCheckedKeys(param)
+    setCheckedKeys (keys = [], leafOnly = false) {
+      this.$refs.tree.setCheckedKeys(keys, leafOnly)
     },
 
-    /**@description 清空节点
+
+    /**@description  对树节点进行筛选操作
      * @author yx
-    */
-    resetChecked () {
-      this.$refs.tree.setCheckedKeys([])
-      // this.$refs.tree.setCheckedNodes([])
+     * @param  {String}  val 接收一个任意类型的参数，该参数会在 filter-node-method 中作为第一个参数
+     */
+    filter (val) {
+      this.$refs.tree.filter(val)
     },
 
-    /**@description  关键字进行过滤--根据节点名称
+    /**@description  对树节点进行筛选时执行的方法，返回 true 表示这个节点可以显示，返回 false 则表示这个节点会被隐藏--根据节点名称
      * @author yx
      * @param  {String}  value 当前查找的值
-     * @param  {Object}  data 当前节点的数据
+     * @param  {Object}  data 传递给 data 属性的数组中该节点所对应的对象
+     * @param  {Object}  node 节点对应的Node
      */
-    filterNodeMethod (value, data) {
-      console.log(value)
-      const { label } = this.props || {}
-      if (!value) return true
-      return data[label].indexOf(value) !== -1
+    filterNodeMethods (value, data, node) {
+      return this.filterNodeMethod(value, data, node, this.props)
     },
 
     /**@description 节点开始拖拽时触发的事件
@@ -482,12 +449,13 @@ export default {
     },
 
     /**@description 点击添加节点图标
-       * @author yx
-       * @param  {Object}  data 当前节点的数据
+        * @author yx
+        * @param  {Object}  node 当前节点的 Node 对象
+        * @param  {Object}  data 当前节点的数据
       */
-    append (data) {
+    append (node, data) {
       // this.addNode(data)
-      this.$emit('append', data)
+      this.$emit('append', { node: node, data: data })
     },
 
     /**@description  删除节点图标
@@ -535,6 +503,14 @@ export default {
       //初始化孩子数组，防止没有孩子数组无法新增节点
       !data[children] && this.$set(data, [children], [])
       data[children].push(newChild)
+    },
+
+    /**@description 清空节点
+    * @author yx
+   */
+    resetChecked () {
+      this.$refs.tree.setCheckedKeys([])
+      // this.$refs.tree.setCheckedNodes([])
     },
   },
 

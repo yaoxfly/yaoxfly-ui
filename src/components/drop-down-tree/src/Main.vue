@@ -30,14 +30,16 @@
       >
         <el-scrollbar style="width: 100%; height: 100%">
           <section class="eve-drop-down-tree__content">
-            <el-input
-              placeholder="请输入关键字进行过滤"
-              v-model="filterText"
-              class="eve-drop-down-tree__select-input"
-              ref="input"
-            >
-            </el-input>
-
+            <slot name="filter">
+              <el-input
+                v-if="isShowfilter"
+                placeholder="请输入关键字进行过滤"
+                v-model="filterText"
+                class="eve-drop-down-tree__select-input"
+                ref="input"
+              >
+              </el-input>
+            </slot>
             <el-tree
               :data="data"
               :props="props"
@@ -95,55 +97,57 @@ export default {
     //树的数据
     data: {
       type: Array,
-      default: () => [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 2,
-          label: '二级 1-1',
-          children: [{
-            id: 3,
-            label: '三级 1-1-1'
-          }
-          ]
-        }]
-      }, {
-        id: 4,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1',
-          children: [{
-            id: 6,
-            label: '三级 2-1-1'
-          }]
-        }, {
-          id: 7,
-          label: '二级 2-2',
-          children: [{
-            id: 8,
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        id: 9,
-        label: '一级 3',
-        children: [{
-          id: 10,
-          label: '二级 3-1',
-          children: [{
-            id: 11,
-            label: '三级 3-1-1'
-          }]
-        }, {
-          id: 12,
-          label: '二级 3-2',
-          children: [{
-            id: 13,
-            label: '三级 3-2-1'
-          }]
-        }]
-      }]
+      default: () => [
+        // {
+        //   id: 1,
+        //   label: '一级 1',
+        //   children: [{
+        //     id: 2,
+        //     label: '二级 1-1',
+        //     children: [{
+        //       id: 3,
+        //       label: '三级 1-1-1'
+        //     }
+        //     ]
+        //   }]
+        // }, {
+        //   id: 4,
+        //   label: '一级 2',
+        //   children: [{
+        //     id: 5,
+        //     label: '二级 2-1',
+        //     children: [{
+        //       id: 6,
+        //       label: '三级 2-1-1'
+        //     }]
+        //   }, {
+        //     id: 7,
+        //     label: '二级 2-2',
+        //     children: [{
+        //       id: 8,
+        //       label: '三级 2-2-1'
+        //     }]
+        //   }]
+        // }, {
+        //   id: 9,
+        //   label: '一级 3',
+        //   children: [{
+        //     id: 10,
+        //     label: '二级 3-1',
+        //     children: [{
+        //       id: 11,
+        //       label: '三级 3-1-1'
+        //     }]
+        //   }, {
+        //     id: 12,
+        //     label: '二级 3-2',
+        //     children: [{
+        //       id: 13,
+        //       label: '三级 3-2-1'
+        //     }]
+        //   }]
+        // }
+      ]
     },
 
     //绑定的值
@@ -181,7 +185,7 @@ export default {
     //节点是否多选
     multiple: {
       type: Boolean,
-      default: () => true
+      default: () => false
     },
 
     // 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法
@@ -223,8 +227,15 @@ export default {
     //(推荐)多选时是否将选中值按文字的形式自适应展示(是否自适应添加+number),collapseTag非自适应展示,只展示一个页签后面就跟着一个number
     columnCollapseTags: {
       type: Boolean,
+      default: () => false
+    },
+
+    //是否显示关键字过滤
+    isShowfilter: {
+      type: Boolean,
       default: () => true
     }
+
   },
 
   data () {
@@ -278,15 +289,16 @@ export default {
 
     /**@description 设置选中值 
      * @author yx
-     * @param  {Array}  keyArr //节点的key数组一般是id数组
+     * @param  {Array}  keys //节点的key数组一般是id数组
+     * @param  {Boolean}  leafOnly //是否仅设置叶子节点的选中状态
      */
-    setCheckedKeys (keyArr) {
-      this.$refs.tree ? this.$refs.tree.setCheckedKeys(keyArr) : this.$nextTick(() => {
-        this.$refs.tree.setCheckedKeys(keyArr)
+    setCheckedKeys (keys, leafOnly = false) {
+      this.$refs.tree ? this.$refs.tree.setCheckedKeys(keys, leafOnly) : this.$nextTick(() => {
+        this.$refs.tree.setCheckedKeys(keys, leafOnly)
       })
     },
 
-    /**@description  单选--清空选择的数据
+    /**@description  清空选择的数据
       * @author yx
       */
     clear () {
@@ -545,6 +557,7 @@ export default {
 ::v-deep .eve-drop-down-tree__column-collapse-tags {
   .el-select__tags {
     overflow: hidden;
+    height: 28px;
   }
 }
 
