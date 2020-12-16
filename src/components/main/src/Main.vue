@@ -13,7 +13,7 @@
     }"
   >
     <section class="eve-main__content" :style="{ background: background }">
-      <el-scrollbar style="height: 102%" v-if="scroll">
+      <el-scrollbar style="height: 100%" v-if="scroll">
         <slot> </slot>
       </el-scrollbar>
       <div v-else>
@@ -33,19 +33,16 @@ export default {
       type: Number,
       default: 125
     },
-
     //各个块间的间距
     spacing: {
       type: Number,
       default: 10
     },
-
     //距离左边的距离(一般是菜单的宽度)
     left: {
       type: Number,
       default: () => 200
     },
-
     //背景颜色
     background: {
       type: String,
@@ -97,6 +94,7 @@ export default {
   &__content {
     width: 100%;
     height: 100%;
+    overflow: hidden;
   }
 }
 

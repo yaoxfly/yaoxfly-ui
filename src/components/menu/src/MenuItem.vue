@@ -27,13 +27,14 @@
       </template>
     </el-submenu>
     <!--最底层的菜单-->
-    <el-menu-item
-      v-else-if="menuData.type == 'item'"
-      :index="menuData[config.path]"
-    >
-      <i :class="menuData.icon"></i>
-      <span slot="title">{{ menuData[config.text] }}</span>
-    </el-menu-item>
+
+    <el-menu-item-group v-else-if="menuData.type == 'item'">
+      <span slot="title">{{ menuData[config.title] }}</span>
+      <el-menu-item :index="menuData[config.path]">
+        <i :class="menuData.icon"></i>
+        <span slot="title">{{ menuData[config.text] }}</span>
+      </el-menu-item>
+    </el-menu-item-group>
   </div>
 </template>
 
@@ -122,3 +123,10 @@ export default {
   }
 }
 </script>
+
+
+<style lang='scss' scoped>
+::v-deep .el-menu-item-group__title {
+  padding: 0;
+}
+</style>

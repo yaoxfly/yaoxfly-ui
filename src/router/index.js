@@ -2,9 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // import Home from '../views/Home.vue'
 import Layout from '@/layout/Layout.vue'
-
 Vue.use(VueRouter)
-
 const routes = [
   {
     path: '/',
@@ -15,13 +13,31 @@ const routes = [
       {
         path: '/use',
         name: 'Use',
-        component: () => import('../views/install/Install')
+        component: () => import('../views/install/Install'),
+        meta: { title: '开发指南' }
       },
-
+      {
+        path: '/main',
+        name: 'Main',
+        component: () => import('../views/main/Main.vue'),
+        meta: { title: '布局组件' }
+      },
+      {
+        path: '/container',
+        name: 'Container',
+        component: () => import('../views/container/Container.vue')
+      },
+      {
+        path: '/header',
+        name: 'Header',
+        component: () => import('../views/header/Header.vue'),
+        meta: { title: '导航组件' }
+      },
       {
         path: '/dialog',
         name: 'Dialog',
-        component: () => import('../views/dialog/Dialog.vue')
+        component: () => import('../views/dialog/Dialog.vue'),
+        meta: { title: '常用组件' }
       },
       {
         path: '/tablePagination',
@@ -42,7 +58,9 @@ const routes = [
         path: '/dropDownTree',
         name: 'DropDownTree',
         component: () => import('../views/drop-down-tree/DropDownTree.vue')
-      }
+      },
+
+
     ]
   },
   {
@@ -55,7 +73,6 @@ const routes = [
     name: 'coder',
     component: () => import('../views/form-design/test-page.vue')
   }
-
 ]
 
 const router = new VueRouter({

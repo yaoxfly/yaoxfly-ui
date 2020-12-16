@@ -27,6 +27,7 @@ export default {
       route.forEach(element => {
         element.text = element.name === 'Use' ? '安装' : element.name
         element.type = 'item'
+        element.title = element.meta && element.meta.title
       })
       this.data = route
     }

@@ -13,7 +13,7 @@
   >
     <!--center(中间一整块)布局-->
     <section class="eve-container__main" v-if="layout === 'center'">
-      <el-scrollbar style="height: 102%">
+      <el-scrollbar style="height: 100%">
         <slot> </slot>
       </el-scrollbar>
     </section>
@@ -135,7 +135,7 @@ export default {
   &__main {
     width: 100%;
     height: 100%;
-    padding: 20px 10px;
+    // padding: 20px 10px;
     background: white;
   }
   &__left-right {
@@ -147,13 +147,13 @@ export default {
 
   &__left {
     width: 100%;
-    padding: 20px 10px;
+    // padding: 20px 10px;
     background: white;
   }
 
   &__right {
     width: 100%;
-    padding: 20px 10px;
+    // padding: 20px 10px;
     background: white;
     overflow: hidden;
     min-width: 800px;
@@ -167,12 +167,12 @@ export default {
   &__up {
     width: 100%;
     background: white;
-    padding: 20px 10px;
+    // padding: 20px 10px;
   }
 
   &__down {
     width: 100%;
-    padding: 20px 10px;
+    // padding: 20px 10px;
     background: white;
   }
 }

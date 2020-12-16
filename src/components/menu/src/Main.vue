@@ -134,7 +134,8 @@ export default {
       default: () => ({
         text: 'text', //文本
         path: 'path', // 路径
-        children: 'children' //树结构数据的孩子节点
+        children: 'children', //树结构数据的孩子节点
+        title: 'title', //分组的title
       })
     },
   },
@@ -152,7 +153,8 @@ export default {
       tempConfig: {
         text: 'text', //文本
         path: 'path', // 路径
-        children: 'children' //树结构数据的孩子节点
+        children: 'children', //树结构数据的孩子节点
+        title: 'title', //分组的title
       },
       //当前路由
       route: ''

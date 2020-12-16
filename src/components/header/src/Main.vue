@@ -7,6 +7,7 @@
   <div>
     <header
       class="eve-header"
+      ref="eve-header"
       :style="{ background: background, height: `${height}px` }"
     >
       <!-- 左边的内容 -->
@@ -186,78 +187,79 @@ export default {
     //是否开启滚动
     scroll: {
       type: Boolean,
-      default: true
+      default: false
     },
 
     //导航按钮的宽度--如果开启滚动必须固定一个宽度
     navigationWidth: {
       type: String,
-      default: () => '680px'
+      default: () => '100%'
     },
     // 导航按钮的数据
     navigationButton:
     {
       type: Array,
-      default: () => [{
-        path: 'dialog', //唯一key值
-        type: 'item', // 最底层的菜单-没有子菜单的
-        text: '主页'// 菜单名
-      },
-      {
-        path: 'dialog1',
-        type: 'item',
-        text: '行政许可'
-      },
-      {
-        path: 'dialog2',
-        type: 'item',
-        text: '市场监管'
-      },
-      {
-        path: 'dialog3',
-        type: 'item',
-        text: '行政执法'
-      },
-      {
-        path: 'dialog4',
-        type: 'item',
-        text: '知识产权'
-      },
-      {
-        path: 'dialog5',
-        type: 'item',
-        text: '质量监管'
-      },
-      {
-        path: 'http://www.baidu.com1',
-        type: 'item',
-        text: '业务应用'
-      },
-      {
-        path: 'http://www.baidu.com测试3',
-        type: 'submenu', //有子菜单的
-        text: '应用支撑',
-        children: [
-          {
-            path: 'http://www.baidu.com3331',
-            type: 'item',
-            text: '测试1',
+      default: () => [
+        {
+          path: 'dialog', //唯一key值
+          type: 'item', // 最底层的菜单-没有子菜单的
+          text: '主页'// 菜单名
+        },
+        {
+          path: 'dialog1',
+          type: 'item',
+          text: '行政许可'
+        },
+        {
+          path: 'dialog2',
+          type: 'item',
+          text: '市场监管'
+        },
+        {
+          path: 'dialog3',
+          type: 'item',
+          text: '行政执法'
+        },
+        {
+          path: 'dialog4',
+          type: 'item',
+          text: '知识产权'
+        },
+        {
+          path: 'dialog5',
+          type: 'item',
+          text: '质量监管'
+        },
+        {
+          path: 'http://www.baidu.com1',
+          type: 'item',
+          text: '业务应用'
+        },
+        {
+          path: 'http://www.baidu.com测试3',
+          type: 'submenu', //有子菜单的
+          text: '应用支撑',
+          children: [
+            {
+              path: 'http://www.baidu.com3331',
+              type: 'item',
+              text: '测试1',
 
-          },
-          {
-            path: 'http://www.baidu.com3332',
-            type: 'item',
-            text: '测试2',
+            },
+            {
+              path: 'http://www.baidu.com3332',
+              type: 'item',
+              text: '测试2',
 
-          },
-          {
-            path: 'http://www.baidu.com3333',
-            type: 'item',
-            text: '测试3',
+            },
+            {
+              path: 'http://www.baidu.com3333',
+              type: 'item',
+              text: '测试3',
 
-          }
-        ]
-      },
+            }
+          ]
+        },
       ]
     },
 
@@ -359,6 +361,10 @@ export default {
         children: 'children' //树结构数据的孩子节点
       },
     }
+  },
+
+  mounted () {
+    console.log(this.$refs['eve-header'].offsetHight, 1)
   },
 
   methods: {
