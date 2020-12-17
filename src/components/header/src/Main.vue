@@ -7,7 +7,7 @@
   <div>
     <header
       class="eve-header"
-      ref="eve-header"
+      ref="eveHeader"
       :style="{ background: background, height: `${height}px` }"
     >
       <!-- 左边的内容 -->
@@ -39,7 +39,7 @@
               :backgroundColor="backgroundColor"
               :textColor="textColor"
               :activeTextColor="activeTextColor"
-              :swiperButtoColor="swiperButtoColor"
+              :swiperButtonColor="swiperButtonColor"
               :config="tempConfig"
               @select="navButton"
             ></eve-scroll>
@@ -92,26 +92,25 @@
             :close-on-press-escape="false"
             :show-close="false"
             :style="{
-              right: `${dialogRight}px`,
-              marginTop: `${dialogTop}px`,
+              left: `-${155 + dialogRight}px`,
             }"
           >
             <template #title>
               <span class="eve-header__dialog-title">
-                <slot name="dialogTitle">
+                <slot name="dialog-title">
                   {{ dialogTitle }}
                 </slot>
               </span>
               <div class="eve-header__dialog-border" v-if="dialogBorder"></div>
             </template>
 
-            <slot name="dialogContent">
-              <span>这里是内容，可以用slot覆盖 ，slot名：dialogContent</span>
+            <slot name="dialog-content">
+              <span>这里是内容，可以用slot覆盖 ，slot名：dialog-content </span>
             </slot>
             <span slot="footer">
               <div class="eve-header__dialog-border" v-if="dialogBorder"></div>
               <div class="eve-header__dialog-footer">
-                <slot name="dialogFooter">
+                <slot name="dialog-footer">
                   <template v-for="(item, index) in dialogButton">
                     <span
                       :key="`dialogButton${index}`"
@@ -179,7 +178,7 @@ export default {
     },
 
     //默认白 swiper-button-white(白)/swiper-button-black(黑)
-    swiperButtoColor: {
+    swiperButtonColor: {
       type: String,
       default: 'swiper-button-white'
     },
@@ -190,7 +189,7 @@ export default {
       default: false
     },
 
-    //导航按钮的宽度--如果开启滚动必须固定一个宽度
+    //导航按钮的宽度--如果开启滚动必须固定一个宽度，不能使用百分比
     navigationWidth: {
       type: String,
       default: () => '100%'
@@ -298,17 +297,10 @@ export default {
         }
       ]
     },
-
     //对话框的距离右边的距离
     dialogRight: {
       type: Number,
-      default: () => 20
-    },
-
-    //对话框的距离上边的距离
-    dialogTop: {
-      type: Number,
-      default: () => 48
+      default: () => 5
     },
 
     //对话框的标题
@@ -364,7 +356,7 @@ export default {
   },
 
   mounted () {
-    console.log(this.$refs['eve-header'].offsetHight, 1)
+
   },
 
   methods: {
@@ -399,7 +391,7 @@ export default {
       * @author yx
       * @param  {Aarray}  menu 
       */
-    findlowestMenu (menu) {
+    findlowestMenu (menu = this.linkageTagMenu) {
       let obj = {}
       menu.some(element => {
         obj = { [this.tempConfig.text]: element[this.tempConfig.text], [this.tempConfig.path]: element[this.tempConfig.path] }
@@ -411,7 +403,8 @@ export default {
         }
       })
       return obj
-    }
+    },
+
   },
 
   watch: {
@@ -432,6 +425,7 @@ export default {
 <style lang='scss' scoped >
 .eve-header {
   // width: 100%;
+
   border-bottom: 0;
   display: flex;
   padding: 0 20px;
@@ -465,6 +459,7 @@ export default {
 
   &__right {
     margin-left: auto;
+    position: relative;
   }
 
   &__center {
@@ -570,14 +565,21 @@ export default {
 
 ::v-deep .eve-header__dialog {
   position: absolute;
-  top: -6px;
+  top: 42px;
+  width: 300px !important ;
+  min-height: 350px;
+  z-index: 1;
+  left: -150px;
+
   .el-dialog {
-    margin: 0;
     position: absolute;
-    right: 0;
-    width: 300px !important ;
+    width: 100%;
+    min-height: 150px;
     margin-top: 0 !important;
     font-size: 14px;
+    z-index: 1;
+    margin-right: 200px;
+    box-shadow: 2px 2px 5px #e9e6e6;
   }
   .el-dialog__header {
     position: relative;
@@ -587,7 +589,6 @@ export default {
   .el-dialog__body {
     padding: 5px 20px 10px 20px;
   }
-
   .el-dialog__footer {
     padding: 0;
   }

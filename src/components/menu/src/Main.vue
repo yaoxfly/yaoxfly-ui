@@ -68,19 +68,19 @@ export default {
       default: true
     },
 
-    // 菜单的背景色（仅支持 hex 格式）
+    // 菜单的背景色
     backgroundColor: {
       type: String,
       default: '#ffffff'
     },
 
-    // 菜单的文字颜色（仅支持 hex 格式）
+    // 菜单的文字颜色
     textColor: {
       type: String,
       default: '#303133'
     },
 
-    // 当前激活菜单的文字颜色（仅支持 hex 格式）
+    // 当前激活菜单的文字颜色
     activeTextColor: {
       type: String,
       default: '#409EFF'
@@ -98,24 +98,24 @@ export default {
     data: {
       type: Array,
       default: () => [
-        {
-          path: '',
-          type: 'submenu',
-          text: '关于',
-          children: [
-            {
-              path: 'about',
-              type: 'item', // 子菜单
-              icon: 'el-icon-location',
-              text: '测试3',
-            }
-          ],
-        },
-        {
-          path: '/',
-          type: 'item',
-          text: '开始'
-        },
+        // {
+        //   path: '',
+        //   type: 'submenu',
+        //   text: '关于',
+        //   children: [
+        //     {
+        //       path: 'about',
+        //       type: 'item', // 子菜单
+        //       icon: 'el-icon-location',
+        //       text: '测试3',
+        //     }
+        //   ],
+        // },
+        // {
+        //   path: '/',
+        //   type: 'item',
+        //   text: '开始'
+        // },
       ]
     },
     // 宽度
@@ -221,7 +221,8 @@ export default {
       })
     },
 
-    /**@description 更新组件--配合header联动用
+    //TODO:这里的联动，目前只是手动的设置，后期改成自动化
+    /**@description 更新组件--配合header联动用 
       * @author yx
      */
     update () {

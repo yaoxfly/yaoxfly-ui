@@ -34,6 +34,11 @@ const routes = [
         meta: { title: '导航组件' }
       },
       {
+        path: '/menu',
+        name: 'Menu',
+        component: () => import('../views/menu/Menu.vue'),
+      },
+      {
         path: '/dialog',
         name: 'Dialog',
         component: () => import('../views/dialog/Dialog.vue'),

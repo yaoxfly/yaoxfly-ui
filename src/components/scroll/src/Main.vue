@@ -33,13 +33,13 @@
         <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         <div
           class="swiper-button-prev"
-          :class="swiperButtoColor"
+          :class="swiperButtonColor"
           slot="button-prev"
           @click="prev"
         ></div>
         <div
           class="swiper-button-next"
-          :class="swiperButtoColor"
+          :class="swiperButtonColor"
           slot="button-next"
           @click="next"
         ></div>

@@ -7,8 +7,11 @@
       :logo="require('../../assets/logo.png')"
       :navigation-button="navigationButton"
       :right-content="rightContent"
-      :dialog-top="dialogTop"
-    ></eve-header>
+    >
+      <template #dialog-content
+        >这里是内容，可以用slot覆盖 ，slot名：dialog-content</template
+      >
+    </eve-header>
   </div>
 </template>
 <script>
@@ -28,6 +31,7 @@ export default {
           type: 'item',
           text: '业务应用'
         },
+
         {
           path: 'http://www.baidu.com测试3',
           type: 'submenu', //有子菜单的
@@ -73,14 +77,9 @@ export default {
           dialog: true //设置这个属性后,点击这个按钮会弹出对话框,默认是false
         }
       ],
-      dialogTop: 235
     }
   },
 }
 </script>
-
-<style scoped>
-</style> 
-
 
 

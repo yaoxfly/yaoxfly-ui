@@ -128,7 +128,7 @@ export default {
       default: () => '#409eff'
     },
     //默认蓝色 swiper-button-white(白)/swiper-button-black(黑)
-    swiperButtoColor: {
+    swiperButtonColor: {
       type: String,
       default: () => ''
     },
