@@ -2,7 +2,9 @@
   <div class="layout">
     <eve-menu :data="data" :top="0"></eve-menu>
     <div class="layout__router-in-main">
-      <router-view class="layout__router" />
+      <eve-main :left="400" :height-differ="20" scroll :shrink-width="264">
+        <router-view class="layout__router" />
+      </eve-main>
     </div>
   </div>
 </template>
@@ -44,13 +46,6 @@ export default {
   padding-left: 200px;
   overflow: hidden;
   height: 100%;
-  &__router-in-main {
-    width: calc(100vw - 400px);
-    height: 100vh;
-    padding-bottom: 30px;
-    overflow: hidden;
-    overflow-y: auto;
-  }
   &__router {
     margin: 20px;
   }

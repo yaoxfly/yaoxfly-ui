@@ -53,6 +53,12 @@ export default {
     scroll: {
       type: Boolean,
       default: () => false
+    },
+
+    // 面包屑、页签的收缩按钮，收缩后左侧的宽度，如果有padding、margin也要算进去
+    shrinkWidth: {
+      type: Number,
+      default: () => 64
     }
 
   },
@@ -72,7 +78,7 @@ export default {
        */
     receiveBus () {
       receive.breadcrumbCollapse(collapse => {
-        this.tempLeft = collapse ? 64 : this.left
+        this.tempLeft = collapse ? this.shrinkWidth : this.left
         // console.log(this.tempLeft, 'layout')
       })
     }

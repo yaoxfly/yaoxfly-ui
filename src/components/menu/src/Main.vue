@@ -138,6 +138,11 @@ export default {
         title: 'title', //分组的title
       })
     },
+    // 面包屑的收缩按钮，收缩后菜单的宽度,如果有padding、margin也要算进去
+    shrinkWidth: {
+      type: Number,
+      default: () => 64
+    }
   },
   data () {
     return {
@@ -215,7 +220,7 @@ export default {
       receive.breadcrumbCollapse(collapse => {
         // console.log(collapse, 'menu')
         this.tempCollapse = collapse
-        this.tempWidth = this.tempCollapse ? 64 : this.width
+        this.tempWidth = this.tempCollapse ? this.shrinkWidth : this.width
         this.$emit('update:collapse', this.tempCollapse)
         this.$emit('update:width', this.tempWidth)
       })
