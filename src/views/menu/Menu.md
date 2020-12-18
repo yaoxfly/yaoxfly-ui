@@ -80,8 +80,8 @@ export default {
 | ----- | ------ | ----- | ----- | - |
 | type | 类型   | string |  submenu，item  | — |
 | text | 菜单文本，可根据下表的config自定义修改参数名 | string |  — | — |
-| path | 菜单路径 ，，可根据下表的config自定义修改参数名| string |  — | — |
-| children | 树结构数据的孩子节点，，可根据下表的config自定义修改参数名 | string |  — | — |
+| path | 菜单路径 ，可根据下表的config自定义修改参数名| string |  — | — |
+| children | 树结构数据的孩子节点，可根据下表的config自定义修改参数名 | string |  — | — |
 | title | 菜单分组的title ，可根据下表的config自定义修改参数名  | string |  — | — |
 | icon | 菜单的图标  | string |  — | — |
 
@@ -102,19 +102,8 @@ export default {
 | right-content-button |右边部分icon和用户信息等按钮的点击事件| function(param)  包含导航按钮的index(下标)和数据| 
 | dialog-operate |右边dialog的按钮的点击事件| function(param) ,包含dialog按钮的index(下标)和数据| 
 
-
 ### Function
 | 方法名 | 说明 | 参数  |
 | ----| ----| --- | 
 | update | 更新组件--配合header联动用, 当header组件调用findlowestMenu方法赋值时，跳转菜单，导致左边菜单展开多个情况时使用| —| 
-
-### Slot
-| name                 | 说明        |
-| -------------------- | ----------  |
-| left                 |  左边内容    |
-| center               | 中间的内容   |
-| right                | 右边的内容   |
-| dialog-title         | 对话框的标题 |
-| dialog-content       | 对话框的内容 |
-| dialog-footer        | 对话框的尾部 |
 

@@ -55,4 +55,15 @@ export default {
     margin: 20px;
   }
 }
+::v-deep .el-menu-item-group__title {
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+::v-deep .el-menu-item,
+::v-deep .el-submenu__title {
+  height: 40px;
+  line-height: 40px;
+}
 </style>

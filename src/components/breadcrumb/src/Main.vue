@@ -63,10 +63,12 @@ export default {
     //自定义面包屑数据--自己转换而来的数据，如有传菜单数据会替换掉这个数据
     data: {
       type: Array,
-      default: () => [{
-        text: '主页',
-        path: '/'
-      }]
+      default: () => [
+        // {
+        //   text: '主页',
+        //   path: '/'
+        // }
+      ]
     },
 
     //菜单数据--内置了转换方法可自动转换成面包屑数据(推荐)
@@ -192,6 +194,8 @@ export default {
         path: 'path', // 路径
         children: 'children' //树结构数据的孩子节点
       },
+      //当前的路由
+      route: ''
     }
   },
   computed: {},
@@ -294,18 +298,25 @@ export default {
       immediate: true,
     },
 
-    //放最后,放在前面刷新面包屑就没有了
+    //放data后,menu前
     $route: {
       handler (val, oldVal) {
-        if (this.menu <= 0) return
-        //路由子路由配置中无论是带/还是不带斜杆,路由监听时总是带有斜杆
-        const menu = this.findBreadcrumb(val.path, this.menu, false)
-        //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
-        const path = menu.length > 0 ? val.path : val.path.split('/')[1]
-        this.breadcrumbData = Array.from(this.formatBreadcrumb(path, this.menu))
+        this.route = val
       },
       immediate: true,
     },
+
+    menu: {
+      handler (val, oldVal) {
+        if (val <= 0) return
+        //路由子路由配置中无论是带/还是不带斜杆,路由监听时总是带有斜杆
+        const menu = this.findBreadcrumb(this.route.path, val, false)
+        //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
+        const path = menu.length > 0 ? this.route.path : this.route.path.split('/')[1]
+        this.breadcrumbData = Array.from(this.formatBreadcrumb(path, val))
+      },
+      immediate: true,
+    }
   }
 }
 </script>

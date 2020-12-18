@@ -39,6 +39,16 @@ const routes = [
         component: () => import('../views/menu/Menu.vue'),
       },
       {
+        path: '/breadcrumb',
+        name: 'Breadcrumb',
+        component: () => import('../views/breadcrumb/Breadcrumb.vue'),
+      },
+      {
+        path: '/tagViews',
+        name: 'TagViews',
+        component: () => import('../views/tag-views/TagViews.vue'),
+      },
+      {
         path: '/dialog',
         name: 'Dialog',
         component: () => import('../views/dialog/Dialog.vue'),
