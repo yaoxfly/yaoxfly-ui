@@ -90,3 +90,8 @@ export default {
 | ----| ----| --- | 
 | saveCache | 存储缓存--刷新时面包屑不刷新，传自定义数据时用|   function (data, name = 'breadcrumd');两个参数，data要存储的数据, name 缓存的名字默认是breadcrumd| 
 | getCache | 获取缓存，传自定义数据时用 |  function ( name = 'breadcrumd');  name 缓存的名字 | 
+
+### Slot
+| 方法名 | 说明 
+| ----| ----| 
+| left | 左边收缩展开小图标 |  

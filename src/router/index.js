@@ -54,6 +54,7 @@ const routes = [
         component: () => import('../views/dialog/Dialog.vue'),
         meta: { title: '常用组件' }
       },
+
       {
         path: '/tablePagination',
         name: 'TablePagination',
@@ -75,7 +76,12 @@ const routes = [
         component: () => import('../views/drop-down-tree/DropDownTree.vue')
       },
 
-
+      {
+        path: '/richText',
+        name: 'RichText',
+        component: () => import('../views/rich-text/RichText.vue'),
+        meta: { title: '其他' }
+      },
     ]
   },
   {

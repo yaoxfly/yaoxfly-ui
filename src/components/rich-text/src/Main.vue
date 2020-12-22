@@ -7,10 +7,12 @@
   <div class="eve-rich-text">
     <editor
       id="richText"
+      ref="richText"
       v-model="myValue"
-      :init="init"
-      :disabled="disabled"
+      :init="tempInit"
+      :disabled="tempDisabled"
       @onClick="onClick"
+      :key="key"
     >
     </editor>
   </div>
@@ -21,7 +23,8 @@ import tinymce from 'tinymce/tinymce' //tinymce默认hidden，不引入不显示
 import Editor from '@tinymce/tinymce-vue'
 import 'tinymce/themes/silver'
 import 'tinymce/skins/ui/oxide/skin.css'//引入皮肤
-import languageUrl from '../../../assets/lang/zh_CN.js'
+import languageUrl from '../../../assets/tinymce/lang/zh_CN.js'
+import '../../../assets/tinymce/plugins/ax_wordlimit/plugin.min.js' //字数限制
 /* 富文本plugins */
 import 'tinymce/icons/default/icons' //引入图标
 import 'tinymce/plugins/image' // 插入上传图片插件
@@ -89,7 +92,7 @@ export default {
     plugins: {
       // ['lists', 'image', 'media ', 'table', 'anchor', 'autolink', 'autosave', 'bbcode', 'code', 'charmap', 'codesample', 'directionality', 'fullpage', 'fullscreen', 'help', 'hr', 'importcss', 'legacyoutput', 'link', 'noneditable', 'pagebreak', 'print', 'preview', 'save', 'searchreplace', 'tabfocus', 'template', 'textpattern', 'toc', 'visualblocks', 'visualchars', 'wordcount']
       type: [String, Array],
-      default: () => ['help'] //help必须要添加，底下help插件没添加不会隐藏
+      default: () => [] //help必须要添加，底下help插件没添加不会隐藏
     },
     //工具栏展示的插件-- |符号是用来分割和布局的插件
     toolbar: {
@@ -103,13 +106,20 @@ export default {
       [0x2600, 'sun'],
       [0x2601, 'cloud']
     ],
+
+    //初始化
+    init: {
+      type: Object,
+      default: () => { }
+    }
   },
 
   data () {
     return {
       //初始化
-      init: {
+      tempInit: {
         selector: 'richText',
+        auto_focus: true,
         //语言插件地址
         language_url: languageUrl,
         //语言   
@@ -120,7 +130,7 @@ export default {
         //高度
         height: 300,
         //使用的插件
-        plugins: this.plugins,
+        plugins: ['wordcount', 'ax_wordlimit'],
         //工具栏展示的插件
         toolbar: this.toolbar,
         // 去水印
@@ -177,23 +187,43 @@ export default {
           { start: '* ', cmd: 'InsertUnorderedList' },
           { start: '- ', cmd: 'InsertUnorderedList' }
         ],
+        ax_wordlimit_num: 40,
 
       },
-      myValue: this.value //富文本的值  
+      myValue: this.value, //富文本的值
+      tempDisabled: false, //禁用(内部用)
+      key: 0
     }
   },
+
   mounted () {
-    tinymce.init({})
+    this.setInit()
   },
+
   methods: {
-    // 添加相关的事件，可用的事件参照文档=> https://github.com/tinymce/tinymce-vue => All available events
-    // 需要什么事件可以自己增加
+
+    /**@description  聚焦事件
+     * @author yx
+     * @param  {Object}  e 事件对象
+     */
     onClick (e) {
-      this.$emit('onClick', e, tinymce)
+      console.log(e, tinymce, 11)
+      this.$emit('on-click', e, tinymce)
     },
-    // 清空内容
+    /**@description  清空内容
+       * @author yx
+       */
     clear () {
       this.myValue = ''
+    },
+
+    // 设置初始化
+    setInit () {
+      tinymce.init({})
+    },
+
+    update () {
+      this.key++
     }
   },
 
@@ -206,6 +236,37 @@ export default {
     myValue (newValue) {
       //获取值
       this.$emit('change', newValue)
+    },
+    plugins: {
+      handler (newValue) {
+        this.tempInit.plugins.push(...newValue)
+        // this.update()
+      },
+      immediate: true
+    },
+    //初始化
+    init: {
+      handler (newValue) {
+        console.log(newValue)
+        this.$nextTick(() => {
+          const init = JSON.parse(JSON.stringify(newValue))
+          const { plugins } = this.tempInit
+          Object.assign(this.tempInit, init)
+          this.tempInit.plugins.push(...plugins)
+          console.log(this.tempInit, 11)
+          this.update()
+        })
+      },
+      immediate: true,
+      deep: true
+    },
+
+    //是否禁用
+    disabled: {
+      handler (newValue) {
+        this.tempDisabled = newValue
+      },
+      immediate: true
     }
   }
 }

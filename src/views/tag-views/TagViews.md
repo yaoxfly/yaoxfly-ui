@@ -77,3 +77,9 @@ export default {
 | setCacheData |  设置缓存数据|  function (cacheName=tagViewsDatas)； cacheName 缓存名称， 默认是 tagViewsDatas| 
 | getCacheData | 从缓存中获取数据 |  function ( cacheName=tagViewsDatas)； cacheName 缓存的名字， 默认是tagViewsDatas| 
 | addData | 添加页签数据 |  function ( data)； data 单个页签数据， 模式格式{text:"",path:""}| 
+
+### Slot
+| 方法名 | 说明 
+| ----| ----| 
+| left | 左边收缩展开小图标 |  
+
