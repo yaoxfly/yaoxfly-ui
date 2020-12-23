@@ -13,13 +13,9 @@ export default {
   name: 'RichText',
   data () {
     return {
-      value: '1',
+      value: '',
       init: {
-        plugins: ['help'],
-        ax_wordlimit_num: 10,
-        ax_wordlimit_callback: (editor, txt, num) => {
-          alert(1)
-        }
+        height: 327
       }
     }
   },

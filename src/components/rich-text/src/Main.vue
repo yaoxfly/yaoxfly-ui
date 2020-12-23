@@ -88,24 +88,6 @@ export default {
       type: Boolean,
       default: false
     },
-    //使用的插件
-    plugins: {
-      // ['lists', 'image', 'media ', 'table', 'anchor', 'autolink', 'autosave', 'bbcode', 'code', 'charmap', 'codesample', 'directionality', 'fullpage', 'fullscreen', 'help', 'hr', 'importcss', 'legacyoutput', 'link', 'noneditable', 'pagebreak', 'print', 'preview', 'save', 'searchreplace', 'tabfocus', 'template', 'textpattern', 'toc', 'visualblocks', 'visualchars', 'wordcount']
-      type: [String, Array],
-      default: () => [] //help必须要添加，底下help插件没添加不会隐藏
-    },
-    //工具栏展示的插件-- |符号是用来分割和布局的插件
-    toolbar: {
-      type: [String, Array],
-      default:
-        'undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat | anchor | restoredraft | code | charmap | codesample | ltr rtl  | fullpage | fullscreen | help | hr | image  | insertdatetime | link | nonbreaking | pagebreak | paste | preview | print | save | searchreplace | template | toc | visualblocks | visualchars | wordcount'
-    },
-    //自定义该窗口中可选的特殊字符。
-    charmap: [
-      [0x2615, 'morning coffee'],
-      [0x2600, 'sun'],
-      [0x2601, 'cloud']
-    ],
 
     //初始化
     init: {
@@ -116,7 +98,7 @@ export default {
 
   data () {
     return {
-      //初始化
+      //默认初始化
       tempInit: {
         selector: 'richText',
         auto_focus: true,
@@ -130,9 +112,9 @@ export default {
         //高度
         height: 300,
         //使用的插件
-        plugins: ['wordcount', 'ax_wordlimit'],
+        plugins: ['wordcount', 'ax_wordlimit', 'help'],
         //工具栏展示的插件
-        toolbar: this.toolbar,
+        toolbar: 'undo redo | formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat | anchor | restoredraft | code | charmap | codesample | ltr rtl  | fullpage | fullscreen | help | hr | image  | insertdatetime | link | nonbreaking | pagebreak | paste | preview | print | save | searchreplace | template | toc | visualblocks | visualchars | wordcount',
         // 去水印
         branding: false,
         // 允许粘贴图像
@@ -187,8 +169,27 @@ export default {
           { start: '* ', cmd: 'InsertUnorderedList' },
           { start: '- ', cmd: 'InsertUnorderedList' }
         ],
+        //自定义该窗口中可选的特殊字符。
+        charmap: [
+          [0x2615, 'morning coffee'],
+          [0x2600, 'sun'],
+          [0x2601, 'cloud']
+        ],
+        //字数限制最大值
         ax_wordlimit_num: 40,
-
+        //字数限制的回调
+        ax_wordlimit_callback: (editor, txt, num) => {
+          const str = txt.substr(0, num)
+          this.myValue = ''
+          this.$message.error(`当前字数${txt.length}，已超过最大限制字数${num}`)
+          this.tempDisabled = true
+          setTimeout(() => {
+            this.tempDisabled = false
+            tinymce.execCommand('mceInsertContent', false, str)
+            this.$emit('update:value', this.myValue)
+            this.$emit('update:disabled', this.tempDisabled)
+          }, 0)
+        }
       },
       myValue: this.value, //富文本的值
       tempDisabled: false, //禁用(内部用)
@@ -197,7 +198,7 @@ export default {
   },
 
   mounted () {
-    this.setInit()
+    this.initialize()
   },
 
   methods: {
@@ -217,13 +218,64 @@ export default {
       this.myValue = ''
     },
 
-    // 设置初始化
-    setInit () {
+    /**@description 设置初始化
+     * @author yx
+    */
+    initialize () {
       tinymce.init({})
+      this.$nextTick(() => {
+        setTimeout(() => {
+          document.getElementsByClassName('tox-statusbar__wordcount')[0].click()
+        }, 300)
+      })
     },
 
+
+    /**@description 更新
+    * @author yx
+    */
     update () {
       this.key++
+    },
+
+    /**@description 深拷贝
+    * @author yx
+    */
+    deepClone (obj) {
+      /* eslint-disable*/
+      //判断拷贝的要进行深拷贝的是数组还是对象，是数组的话进行数组拷贝，对象的话进行对象拷贝
+      const objClone = Array.isArray(obj) ? [] : {}
+      //进行深拷贝的不能为空，并且是对象或者是
+      if (obj && typeof obj === 'object') {
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            if (obj[key] && typeof obj[key] === 'object') {
+              objClone[key] = this.deepClone(obj[key])
+            } else {
+              objClone[key] = obj[key]
+            }
+          }
+        }
+      }
+      return objClone
+    },
+
+    /**@description 设置属性和状态
+        * @param  {Object}  obj 源对象
+        * @param  {Object}  param 属性
+        * @author yx 
+     */
+    setProperty (obj, param) {
+      if (param instanceof Array) {
+        param.forEach(element => {
+          this.setProperty(obj, element)
+        });
+      } else {
+        Object.defineProperty(obj, param, {
+          configurable: false, //不可删除
+          writable: false //不可修改
+        })
+      }
     }
   },
 
@@ -237,23 +289,18 @@ export default {
       //获取值
       this.$emit('change', newValue)
     },
-    plugins: {
-      handler (newValue) {
-        this.tempInit.plugins.push(...newValue)
-        // this.update()
-      },
-      immediate: true
-    },
+
     //初始化
     init: {
       handler (newValue) {
-        console.log(newValue)
         this.$nextTick(() => {
-          const init = JSON.parse(JSON.stringify(newValue))
+          const init = this.deepClone(newValue)
+          this.setProperty(this.tempInit, [
+            'selector',
+          ])
           const { plugins } = this.tempInit
           Object.assign(this.tempInit, init)
           this.tempInit.plugins.push(...plugins)
-          console.log(this.tempInit, 11)
           this.update()
         })
       },

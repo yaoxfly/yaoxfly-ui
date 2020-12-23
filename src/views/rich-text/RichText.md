@@ -1,5 +1,5 @@
   # RichText
-   富文本
+   富文本组件，基于tinymce富文本插件，添加了字数限制，集成了各种插件，等自定义功能。
   # 基础用法
 
  <template>
@@ -22,84 +22,33 @@ export default {
 ```html
 <template>
   <div>
-    <eve-header
-      title="X平台系统"
-      sub-title="xxxxxxxxx子系统"
-      :logo="require('../../assets/logo.png')"
-      :navigation-button="navigationButton"
-      :right-content="rightContent"
-    >
-      <template #dialog-content
-        >这里是内容，可以用slot覆盖 ，slot名：dialog-content</template
-      >
-    </eve-header>
+    <eve-rich-text
+      v-model="value"
+      @on-click="onClick"
+      :init="init"
+    ></eve-rich-text>
   </div>
 </template>
 <script>
 export default {
-  name: 'Header',
+  name: 'RichText',
   data () {
     return {
-      //中间按钮的数据
-      navigationButton: [
-        {
-          path: 'dialog', //唯一key值
-          type: 'item', // 最底层的菜单-没有子菜单的
-          text: '主页'// 菜单名
-        },
-        {
-          path: 'http://www.baidu.com1',
-          type: 'item',
-          text: '业务应用'
-        },
-
-        {
-          path: 'http://www.baidu.com测试3',
-          type: 'submenu', //有子菜单的
-          text: '应用支撑',
-          children: [
-            {
-              path: 'http://www.baidu.com3331',
-              type: 'item',
-              text: '测试1',
-            },
-            {
-              path: 'http://www.baidu.com3332',
-              type: 'item',
-              text: '测试2',
-            },
-            {
-              path: 'http://www.baidu.com3333',
-              type: 'item',
-              text: '测试3',
-
-            }
-          ]
-        },
-      ],
-
-      //右边的内容：一般是图标或者是文本
-      rightContent: [
-        {
-          type: 'icon',
-          value: require('../../assets/image/header/help.png'),
-        },
-        {
-          type: 'icon',
-          value: require('../../assets/image/header/info.png'),
-          number: 8, //在图标右上方添加number
-        },
-        {
-          type: 'icon',
-          value: require('../../assets/image/header/head_sculpture.png'),
-        },
-        {
-          value: '李四',
-          dialog: true //设置这个属性后,点击这个按钮会弹出对话框,默认是false
-        }
-      ],
+      value: '',
+      init: {
+        height: 327
+      }
     }
   },
+  mounted () {
+
+  },
+  methods: {
+    //聚焦事件
+    onClick () {
+      console.log(this.value)
+    }
+  }
 }
 </script>
 ```
@@ -107,66 +56,84 @@ export default {
 ### Attributes
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
 | ----- | ------ | ----- | ----- | - |
-| logo  | logo图片 | string | — | — | 
-| title | 标题 | string | — | — | 
-| sub-title | 副标题 |  string | — | — |
-| left-width |  左边包含logo和系统名的宽度 |  number | — | 250 |
-| background |  背景颜色 |  string | — | #409EFF |
-| height |  header高度 |  number | — | 55 |
-| swiper-button-color |  滚动两边按钮的颜色 |  string | swiper-button-white (白)，swiper-button-black(黑)| swiper-button-white |
-| scroll |  是否开启滚动 |  boolean | — | false |
-| navigation-width |  导航按钮的宽度--如果开启滚动必须固定一个宽度，不能使用百分比 | string | — | 100% |
-| navigation-button | 导航按钮的数据 | array | — | [] |
-| text-color | 字体颜色(中间菜单) | string | — | #fff |
-| active-text-color | 当前激活菜单的文字颜色(中间菜单) | string | — | blue |
-| right-content | 右边的内容：一般是图标或者是文本，详细配置见下表 | array | — | — |
-| dialog-right |对话框的距离右边的距离 | number | — |  5 |
-| dialog-title |对话框的标题 | string | — |  — |
-| dialog-border |对话框的线,默认显示 | boolean | — |  true |
-| dialog-button |对话框的按钮 | array | — |  [] |
-| linkage-tag-menu |左边菜单数据：联动页签、左边菜单组件，配置后切换顶部菜单，页面默认跳转左侧菜单的第一个，如果存在二级，则跳转到二级菜单的第一个 | array | — |  [] |
-| config |配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认,详细参数见下表 | object | — |   — |
-| config |配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认,详细参数见下表 | object | — |   — |
-| slides-per-view |滚动显示的个数 | number | — |   5 |
-| background-color |滚动内容背景颜色 | string | — |   transparent |
+| value/v-model  | 双向绑定 | string | — | — | 
+| disabled | 是否禁用 | boolean | — | false | 
+| init | 初始化配置，详细参数见下表 |  object | — | — |
 
-
-### right-content
+### init
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
 | ----- | ------ | ----- | ----- | - |
-| type | 类型 | string |  icon、text ,当是文本的时候可不需要填写 | text |
-| value | 内容值 | string |  — |  — |
-| number | 图标上显示数字 | string |  — | children |
-| dialog | 设置这个属性后,点击这个按钮会弹出对话框 | boolean |  — | true |
+| auto_focus | 类型 | boolean |  —  | true |
+| language_url | 语言插件地址 |  string |  —  |  — |
+| language | 语言 |  string |  —  |  zh_CN |
+| height | 高度 |  number |  —  |  300 |
+| plugins | 插件,详细参数见下表 |  array/string |  —  |  ['wordcount', 'ax_wordlimit', 'help'] |
+| toolbar | 工具栏展示的插件，已内置了基本所有插件，建议不需要传 |  array/string |  —  | —|
+| branding | 是否有水印 |  boolean |  —  | fasle|
+| paste_data_images | 允许粘贴图像 |  boolean |  —  | true|
+| media_live_embeds | 媒体实时预览开关 |  boolean |  —  | true|
+| menubar | 是否隐藏最上方menu |  boolean |  —  | false|
+| images_upload_handler | 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片 |  function |  —  | —|
+| video_template_callback | 此处为视频显示的回调 |  function |  —  | —|
+| min_height | 限定编辑器的最小高度。 |  number |  —  | 327|
+| max_height | 限定编辑器的最大高度 |  number |  —  | 500|
+| save_enablewhendirty |当内容无变化时禁用保存按钮,当有变化时，保存按钮变为可点击状态 |  boolean |  —  | true|
+| save_onsavecallback |保存回调函数 |  function |  —  | —|
+| templates |自定义内容模板 |  array |  —  | —|
+| textpattern_patterns |快速排版（类似markdown） |  array |  —  | —|
+| charmap |自定义该窗口中可选的特殊字符 |  array |  —  | —|
+| ax_wordlimit_num |字数限制最大值 |  number |  —  | —|
+| ax_wordlimit_callback |字数限制的回调 |  function |  —  | —|
 
-
-### config
-| 参数   | 说明 | 类型  | 可选值 | 默认值 |
-| ----- | ------ | ----- | ----- | - |
-| text | 菜单文本渲染的key值 | string |  — | text |
-| path | 菜单路径渲染的key值 | string |  — | path |
-| children | 树结构数据的孩子节点key值 | string |  — | children |
-
+### plugins
+| 插件   | 说明 | 
+| ----- | ------ | 
+| lists | 列表插件 | 
+| image | 插入上传图片插件 | 
+| media | 插入视频插件 | 
+| table | 插入表格插件 | 
+| anchor | 锚点插件 | 
+| autolink | 自动创建超链接 | 
+| autosave | 自动存稿 | 
+| bbcode | 为TinyMCE添加基于BBCode的输入输出功能。 | 
+| code | 为TinyMCE添加基于BBCode的输入输出功能。 | 
+| charmap | 自定义该窗口中可选的特殊字符。 | 
+| codesample | 代码示例插件 | 
+| directionality | 文字方向 | 
+| fullpage | 文档属性 | 
+| fullpage | 全屏 | 
+| help | 帮助 | 
+| hr | 水平分割线 | 
+| importcss | 将class加入”格式“下拉菜单中 |
+| legacyoutput | 输出html4 |
+| link | 超链接 |
+| noneditable | 不可编辑元素 |
+| pagebreak | 插入分页符 |
+| print | 打印 |
+| preview | 预览 |
+| save | 保存提交按钮 |
+| searchreplace | 查找替换 |
+| tabfocus | tab 切入切出 |
+| template | 内容模板 |
+| textpattern | 快速排版 |
+| toc | 目录生成器 |
+| visualblocks | 显示块元素范围 |
+| visualchars | 显示不可见字符 |
+| wordcount | 字数统计插件 |
 
 ### Events
 | 事件名称 | 说明 | 回调参数  |
 | ----| ----| --- | 
-| nav-button |中间部分导航按钮点击事件| function(param)  包含导航按钮的路径| 
-| right-content-button |右边部分icon和用户信息等按钮的点击事件| function(param)  包含导航按钮的index(下标)和数据| 
-| dialog-operate |右边dialog的按钮的点击事件| function(param)  包含dialog按钮的index(下标)和数据| 
+| on-click | 聚焦事件| function(e,tinymce)  包含事件对象，以及富文本本身| 
 
 ### Function
 | 方法名 | 说明 | 参数  |
 | ----| ----| --- | 
-| findlowestMenu | 查找最底层的菜单，当要实现联动页签、左边菜单组件，配置后切换顶部菜单，页面默认跳转左侧菜单的第一个，如果存在二级，则跳转到二级菜单的第一个的功能时使用 | function(menu) 传入菜单数组 |  
+| initialize | 初始化富文本 | — |  
+| update | 强制更新富文本 | — |  
+| clear | 清空富文本的值 | — |  
 
-### Slot
-| name                 | 说明        |
-| -------------------- | ----------  |
-| left                 |  左边内容    |
-| center               | 中间的内容   |
-| right                | 右边的内容   |
-| dialog-title         | 对话框的标题 |
-| dialog-content       | 对话框的内容 |
-| dialog-footer        | 对话框的尾部 |
+### 参考
+更多的内容参考[tinymce官方文档](http://tinymce.ax-z.cn/plugins/charmap.php)
 
+> 按住ctrl再点击链接，通过新窗口打开文档。
