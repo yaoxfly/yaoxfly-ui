@@ -75,6 +75,11 @@ const routes = [
         name: 'DropDownTree',
         component: () => import('../views/drop-down-tree/DropDownTree.vue')
       },
+      {
+        path: '/upload',
+        name: 'Upload',
+        component: () => import('../views/upload/Upload.vue')
+      },
 
       {
         path: '/richText',

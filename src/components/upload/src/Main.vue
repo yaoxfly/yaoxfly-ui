@@ -22,13 +22,13 @@
       :list-type="listType"
       :auto-upload="autoUpload"
       :file-list="fileLists"
-      :on-exceed="onExceed"
-      :on-preview="onPreview"
-      :on-remove="onRemove"
-      :on-success="onSuccess"
-      :on-change="onChange"
-      :before-upload="beforeUpload"
-      :before-remove="beforeRemove"
+      :on-exceed="handleOnExceed"
+      :on-preview="handleOnPreview"
+      :on-remove="handleOnRemove"
+      :on-success="handleOnSuccess"
+      :on-change="handleOnChange"
+      :before-upload="handleBeforeUpload"
+      :before-remove="handleBeforeRemove"
       :http-request="httpRequest"
     >
       <slot>
@@ -63,14 +63,14 @@
       <!-- 触发文件选择框的内容 -->
       <template #trigger> <slot name="trigger"></slot> </template>
 
-      <!-- 文件缩略图--黑色框框里的各种按钮 -->
+      <!-- 文件缩略图--黑色框里的各种按钮 -->
       <template v-slot:file="{ file }">
         <slot name="file" :file="file"></slot>
       </template>
     </el-upload>
 
     <!-- 预览-放大图用 -->
-    <el-dialog :visible.sync="dialog.visible">
+    <el-dialog :visible.sync="dialog.visible" title="预览">
       <img width="100%" :src="dialog.imageUrl" alt="" />
     </el-dialog>
   </div>
@@ -109,53 +109,58 @@ export default {
       type: String,
       default: () => 'file'
     },
-
     //是否支持发送 cookie 凭证信息
     withCredentials: {
       type: Boolean,
       default: () => false
     },
-
     //是否显示已上传文件列表
     showFileList: {
       type: Boolean,
       default: () => true
     },
-
     //是否启用拖拽上传
     drag: {
       type: Boolean,
       default: () => false
     },
-
     //接受上传的文件类型--".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF";默认无限制
     accept: {
       type: String,
       default: () => ''
     },
+    //点击文件列表中已上传的文件时的钩子
+    onPreview: {
+      type: Function,
+      default: () => { }
+    },
+    //文件列表移除文件时的钩子
+    onRemove: {
+      type: Function,
+      default: () => { }
+    },
+    //文件上传成功时的钩子
+    onSuccess: {
+      type: Function,
+      default: () => { }
+    },
+
+    //文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
+    onChange: {
+      type: Function,
+      default: () => { }
+    },
 
     //上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传，要去掉列表
     beforeUpload: {
       type: Function,
-      default: function (file) {
-        // const isJPG = file.type === 'image/jpeg'
-        // const isLt2M = file.size / 1024 / 1024 < 2
-        // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!')
-        // }
-        // if (!isLt2M) {
-        //   this.$message.error('上传头像图片大小不能超过 2MB!')
-        // }
-        // return isJPG && isLt2M
-      }
+      default: () => { }
     },
 
     //删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止删除
     beforeRemove: {
       type: Function,
-      default: function (file, fileList) {
-        return this.$confirm(`确定移除 ${file.name}?`)
-      }
+      default: () => { }
     },
 
     /* action为#时且autoUpload为true时，覆盖默认的上传行为，可以自定义上传的实现(即自动上传可用ajax)
@@ -192,9 +197,7 @@ export default {
     */
     onExceed: {
       type: Function,
-      default: function (files, fileList) {
-        this.$message.warning(`当前限制选择${this.limit}个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-      }
+      default: function () { }
     },
 
     //上传的文件列表
@@ -252,10 +255,10 @@ export default {
       * @author yx
       * @param  {Object}  file  文件详细信息
      */
-    onPreview (file) {
+    handleOnPreview (file) {
       this.dialog.imageUrl = file.url
-      this.dialog.visible = true
-      this.$emit('on-preview', file)
+      this.dialog.imageUrl && (this.dialog.visible = true)
+      this.onPreview()
     },
 
     /** @description   文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
@@ -263,7 +266,7 @@ export default {
       * @param  {Object}  file 文件详细信息
       * @param  {Array}  fileList 文件列表信息
      */
-    onChange (file, fileList) {
+    handleOnChange (file, fileList) {
       const KeyMap = {
         //上传类型是单张图片的时候
         picture: () => {
@@ -275,10 +278,9 @@ export default {
         'picture-card': () => {
           this.isHideAdd = fileList.length >= this.limit
         }
-
       }
       KeyMap[this.uploadType] && KeyMap[this.uploadType]()
-      this.$emit('on-change', file, fileList)
+      this.onChange(file, fileList)
     },
 
     /** @description   文件上传成功时的钩子
@@ -287,8 +289,8 @@ export default {
       * @param  {Object}  file 文件详细信息
       * @param  {Array}  fileList 文件列表信息
      */
-    onSuccess (response, file, fileList) {
-      this.$emit('on-success', response, file, fileList)
+    handleOnSuccess (response, file, fileList) {
+      this.onSuccess(response, file, fileList)
     },
 
     /** @description  文件列表移除文件时的钩子(回调)
@@ -296,11 +298,43 @@ export default {
        * @param  {Object}  file 文件详细信息
        * @param  {Array}  fileList 文件列表信息(被删除后剩余的列表信息)
       */
-    onRemove (file, fileList) {
+    handleOnRemove (file, fileList) {
       this.isHideAdd = false
-      this.$emit('on-remove', file, fileList)
-    }
+      this.onRemove(file, fileList)
+    },
 
+    /** @description  文件超出个数限制时的钩子
+        * @author yx
+        * @param  {Object}  file 文件详细信息
+        * @param  {Array}  fileList 文件列表信息(被删除后剩余的列表信息)
+     */
+    handleOnExceed (files, fileList) {
+      this.$message.warning(`当前限制选择${this.limit}个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.onExceed(files, fileList)
+    },
+
+    /** @description  上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传，要去掉列表
+       * @author yx
+       * @param  {Object}  file 文件详细信息
+     */
+    handleBeforeUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      this.beforeUpload()
+      return isJPG && isLt2M
+    },
+
+    //删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止删除
+    handleBeforeRemove (file, fileList) {
+      this.beforeRemove()
+      return this.$confirm(`确定移除 ${file.name}?`)
+    }
   },
 
   watch: {
@@ -348,9 +382,12 @@ export default {
   }
 }
 
-::v-deep .eve-upload__none {
-  .el-upload--picture-card {
-    display: none;
-  }
+::v-deep .el-icon-close-tip {
+  display: none !important;
+}
+
+::v-deep .el-upload-list__item-name {
+  cursor: pointer;
 }
 </style>
+

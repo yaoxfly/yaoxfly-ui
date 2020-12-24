@@ -1,15 +1,14 @@
 <template>
   <div>
-    <eve-select-form
-      :rules="rules"
-      :model="model"
-      :data="data"
-      @handle-submit="handleSubmit"
-    >
-      <template #input>
-        <span class="eve-select-form__demo">追加内容</span>
-      </template>
-    </eve-select-form>
+    <div>
+      <eve-select-form
+        :rules="rules"
+        :model="model"
+        :data="data"
+        @handle-submit="handleSubmit"
+      >
+      </eve-select-form>
+    </div>
   </div>
 </template>
 <script>
