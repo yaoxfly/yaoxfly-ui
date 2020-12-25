@@ -7,6 +7,7 @@
       :beforeUpload="beforeUpload"
       :file-list="fileList"
       ref="upload"
+      upload-type="picture"
     ></eve-upload>
     <el-button @click="clear" :style="{ marginTop: '10px' }"
       >清空上传列表</el-button

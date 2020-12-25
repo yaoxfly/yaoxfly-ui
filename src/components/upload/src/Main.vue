@@ -8,6 +8,7 @@
   <div>
     <el-upload
       class="eve-upload"
+      ref="upload"
       :class="isHideAdd && 'eve-upload__none'"
       :action="action"
       :multiple="multiple"
@@ -33,18 +34,18 @@
     >
       <slot>
         <!-- 单独上传一张图片 -->
-        <section v-if="uploadType === 'picture'">
+        <section v-if="tempUploadType === 'picture'">
           <img v-if="imageUrl" :src="imageUrl" class="eve-upload__img" />
           <i v-else class="el-icon-plus eve-upload__icon"></i>
         </section>
 
         <!-- 照片墙,多张图片 -->
-        <section v-else-if="uploadType === 'picture-card'">
+        <section v-else-if="tempUploadType === 'picture-card'">
           <i class="el-icon-plus"></i>
         </section>
 
         <!-- 拖拽上传 -->
-        <section v-else-if="uploadType === 'drag'">
+        <section v-else-if="tempUploadType === 'drag'">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </section>
@@ -63,7 +64,7 @@
       <!-- 触发文件选择框的内容 -->
       <template #trigger> <slot name="trigger"></slot> </template>
 
-      <!-- 文件缩略图--黑色框里的各种按钮 -->
+      <!-- 文件缩略图--自定义黑色框里的按钮 -->
       <template v-slot:file="{ file }">
         <slot name="file" :file="file"></slot>
       </template>
@@ -77,6 +78,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'EveUpload',
   props: {
@@ -197,22 +199,15 @@ export default {
     */
     onExceed: {
       type: Function,
-      default: function () { }
+      default: function () {
+        return true
+      }
     },
 
     //上传的文件列表
     fileList: {
       type: Array,
-      default: () => [
-        // {
-        //   name: 'food.jpeg',
-        //   url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        // },
-        // {
-        //   name: 'food2.jpeg',
-        //   url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        // }
-      ]
+      default: () => []
     },
     /* 自定义属性 */
 
@@ -222,12 +217,11 @@ export default {
       default: '上传提示说明文字，可传属性也可用slot,slot名和属性名一样都是tip (例子：只能上传jpg/png文件，且不超过500kb)'
     },
 
-    //TODO:当 listType为picture-card时上传类型强制为picture-card,当drag开启时上传类型强制为drag
     //上传类型 --text(按钮)/picture(单张图片)/picture-card(照片墙)/drag(拖拽上传的样式),当listType为picture-card时,当前值一定也要设置为picture-card，showFileList也要设置为true否则看不见已经添加的图片。
     uploadType: {
       type: String,
       default: 'text'
-    }
+    },
 
   },
 
@@ -242,7 +236,9 @@ export default {
         imageUrl: '', //图片地址
         visible: false //是否显示
       },
-      isHideAdd: false //当uploadType类型是picture-card的时候, 超过限制张数，隐藏新增按钮。
+      isHideAdd: false, //当uploadType类型是picture-card的时候, 超过限制张数，隐藏新增按钮。
+      permission: true, //是否允许上传
+      tempUploadType: 'text' //上传类型(内部判断逻辑用)
     }
   },
 
@@ -258,7 +254,7 @@ export default {
     handleOnPreview (file) {
       this.dialog.imageUrl = file.url
       this.dialog.imageUrl && (this.dialog.visible = true)
-      this.onPreview()
+      this.onPreview(file)
     },
 
     /** @description   文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
@@ -271,7 +267,7 @@ export default {
         //上传类型是单张图片的时候
         picture: () => {
           this.fileLists = []
-          this.$emit('update:file-list', this.fileLists)
+          this.$emit('update:fileList', this.fileLists)
           this.imageUrl = URL.createObjectURL(file.raw)
         },
         //上传类型是照片墙的时候
@@ -279,9 +275,10 @@ export default {
           this.isHideAdd = fileList.length >= this.limit
         }
       }
-      KeyMap[this.uploadType] && KeyMap[this.uploadType]()
+      KeyMap[this.tempUploadType] && KeyMap[this.tempUploadType]()
       this.onChange(file, fileList)
     },
+
 
     /** @description   文件上传成功时的钩子
       * @author yx
@@ -309,8 +306,7 @@ export default {
         * @param  {Array}  fileList 文件列表信息(被删除后剩余的列表信息)
      */
     handleOnExceed (files, fileList) {
-      this.$message.warning(`当前限制选择${this.limit}个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-      this.onExceed(files, fileList)
+      this.onExceed(files, fileList) && this.$message.warning(`当前限制选择${this.limit}个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
 
     /** @description  上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传，要去掉列表
@@ -318,39 +314,94 @@ export default {
        * @param  {Object}  file 文件详细信息
      */
     handleBeforeUpload (file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      this.beforeUpload()
-      return isJPG && isLt2M
+      this.permission = this.beforeUpload(file) !== undefined ? this.beforeUpload(file) : this.permission
+      return this.permission
     },
 
     //删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止删除
     handleBeforeRemove (file, fileList) {
-      this.beforeRemove()
-      return this.$confirm(`确定移除 ${file.name}?`)
-    }
-  },
+      if (this.beforeRemove(file, fileList) !== undefined) {
+        return this.beforeRemove(file, fileList)
+      }
+      if (this.permission) {
+        return this.$confirm(`确定移除 ${file.name}?`, '', {
+          closeOnClickModal: false,
+          closeOnPressEscape: false,
+        })
+      }
+    },
 
+    /** @description 手动上传文件列表
+        * @author yx
+      */
+    submit () {
+      this.$refs.upload.submit()
+    },
+
+    /** @description 清空已上传的文件列表（该方法不支持在 before-upload 中调用）
+         * @author yx
+       */
+    clearFiles () {
+      this.$refs.upload.clearFiles()
+    },
+
+    /** @description 取消上传请求 , file: fileList 中的 file 对象 ）
+       * @author yx
+     */
+    abort () {
+      this.$refs.upload.abort()
+    }
+
+
+  },
   watch: {
     //文件列表
     fileList: {
       handler (newValue) {
         this.fileLists = newValue
         this.$emit('update:fileList', this.fileLists)
-      }
+      },
+      immediate: true
     },
+
+    //上传类型
+    uploadType: {
+      handler (newValue) {
+        this.tempUploadType = newValue
+      },
+      immediate: true
+    },
+
+    //文件列表的类型
+    listType: {
+      handler (newValue) {
+        newValue === 'picture-card' && (this.tempUploadType = newValue)
+      },
+      immediate: true
+    },
+
+    //拖拽
+    drag: {
+      handler (newValue) {
+        this.drag && (this.tempUploadType = 'drag')
+        console.log(this.tempUploadType)
+      },
+      immediate: true
+    }
   },
+
+
 }
 </script>
 
 <style lang="scss" scoped>
-.eve-upload {
+::v-deep .eve-upload__none {
+  .el-upload--picture-card i {
+    display: none;
+  }
+  .el-upload {
+    display: none;
+  }
 }
 ::v-deep .el-button {
   padding: 9px 15px;

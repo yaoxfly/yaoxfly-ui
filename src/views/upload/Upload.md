@@ -1,6 +1,6 @@
 # Upload
 
-上传附件。
+通过点击或者拖拽上传文件,已集成多种上传类型的样式，加强了部分功能，如删除前的提示，超出个数限制提示,照片墙超出个数自动隐藏+等功能。
 
 # 基础用法
 
@@ -13,9 +13,16 @@
 <script>
 
 import Example from './Example'
+import PictureCardExample from './PictureCardExample'
+import PictureExample from './PictureExample'
+import DragExample from './DragExample'
+
 export default {
   components: {
     Example,
+    PictureCardExample,
+    PictureExample,
+    DragExample
   }
 }
 </script>
@@ -25,7 +32,17 @@ export default {
 ``` html
 <template>
   <div>
-    <eve-upload></eve-upload>
+    <eve-upload
+      :http-request="httpRequest"
+      auto-upload
+      :tip="tip"
+      :beforeUpload="beforeUpload"
+      :file-list="fileList"
+      ref="upload"
+    ></eve-upload>
+    <el-button @click="clear" :style="{ marginTop: '10px' }"
+      >清空上传列表</el-button
+    >
   </div>
 </template>
 <script>
@@ -33,10 +50,250 @@ export default {
 export default {
   data () {
     return {
-
+      tip: '上传提示说明文字，可传属性也可用slot,slot名和属性名一样都是tip (例子：只能上传jpg/png文件，且不超过2MB!)',
+      permission: false,
+      fileList: []
     }
   },
-  methods: {}
+  methods: {
+    // ajax请求
+    httpRequest (data) {
+      if (this.permission) {
+        console.log(data)
+      }
+    },
+
+    // 上传之前
+    beforeUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      this.permission = isJPG && isLt2M
+      return this.permission
+    },
+
+    //清空上传的列表
+    clear () {
+      this.$refs.upload.clearFiles()
+    }
+
+  }
+}
+</script>
+
+```
+
+# 用户头像上传
+
+<template>
+  <div>
+    <PictureExample/>
+  </div>
+</template>
+
+# 演示代码
+
+``` html
+<template>
+  <div>
+    <eve-upload
+      :http-request="httpRequest"
+      auto-upload
+      :tip="tip"
+      :beforeUpload="beforeUpload"
+      :file-list="fileList"
+      ref="upload"
+      upload-type="picture"
+    ></eve-upload>
+    <el-button @click="clear" :style="{ marginTop: '10px' }"
+      >清空上传列表</el-button
+    >
+  </div>
+</template>
+<script>
+
+export default {
+  data () {
+    return {
+      tip: '上传提示说明文字，可传属性也可用slot,slot名和属性名一样都是tip (例子：只能上传jpg/png文件，且不超过2MB!)',
+      permission: false,
+      fileList: []
+    }
+  },
+  methods: {
+    // ajax请求
+    httpRequest (data) {
+      if (this.permission) {
+        console.log(data)
+      }
+    },
+
+    // 上传之前
+    beforeUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      this.permission = isJPG && isLt2M
+      return this.permission
+    },
+
+    //清空上传的列表
+    clear () {
+      this.$refs.upload.clearFiles()
+    }
+
+  }
+}
+</script>
+```
+
+> 如果需要预览的操作可以把`list-type`，设置为`picture-card`； `limit`设置为`1`，也可实现单张图片上传。
+
+# 照片墙
+
+<template>
+  <div>
+    <PictureCardExample/>
+  </div>
+</template>
+
+# 演示代码
+
+``` html
+<template>
+  <div>
+    <eve-upload
+      :http-request="httpRequest"
+      auto-upload
+      :tip="tip"
+      :beforeUpload="beforeUpload"
+      :file-list="fileList"
+      ref="upload"
+      list-type="picture-card"
+    ></eve-upload>
+    <el-button @click="clear" :style="{ marginTop: '10px' }"
+      >清空上传列表</el-button
+    >
+  </div>
+</template>
+<script>
+
+export default {
+  data () {
+    return {
+      tip: '上传提示说明文字，可传属性也可用slot,slot名和属性名一样都是tip (例子：只能上传jpg/png文件，且不超过2MB!)',
+      permission: false,
+      fileList: []
+    }
+  },
+  methods: {
+    // ajax请求
+    httpRequest (data) {
+      if (this.permission) {
+        console.log(data)
+      }
+    },
+
+    // 上传之前
+    beforeUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      this.permission = isJPG && isLt2M
+      return this.permission
+    },
+
+    //清空上传的列表
+    clear () {
+      this.$refs.upload.clearFiles()
+    }
+
+  }
+}
+</script>
+```
+
+
+# 拖拽上传
+
+<template>
+  <div>
+    <DragExample/>
+  </div>
+</template>
+
+# 演示代码
+
+``` html
+<template>
+  <div>
+    <eve-upload
+      :http-request="httpRequest"
+      auto-upload
+      :tip="tip"
+      :beforeUpload="beforeUpload"
+      :file-list="fileList"
+      ref="upload"
+      drag
+    ></eve-upload>
+    <el-button @click="clear" :style="{ marginTop: '10px' }"
+      >清空上传列表</el-button
+    >
+  </div>
+</template>
+<script>
+
+export default {
+  data () {
+    return {
+      tip: '上传提示说明文字，可传属性也可用slot,slot名和属性名一样都是tip (例子：只能上传jpg/png文件，且不超过2MB!)',
+      permission: false,
+      fileList: []
+    }
+  },
+  methods: {
+    // ajax请求
+    httpRequest (data) {
+      if (this.permission) {
+        console.log(data)
+      }
+    },
+
+    // 上传之前
+    beforeUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      this.permission = isJPG && isLt2M
+      return this.permission
+    },
+
+    //清空上传的列表
+    clear () {
+      this.$refs.upload.clearFiles()
+    }
+
+  }
 }
 </script>
 
@@ -68,12 +325,23 @@ export default {
 | on-exceed |文件超出个数限制时的钩子 |  function(files, fileList) | — |—|
 
 
-###  Attributes(自定义)
+> 当 `drag`属性为`true` 时`list-type`属性可不设置，默认`text`即可,设置其他类型如`picture-card`样式会错乱。
 
+###  Attributes(自定义)
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ----| ----| --- | ---- | ----- |
+| upload-type |上传类型 | string | text(按钮)/picture(单张图片)/picture-card(照片墙)/drag(拖拽上传) | text  |
 | tip |提示说明文字| string | — | 上传提示说明文字，可传属性也可用slot,slot名和属性名一样都是tip (例子：只能上传jpg/png文件，且不超过500kb)|
-| upload-type |上传类型 | string | 上传类型 --text(按钮)/picture(单张图片)/picture-card(照片墙)/drag(拖拽上传的样式),当listType为picture-card时,当前值一定也要设置为picture-card，showFileList也要设置为true,否则看不见已经添加的图片。 | text  |
+
+> 当`list-type`为`picture-card`时,当前值会强制设置为`picture-card`,`show-file-list`要设置为`true`,否则看不见已经添加的图片；当`drag`为`true`时，当前值会强制转换为`drag`。
+
+###  Methods
+| 方法名 | 说明 | 参数 | 
+| ----| ----| --- | 
+| clearFiles  |清空已上传的文件列表（该方法不支持在 before-upload 中调用） | — | 
+| abort |取消上传请求  | （ file: fileList 中的 file 对象 ）  |
+| submit |手动上传文件列表  | —  |
+
 
 ###  Slot
 | name | 说明 | 
