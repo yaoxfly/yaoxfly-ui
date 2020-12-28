@@ -21,7 +21,6 @@
       :accept="accept"
       :limit="limit"
       :list-type="listType"
-      :auto-upload="autoUpload"
       :file-list="fileLists"
       :on-exceed="handleOnExceed"
       :on-preview="handleOnPreview"
@@ -30,7 +29,8 @@
       :on-change="handleOnChange"
       :before-upload="handleBeforeUpload"
       :before-remove="handleBeforeRemove"
-      :http-request="httpRequest"
+      :auto-upload="autoUpload"
+      v-bind="$attrs"
     >
       <slot>
         <!-- 单独上传一张图片 -->
@@ -81,12 +81,13 @@
 
 export default {
   name: 'EveUpload',
+  inheritAttrs: false,
   props: {
     /*element-ui属性 */
-    //必选参数，上传的地址--上传地址设置为#，选择完自动上传，不会上传到action地址,而是自定义的http-request方法里
+    //必选参数，上传的地址
     action: {
       type: String,
-      default: () => '#'
+      default: () => ''
     },
 
     //设置上传的请求头部
@@ -165,16 +166,6 @@ export default {
       default: () => { }
     },
 
-    /* action为#时且autoUpload为true时，覆盖默认的上传行为，可以自定义上传的实现(即自动上传可用ajax)
-      * @param  {Object}  data 上传信息--包括上传地址、文件名称、参数、headers等信息
-    */
-    httpRequest: {
-      type: Function,
-      default: function (data) {
-        // console.log(data, 'data')
-      }
-    },
-
     //文件列表的类型(展示用) --text/picture/picture-card
     listType: {
       type: String,
@@ -190,7 +181,7 @@ export default {
     //最大允许上传个数 -- 0是无限制
     limit: {
       type: Number,
-      default: 2
+      default: 3
     },
 
     /* 文件超出个数限制时的钩子
@@ -245,6 +236,7 @@ export default {
   created () { },
   mounted () {
     // console.log(this.$attrs)
+    this.$refs.upload.$el.removeAttribute('http-request')
   },
   methods: {
     /** @description    点击文件列表中已上传的文件时的钩子(回调) 
@@ -264,7 +256,7 @@ export default {
      */
     handleOnChange (file, fileList) {
       const KeyMap = {
-        //上传类型是单张图片的时候
+        //上传类型是单张图片的时候--显示图片
         picture: () => {
           this.fileLists = []
           this.$emit('update:fileList', this.fileLists)
