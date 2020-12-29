@@ -200,3 +200,7 @@
     }
   }
 }
+
+::v-deep .eve-scroll__border-none.el-menu.el-menu--horizontal {
+  border-bottom: solid 1px transparent;
+}

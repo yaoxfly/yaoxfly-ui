@@ -87,6 +87,11 @@ const routes = [
         component: () => import('../views/rich-text/RichText.vue'),
         meta: { title: '其他' }
       },
+      {
+        path: '/scroll',
+        name: 'Scroll',
+        component: () => import('../views/scroll/Scroll.vue'),
+      },
     ]
   },
   {

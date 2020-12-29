@@ -10,7 +10,7 @@
       mode="horizontal"
       @select="(index, indexPath) => select(index, indexPath, data)"
       class="eve-scroll__menu"
-      :class="className"
+      :class="[className, bottomBorder || 'eve-scroll__border-none']"
       :background-color="backgroundColor"
       :text-color="textColor"
       :active-text-color="activeTextColor"
@@ -22,12 +22,14 @@
         class="eve-scroll__swiper"
         v-if="scroll"
       >
-        <template v-for="item in data">
+        <template v-for="(item, index) in data">
           <swiper-slide
             :key="item[tempConfig.path]"
             class="eve-scroll__content"
           >
-            <menu-item :menu-data="item"></menu-item>
+            <slot :row="item" :index="index" :data="data">
+              <menu-item :menu-data="item"></menu-item>
+            </slot>
           </swiper-slide>
         </template>
         <!-- <div class="swiper-pagination" slot="pagination"></div> -->
@@ -142,7 +144,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import './scroll.scss';

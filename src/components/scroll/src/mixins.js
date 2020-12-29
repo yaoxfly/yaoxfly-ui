@@ -24,86 +24,87 @@ export default {
     //菜单的数据
     data: {
       type: Array,
-      default: () => [{
-        path: 'dialog', //唯一key值
-        type: 'item', // 最底层的菜单
-        text: '主页'// 菜单名
-      },
-      {
-        path: 'dialog1',
-        type: 'item',
-        text: '行政许可'
-      },
-      {
-        path: 'dialog2',
-        type: 'item',
-        text: '市场监管'
-      },
-      {
-        path: 'dialog3',
-        type: 'item',
-        text: '行政执法'
-      },
-      {
-        path: 'dialog4',
-        type: 'item',
-        text: '知识产权'
-      },
-      {
-        path: 'dialog5',
-        type: 'item',
-        text: '质量监管'
-      },
-      {
-        path: 'http://www.baidu.com1',
-        type: 'item',
-        text: '业务应用'
-      },
-      {
-        path: 'http://www.baidu.com测试3',
-        type: 'submenu',
-        text: '应用支撑',
-        children: [
-          {
-            path: 'http://www.baidu.com3331',
-            type: 'item',
-            text: '测试1',
+      default: () => [
+        //   {
+        //   path: 'dialog', //唯一key值
+        //   type: 'item', // 最底层的菜单
+        //   text: '主页'// 菜单名
+        // },
+        // {
+        //   path: 'dialog1',
+        //   type: 'item',
+        //   text: '行政许可'
+        // },
+        // {
+        //   path: 'dialog2',
+        //   type: 'item',
+        //   text: '市场监管'
+        // },
+        // {
+        //   path: 'dialog3',
+        //   type: 'item',
+        //   text: '行政执法'
+        // },
+        // {
+        //   path: 'dialog4',
+        //   type: 'item',
+        //   text: '知识产权'
+        // },
+        // {
+        //   path: 'dialog5',
+        //   type: 'item',
+        //   text: '质量监管'
+        // },
+        // {
+        //   path: 'http://www.baidu.com1',
+        //   type: 'item',
+        //   text: '业务应用'
+        // },
+        // {
+        //   path: 'http://www.baidu.com测试3',
+        //   type: 'submenu',
+        //   text: '应用支撑',
+        //   children: [
+        //     {
+        //       path: 'http://www.baidu.com3331',
+        //       type: 'item',
+        //       text: '测试1',
 
-          },
-          {
-            path: 'http://www.baidu.com3332',
-            type: 'item',
-            text: '测试2',
+        //     },
+        //     {
+        //       path: 'http://www.baidu.com3332',
+        //       type: 'item',
+        //       text: '测试2',
 
-          },
-          {
-            path: 'http://www.baidu.com3333',
-            type: 'item',
-            text: '测试3',
+        //     },
+        //     {
+        //       path: 'http://www.baidu.com3333',
+        //       type: 'item',
+        //       text: '测试3',
 
-          }
-        ]
-      },
+        //     }
+        //   ]
+        // },
 
-      {
-        path: 'http://www.baidu.com1211',
-        type: 'submenu',
-        text: '测试4',
-        children: [
-          {
-            path: 'http://www.baidu.com33311',
-            type: 'submenu',
-            text: '测试2',
-            children: [
-              {
-                path: 'http://www.baidu.com3331qq1',
-                type: 'item',
-                text: '测试2'
-              }
-            ]
-          }
-        ]
-      }
+        // {
+        //   path: 'http://www.baidu.com1211',
+        //   type: 'submenu',
+        //   text: '测试4',
+        //   children: [
+        //     {
+        //       path: 'http://www.baidu.com33311',
+        //       type: 'submenu',
+        //       text: '测试2',
+        //       children: [
+        //         {
+        //           path: 'http://www.baidu.com3331qq1',
+        //           type: 'item',
+        //           text: '测试2'
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // }
       ]
     },
     //滚动显示的个数
@@ -132,6 +133,11 @@ export default {
       type: String,
       default: () => ''
     },
+    //是否显示底部的线
+    bottomBorder: {
+      type: Boolean,
+      default: () => false
+    }
   },
 
   methods: {
@@ -186,6 +192,5 @@ export default {
     },
 
   }
-
 
 }
