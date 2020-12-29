@@ -1,10 +1,25 @@
 <template>
   <div class="layout">
-    <eve-menu :data="data" :top="0"></eve-menu>
-    <div class="layout__router-in-main">
-      <eve-main :left="400" :height-differ="20" scroll :shrink-width="264">
-        <router-view class="layout__router" />
-      </eve-main>
+    <div class="layout__header-container">
+      <div class="layout__header">
+        <div class="layout__header-main">
+          <span class="layout__header-title">eve-ui</span>
+        </div>
+        <div class="layout__header-introduce">
+          基于element-ui二次封装的高级组件，对element-ui做了个性化需求调整，新增新的属性、事件、方法、slot等。
+        </div>
+      </div>
+    </div>
+
+    <div class="layout__main">
+      <div class="layout__content">
+        <eve-menu :data="data" :top="100"></eve-menu>
+        <div class="layout__router-in-main">
+          <eve-main :height-differ="120" scroll :shrink-width="264">
+            <router-view class="layout__router" />
+          </eve-main>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -16,7 +31,7 @@ export default {
   name: 'Layout',
   data () {
     return {
-      data: []
+      data: [],
     }
   },
   mounted () {
@@ -32,7 +47,8 @@ export default {
         element.title = element.meta && element.meta.title
       })
       this.data = route
-    }
+    },
+
   }
 }
 </script>
@@ -41,13 +57,41 @@ export default {
 <style lang='scss' scoped>
 .layout {
   width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  padding-left: 200px;
   overflow: hidden;
   height: 100%;
+
   &__router {
     margin: 20px;
+  }
+  &__header {
+    height: 100px;
+    width: 1350px;
+    &-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  &__header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__content {
+    display: flex;
+  }
+
+  &__header-title {
+    font-size: 32px;
+    color: #1976d2;
+    line-height: 50px;
+  }
+  &__header-introduce {
+    font-size: 18px;
+  }
+  &__main {
+    display: flex;
+    justify-content: center;
   }
 }
 ::v-deep .el-menu-item-group__title {
@@ -60,5 +104,9 @@ export default {
 ::v-deep .el-submenu__title {
   height: 40px;
   line-height: 40px;
+}
+
+::v-deep .eve-main {
+  width: 1170px !important;
 }
 </style>

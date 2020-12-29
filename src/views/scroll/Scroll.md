@@ -25,7 +25,7 @@ export default {
 ```html
 <template>
   <div>
-    <eve-scroll :data="data" @select="select"></eve-scroll>
+    <eve-scroll :data="data" @select="select" bottom-border> </eve-scroll>
   </div>
 </template>
 <script>
@@ -135,6 +135,60 @@ export default {
   </div>
 </template>
 
+# 演示代码
+```html
+<template>
+  <div>
+    <eve-scroll :data="data" @select="select">
+      <template slot-scope="{ data, index, row }">
+        <img :src="row.img" />
+      </template>
+    </eve-scroll>
+  </div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      data: [
+        {
+          img: require('../../assets/image/header/scroll-test.png')
+        },
+        {
+          img: require('../../assets/image/header/scroll-test.png')
+        },
+        {
+          img: require('../../assets/image/header/scroll-test.png')
+        },
+        {
+          img: require('../../assets/image/header/scroll-test.png')
+        },
+        {
+          img: require('../../assets/image/header/scroll-test.png')
+        },
+        {
+          img: require('../../assets/image/header/scroll-test.png')
+        }, {
+          img: require('../../assets/image/header/scroll-test.png')
+        },
+        {
+          img: require('../../assets/image/header/scroll-test.png')
+        },
+      ]
+    }
+  },
+  mounted () { },
+  methods: {
+    //点击菜单回调
+    select (emit) {
+      console.log(emit, 11)
+    }
+  }
+}
+</script>
+```
+
+
 ### Attributes
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
 | ----- | ------ | ----- | ----- | - |
@@ -153,9 +207,9 @@ export default {
 | ----| ----| --- | 
 | select |菜单激活回调| function(index,indexPath,text,currentData,data) ; 包含index(当前路径)、indexPath(路径数组)、data(菜单数据),text(菜单文本)、currentData(当前菜单详细信息)| 
 
-### Slot
+### Scoped Slot
 | name  | 说明 |
 |  - |   -     |
-|  — | 中间按钮的内容 |
+|  — | 中间按钮的内容,参数 { data, index, row}， data：整体数据；index：下标；row：一行数据 |
 
 

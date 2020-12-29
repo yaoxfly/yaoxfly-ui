@@ -60,3 +60,5 @@ node_modules
  dist/
  *.md
 ```
+
+> 当前组件库有用到`sass`，使用当前库需安装`node-sass`、和`sass-loader`; 安装命令： `npm i node-sass  sass-loader --save-dev`
