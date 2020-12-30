@@ -1,7 +1,7 @@
 <template>
   <div>
     <eve-scroll :data="data" @select="select">
-      <template slot-scope="{ data, index, row }">
+      <template v-slot:content="{ data, index, row }">
         <img :src="row.img" />
       </template>
     </eve-scroll>

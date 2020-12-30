@@ -8,9 +8,11 @@
 </template>
 <script>
 import Example from './Example'
+import ScrollExample from './ScrollExample'
 export default {
   components: {
     Example,
+    ScrollExample
   }
 }
 </script>
@@ -35,6 +37,35 @@ export default {
 
 ```
 
+# 滚动的页签
+ <template>
+  <div>
+    <ScrollExample/>
+  </div>
+</template>
+
+# 演示代码
+
+```html
+<template>
+  <div>
+    <eve-tag-views scroll :slides-per-view="6" width="1000px"></eve-tag-views>
+  </div>
+</template>
+<script>
+
+export default {
+  name: 'TagViews',
+  data () {
+    return {}
+  },
+}
+</script>
+
+
+```
+
+
 ### Attributes
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
 | ----- | ------ | ----- | ----- | - |
@@ -48,6 +79,12 @@ export default {
 | icon-left |  图标、图片等离左边的距离 |  number, string | — |  10  |
 | height |  高度 |  number, string | — | 50 |
 | config |  配置菜单、面包屑数据的text、path、children等key值--支持只修改某个key值,其他配置默认,详细参数见下表 |  object | — |   —   |
+| scroll |  是否开始滚动 |  boolean | — |   false   |
+| scroll-width |  滚动菜单的宽度 |  string | — |   100%   |
+| slides-per-view |  滚动显示的个数 |  number | — |   5   |
+| background-color |  滚动背景颜色 |  string | —  |  transparent  |
+| swiper-button-color |  滚动两边按钮的颜色 |  string | swiper-button-white (白)，swiper-button-black(黑)  |  black  |默认蓝 |
+
 
 ### icon-class
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |

@@ -210,6 +210,6 @@ export default {
 ### Scoped Slot
 | name  | 说明 |
 |  - |   -     |
-|  — | 中间按钮的内容,参数 { data, index, row}， data：整体数据；index：下标；row：一行数据 |
+|  content | 中间按钮的内容,参数 { data, index, row}， data：整体数据；index：下标；row：一行数据 |
 
 

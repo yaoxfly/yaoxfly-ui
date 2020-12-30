@@ -1,6 +1,6 @@
 <template>
   <div>
-    <eve-main :left="460" scroll>
+    <eve-main :left="660" scroll>
       <div class="eve-main-content__demo">
         中间内容块 中间内容块 中间内容块 中间内容块 中间内容块 中间内容块
         中间内容块中间内容块中间内容块中间内容块中间内容块 中间内容块 中间内容块

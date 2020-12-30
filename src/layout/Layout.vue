@@ -6,18 +6,25 @@
           <span class="layout__header-title">eve-ui</span>
         </div>
         <div class="layout__header-introduce">
-          基于element-ui二次封装的高级组件，对element-ui做了个性化需求调整，新增新的属性、事件、方法、slot等。
+          基于element-ui二次封装的高级组件，对element-ui做了个性化需求调整，新增新的属性、事件、方法、slot等；
         </div>
       </div>
     </div>
 
     <div class="layout__main">
       <div class="layout__content">
-        <eve-menu :data="data" :top="100"></eve-menu>
-        <div class="layout__router-in-main">
-          <eve-main :height-differ="120" scroll :shrink-width="264">
+        <div class="layout__left">
+          <eve-menu
+            :data="data"
+            :top="140"
+            class="layout__menu"
+            :border-right="false"
+          ></eve-menu>
+        </div>
+        <div class="layout__right">
+          <div class="layout__router-in-main">
             <router-view class="layout__router" />
-          </eve-main>
+          </div>
         </div>
       </div>
     </div>
@@ -59,16 +66,17 @@ export default {
   width: 100%;
   overflow: hidden;
   height: 100%;
-
   &__router {
-    margin: 20px;
+    margin: 0 20px;
   }
   &__header {
     height: 100px;
-    width: 1350px;
+    width: 100%;
+    margin-left: calc(25% - 181px);
+    border-bottom: 1px solid #e2dfdf;
     &-container {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
     }
   }
@@ -78,22 +86,44 @@ export default {
     align-items: center;
   }
   &__content {
+    width: 100%;
     display: flex;
+    justify-content: center;
   }
 
   &__header-title {
     font-size: 32px;
-    color: #1976d2;
+    color: rgb(64, 158, 255);
     line-height: 50px;
   }
   &__header-introduce {
-    font-size: 18px;
+    font-size: 16px;
   }
   &__main {
+    width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 40px;
+  }
+  &__router-in-main {
+    width: 89%;
+    height: 80vh;
+  }
+  &__left {
+    width: 25%;
+    display: flex;
+    justify-content: flex-end;
+    height: calc(100vh - 152px);
+    margin-top: 12px;
+  }
+  &__right {
+    width: 75%;
+    overflow: hidden;
+    overflow-y: auto;
+    height: calc(100vh - 152px);
   }
 }
+
 ::v-deep .el-menu-item-group__title {
   color: #333;
   font-size: 16px;
@@ -106,7 +136,31 @@ export default {
   line-height: 40px;
 }
 
-::v-deep .eve-main {
-  width: 1170px !important;
+::-webkit-scrollbar-track-piece {
+  //滚动条凹槽的颜色，还可以设置边框属性
+  background-color: #f8f8f8;
+}
+::-webkit-scrollbar {
+  //滚动条的宽度
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  //滚动条的设置
+  background-color: rgba(144, 147, 153, 0.5);
+  background-clip: padding-box;
+  min-height: 10px;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(144, 147, 153, 0.5);
+}
+
+::v-deep .eve-menu__menu-item .el-menu-item:focus,
+::v-deep .eve-menu__menu-item .el-menu-item:hover {
+  background: transparent !important;
+  border-right: 0 solid transparent;
 }
 </style>

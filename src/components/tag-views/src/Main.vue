@@ -13,7 +13,29 @@
       </slot>
     </div>
 
+    <eve-scroll
+      v-if="scroll"
+      v-bind="$attrs"
+      class="eve-tag-views__scroll"
+      :width="scrollWidth"
+    >
+      <swiper-slide v-for="item in tempData" :key="item[tempConfig.text]">
+        <el-tag
+          :closable="active(item[tempConfig.path])"
+          :type="item.type"
+          class="eve-tag-views__button"
+          :effect="active(item[tempConfig.path]) ? 'dark' : 'plain'"
+          @click="jump(item[tempConfig.path])"
+          @close="close(item[tempConfig.path])"
+          :disable-transitions="disableTransitions"
+        >
+          <span> {{ item[tempConfig.text] }} </span>
+        </el-tag>
+      </swiper-slide>
+    </eve-scroll>
+
     <el-tag
+      v-else
       v-for="item in tempData"
       :key="item[tempConfig.text]"
       :closable="active(item[tempConfig.path])"
@@ -29,13 +51,14 @@
   </div>
 </template>
 <script>
-
+import { SwiperSlide } from 'vue-awesome-swiper'
 import { receive } from '../../../bus/tagViews.js'
 import BreadcrumbIcon from '../../breadcrumb/src/BreadcrumbIcon.vue'
 export default {
   name: 'EveTagViews',
   components: {
-    BreadcrumbIcon
+    BreadcrumbIcon,
+    SwiperSlide
   },
   props: {
     // 是否开启缓存
@@ -94,6 +117,15 @@ export default {
         path: 'path', // 路径
         children: 'children' //树结构数据的孩子节点
       })
+    },
+    //是否滚动
+    scroll: {
+      type: Boolean,
+      default: false
+    },
+    scrollWidth: {
+      type: [Number, String],
+      default: '100%'
     }
   },
   data () {
@@ -250,10 +282,18 @@ export default {
     cursor: pointer;
     margin-left: 20px;
   }
+  &__scroll {
+    margin-left: 20px;
+  }
 }
 
 ::v-deep.el-tag {
   height: 28px;
   line-height: 26px;
+  text-align: center;
+}
+
+::v-deep.swiper-slide {
+  padding-right: 20px;
 }
 </style>

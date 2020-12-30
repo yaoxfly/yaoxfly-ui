@@ -67,6 +67,8 @@ export default {
 | active-text-color |  当前激活菜单的文字颜色 |  string | — | #409EFF |
 | collapse | 是否水平折叠收起菜单（仅在 mode 为 vertical 时可用） |  boolean | — | false |
 | shrink-width |   面包屑、页签的收缩按钮，收缩后左侧的宽度，如果有padding、margin也要算进去 |  number | — | 64 |
+| border-right |   是否有右边的线 |  boolean | — | true |
+
 
 ### Attributes(自定义)
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |

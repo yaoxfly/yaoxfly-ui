@@ -8,6 +8,7 @@
     <el-scrollbar style="height: 100%">
       <el-menu
         class="eve-menu"
+        :class="[!borderRight && 'eve-menu__border-right-none']"
         :router="router"
         :unique-opened="uniqueOpened"
         :default-active="active"
@@ -142,6 +143,11 @@ export default {
     shrinkWidth: {
       type: Number,
       default: () => 64
+    },
+    //是否有右边的线
+    borderRight: {
+      type: Boolean,
+      default: () => true
     }
   },
   data () {
@@ -319,6 +325,10 @@ export default {
 }
 :v-deep .el-scrollbar__bar.is-horizontal > div {
   height: 120%;
+}
+
+::v-deep .eve-menu__border-right-none.el-menu {
+  border-right: solid 1px transparent !important;
 }
 </style>
 

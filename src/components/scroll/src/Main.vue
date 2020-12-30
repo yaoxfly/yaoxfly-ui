@@ -22,16 +22,18 @@
         class="eve-scroll__swiper"
         v-if="scroll"
       >
-        <template v-for="(item, index) in data">
-          <swiper-slide
-            :key="item[tempConfig.path]"
-            class="eve-scroll__content"
-          >
-            <slot :row="item" :index="index" :data="data">
-              <menu-item :menu-data="item"></menu-item>
-            </slot>
-          </swiper-slide>
-        </template>
+        <slot>
+          <template v-for="(item, index) in data">
+            <swiper-slide
+              :key="item[tempConfig.path]"
+              class="eve-scroll__content"
+            >
+              <slot name="content" :row="item" :index="index" :data="data">
+                <menu-item :menu-data="item"></menu-item>
+              </slot>
+            </swiper-slide>
+          </template>
+        </slot>
         <!-- <div class="swiper-pagination" slot="pagination"></div> -->
         <div
           class="swiper-button-prev"
