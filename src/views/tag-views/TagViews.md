@@ -80,7 +80,7 @@ export default {
 | height |  高度 |  number, string | — | 50 |
 | config |  配置菜单、面包屑数据的text、path、children等key值--支持只修改某个key值,其他配置默认,详细参数见下表 |  object | — |   —   |
 | scroll |  是否开始滚动 |  boolean | — |   false   |
-| scroll-width |  滚动菜单的宽度 |  string | — |   100%   |
+| scroll-width |  滚动菜单的宽度,开启滚动必须设置固定值  |  string | — |   100%   |
 | slides-per-view |  滚动显示的个数 |  number | — |   5   |
 | background-color |  滚动背景颜色 |  string | —  |  transparent  |
 | swiper-button-color |  滚动两边按钮的颜色 |  string | swiper-button-white (白)，swiper-button-black(黑)  |  black  |默认蓝 |
