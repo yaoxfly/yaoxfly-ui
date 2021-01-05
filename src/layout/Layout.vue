@@ -49,7 +49,7 @@ export default {
       const arr = routes.filter(item => item.name === 'Layout')
       const route = JSON.parse(JSON.stringify(arr[0].children))
       route.forEach(element => {
-        element.text = element.name === 'Use' ? '安装' : element.name
+        element.text = element.name
         element.type = 'item'
         element.title = element.meta && element.meta.title
       })

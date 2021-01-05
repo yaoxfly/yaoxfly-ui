@@ -11,10 +11,16 @@ const routes = [
     redirect: '/use',
     children: [
       {
-        path: '/use',
-        name: 'Use',
-        component: () => import('../views/install/Install'),
+        path: '/install',
+        name: '安装',
+        component: () => import('../views/install/Install.vue'),
         meta: { title: '开发指南' }
+      },
+      {
+        path: '/use',
+        name: '快速上手',
+        component: () => import('../views/use/Use.vue'),
+
       },
       {
         path: '/main',
