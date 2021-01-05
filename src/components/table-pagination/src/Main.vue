@@ -24,9 +24,10 @@
       :tree-props="treeProps"
       :lazy="lazy"
       @current-change="currentRowChange"
-      @sort-change="sortChange"
       @select="select"
       @select-all="selectAll"
+      v-bind="$attrs"
+      v-on="$listeners"
     >
       <!--暂无数据 -->
       <template #empty>
@@ -140,6 +141,8 @@
               :fixed="item.fixed"
               :type="item.type"
               :sortable="item.sortable"
+              :filters="item.filters"
+              :filter-method="item.filterMethod"
               :show-overflow-tooltip="
                 item.showOverflowTooltip ? item.showOverflowTooltip : true
               "
@@ -195,116 +198,116 @@ export default {
     data: {
       type: Array,
       default: () => [
-        {
-          id: 1,
-          name: 'John Brown',
-          age: 18,
-          address: 'New York No. 1 Lake Park',
-          date: '2016-10-03',
-          children: [{
-            id: 31,
-            name: 'John Brown',
-            age: 200,
-            address: 'New York No. 1 Lake Park',
-            date: '2016-10-03',
-            children: [{
-              id: 313333,
-              name: 'John Brown',
-              age: 200,
-              address: 'New York No. 1 Lake Park',
-              date: '2016-10-03',
-              children: [{
-                id: 3133333333,
-                name: 'John Brown',
-                age: 200,
-                address: 'New York No. 1 Lake Park',
-                date: '2016-10-03',
-              }, {
-                id: 2003344333,
-                name: 'John Brown',
-                age: 18,
-                address: 'New York No. 1 Lake Park',
-                date: '2016-10-03',
-              }]
-            }, {
-              id: 2003344,
-              name: 'John Brown',
-              age: 18,
-              address: 'New York No. 1 Lake Park',
-              date: '2016-10-03',
-            }]
-          }, {
-            id: 200,
-            name: 'John Brown',
-            age: 18,
-            address: 'New York No. 1 Lake Park',
-            date: '2016-10-03',
-          }]
+        // {
+        //   id: 1,
+        //   name: 'John Brown',
+        //   age: 18,
+        //   address: 'New York No. 1 Lake Park',
+        //   date: '2016-10-03',
+        //   children: [{
+        //     id: 31,
+        //     name: 'John Brown',
+        //     age: 200,
+        //     address: 'New York No. 1 Lake Park',
+        //     date: '2016-10-03',
+        //     children: [{
+        //       id: 313333,
+        //       name: 'John Brown',
+        //       age: 200,
+        //       address: 'New York No. 1 Lake Park',
+        //       date: '2016-10-03',
+        //       children: [{
+        //         id: 3133333333,
+        //         name: 'John Brown',
+        //         age: 200,
+        //         address: 'New York No. 1 Lake Park',
+        //         date: '2016-10-03',
+        //       }, {
+        //         id: 2003344333,
+        //         name: 'John Brown',
+        //         age: 18,
+        //         address: 'New York No. 1 Lake Park',
+        //         date: '2016-10-03',
+        //       }]
+        //     }, {
+        //       id: 2003344,
+        //       name: 'John Brown',
+        //       age: 18,
+        //       address: 'New York No. 1 Lake Park',
+        //       date: '2016-10-03',
+        //     }]
+        //   }, {
+        //     id: 200,
+        //     name: 'John Brown',
+        //     age: 18,
+        //     address: 'New York No. 1 Lake Park',
+        //     date: '2016-10-03',
+        //   }]
 
-        },
-        {
-          id: 2,
-          name: 'Jim Green',
-          age: 24,
-          address: 'London No. 1 Lake Park',
-          date: '2016-10-01',
+        // },
+        // {
+        //   id: 2,
+        //   name: 'Jim Green',
+        //   age: 24,
+        //   address: 'London No. 1 Lake Park',
+        //   date: '2016-10-01',
 
-        },
-        {
-          id: 3,
-          name: 'Joe Black',
-          age: 30,
-          address: 'Sydney No. 1 Lake Park',
-          date: '2016-10-02'
-        },
-        {
-          id: 4,
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04'
-        },
-        {
-          id: 5,
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04'
-        },
-        {
-          id: 6,
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04',
-          children: [{
-            id: 3133,
-            name: 'John Brown',
-            age: 200,
-            address: 'New York No. 1 Lake Park',
-            date: '2016-10-03',
-          }, {
-            id: 20033,
-            name: 'John Brown',
-            age: 18,
-            address: 'New York No. 1 Lake Park',
-            date: '2016-10-03',
-          }]
-        },
-        {
-          id: 7,
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04'
-        },
-        {
-          id: 8,
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04'
-        },
+        // },
+        // {
+        //   id: 3,
+        //   name: 'Joe Black',
+        //   age: 30,
+        //   address: 'Sydney No. 1 Lake Park',
+        //   date: '2016-10-02'
+        // },
+        // {
+        //   id: 4,
+        //   name: 'Jon Snow',
+        //   age: 26,
+        //   address: 'Ottawa No. 2 Lake Park',
+        //   date: '2016-10-04'
+        // },
+        // {
+        //   id: 5,
+        //   name: 'Jon Snow',
+        //   age: 26,
+        //   address: 'Ottawa No. 2 Lake Park',
+        //   date: '2016-10-04'
+        // },
+        // {
+        //   id: 6,
+        //   name: 'Jon Snow',
+        //   age: 26,
+        //   address: 'Ottawa No. 2 Lake Park',
+        //   date: '2016-10-04',
+        //   children: [{
+        //     id: 3133,
+        //     name: 'John Brown',
+        //     age: 200,
+        //     address: 'New York No. 1 Lake Park',
+        //     date: '2016-10-03',
+        //   }, {
+        //     id: 20033,
+        //     name: 'John Brown',
+        //     age: 18,
+        //     address: 'New York No. 1 Lake Park',
+        //     date: '2016-10-03',
+        //   }]
+        // },
+        // {
+        //   id: 7,
+        //   name: 'Jon Snow',
+        //   age: 26,
+        //   address: 'Ottawa No. 2 Lake Park',
+        //   date: '2016-10-04'
+        // },
+        // {
+        //   id: 8,
+        //   name: 'Jon Snow',
+        //   age: 26,
+        //   address: 'Ottawa No. 2 Lake Park',
+        //   date: '2016-10-04'
+        // },
 
       ]
     },
@@ -475,24 +478,24 @@ export default {
     columns: {
       type: Array,
       default: () => [
-        {
-          label: 'Name',
-          prop: 'name'
-        },
-        {
-          label: 'Age',
-          prop: 'age',
-          sortable: 'custom', // 接受一个Boolean，默认为false,如果需要后端排序，需将sortable设置为custom
-          filters: [{ text: 18, value: 18 }, { text: 19, value: 19 }, { text: 20, value: 20 }]
-        },
-        {
-          label: 'Address',
-          prop: 'address',
-          formatData: (data) => {
-            // console.log(data, 11)
-            return data + '我是被转换的数据'
-          }
-        },
+        // {
+        //   label: 'Name',
+        //   prop: 'name'
+        // },
+        // {
+        //   label: 'Age',
+        //   prop: 'age',
+        //   sortable: 'custom', // 接受一个Boolean，默认为false,如果需要后端排序，需将sortable设置为custom
+        //   filters: [{ text: 18, value: 18 }, { text: 19, value: 19 }, { text: 20, value: 20 }]
+        // },
+        // {
+        //   label: 'Address',
+        //   prop: 'address',
+        //   formatData: (data) => {
+        //     // console.log(data, 11)
+        //     return data + '我是被转换的数据'
+        //   }
+        // },
       ]
     },
     // 当用户Checkbox时触发的事件, 是否只返回id数组
@@ -633,11 +636,11 @@ export default {
       // console.log(val)
       this.$emit('current-row-change', currentRow, oldCurrentRow)
     },
-    // 排序回调
-    sortChange (emit) {
-      // console.log(emit)
-      this.$emit('sort-change', emit)
-    },
+    // // 排序回调
+    // sortChange (emit) {
+    //   // console.log(emit)
+    //   this.$emit('sort-change', emit)
+    // },
 
     // 当用户手动勾选数据行的 Checkbox 时触发的事件
     select (emit) {
@@ -860,9 +863,10 @@ export default {
 
 ::v-deep .el-table .cell.el-tooltip {
   //防止使用插槽或render时tree的箭头会偏移
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
 }
+
 //  ::v-deep .warning-row {
 //   background: oldlace;
 // }

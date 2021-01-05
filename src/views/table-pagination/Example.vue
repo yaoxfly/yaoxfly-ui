@@ -9,28 +9,9 @@
       :columns="columns"
       :data="data"
       :button="button"
+      @sort-change="sortChange"
+      :default-sort="{ prop: 'age', order: 'ascending' }"
     >
-      <!-- <el-table-column
-        prop="age"
-        label="label"
-        fixed
-        sortable
-        :filters="[{ text: 18, value: 18 }]"
-        :filter-method="filterHandler"
-      ></el-table-column> -->
-      <!-- <template v-slot:age="scope">
-        <el-table-column
-          :prop="scope.row.prop"
-          :label="scope.row.label"
-          :width="scope.row.width"
-          :key="`eve-table-pagination${scope.row.label}`"
-          :fixed="scope.row.fixed"
-          :type="scope.row.type"
-          :sortable="scope.row.sortable"
-          :filters="[{ text: 18, value: 18 }]"
-          :filter-method="filterHandler"
-        ></el-table-column>
-      </template> -->
     </eve-table-pagination>
   </div>
 </template>
@@ -167,6 +148,7 @@ export default {
           type: 'index', // 序号
           width: 75,
           label: '序号',
+
         },
         {
           label: 'Name',
@@ -175,13 +157,21 @@ export default {
         {
           label: 'Age',
           prop: 'age',
+          sortable: true,
+          filters: [{ text: 18, value: 18 }, { text: 19, value: 19 }, { text: 26, value: 26 }],
+          filterMethod: (value, row, column) => {
+            const property = column.property
+            return row[property] === value
+          }
         },
+
         {
           label: 'Address',
           prop: 'address',
+
           render: (h, data) => {
             const { row: { address } = {} } = data
-            return h('div', {
+            return h('span', {
               //和`v-bind:style`一样的 API
               style: {
                 fontSize: '14px'
@@ -257,7 +247,13 @@ export default {
     //页面切换
     currentChange (emit) {
       console.log(emit)
-    }
+    },
+
+    //排序改变
+    sortChange ({ column, prop, order }) {
+      console.log(column, prop, order)
+    },
+
   }
 }
 

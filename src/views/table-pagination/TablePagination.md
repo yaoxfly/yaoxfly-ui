@@ -271,6 +271,9 @@ export default {
 | tree-props   | 渲染嵌套数据(树)的配置选项,hasChildren用来懒加载   | Object | — | { children: 'children', hasChildren: 'hasChildren' }  |
 | lazy   | 是否懒加载子节点数据   | Boolean | — | false |
 | load   | 加载子节点数据的函数,lazy为true时生效,函数第二个参数包含了节点的层级信息--树懒加载用   | Function | — | — |
+| default-sort   | 默认的排序列的 prop 和顺序。它的prop属性指定默认的排序的列，order指定默认排序的顺序   | Object | order: ascending, descending | 如果只指定了prop, 没有指定order, 则默认顺序是ascending |
+
+> `element-ui`的`table`的属性和事件(不包括`Table-column Attributes`)都可传入,内置了接收方法。
 
 ###  Table  Attributes (自定义)
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
@@ -287,6 +290,25 @@ export default {
 | z-index | 代表数据在第n层，当传进来的数据是树结构时，并开启了表格数据转换时要配置的一个属性，默认是zIndex | string| — |zIndex|
 | is-format-data | 是否开启表格数据转换，主要用于树结构数据添加zIndex时用 | boolean| — |false|
 
+
+### columns 
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| ----| ----| --- | ---- | ----- |
+| prop   | 表格要渲染的key值  | string  |— | —  |
+| label  | 表头显示的值   | number | — | 24  |
+| width  | 当前列的宽度   | number | — | —  |
+| fixed  | 列是否固定在左侧或者右侧，true 表示固定在左侧   | string, boolean | true, left, right | — |
+| type   | 列的类型 | string |  selection(选择框)、index(序号)、operate(操作)、tree(下拉树)  | 普通内容 |
+| show-overflow-tooltip  | 当内容过长被隐藏时显示 tooltip   | boolean |  — | true  |
+| formatData | 简单改变当前列的文本值,复杂用render或者插槽    | Function(data) |  — | —  |
+| render  |  使用render函数自定义内容 |  Function(h,data)  | — | —  |
+| sortable  |  对应列是否可以排序，如果设置为 'custom'，则代表用户希望远程排序，需要监听 Table 的 sort-change 事件 |  boolean, string  | true, false, 'custom' | false  |
+| filters  |  数据过滤的选项，数组格式，数组中的元素需要有 text 和 value 属性。 |  Array[{ text, value }] | — | — |
+| filter-method  |  数据过滤使用的方法，如果是多选的筛选项，对每一条数据会执行多次，任意一次返回 true 就会显示。 |  Function(value, row, column) | — | — |
+
+
+>  表头配置属性, 其中 `formatData` 方法只对`type`是普通内容列有效 ,`render`只对普通内容和操作列有效
+
 ###  Pagination Attributes
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ----| ----| --- | ---- | ----- |
@@ -299,8 +321,6 @@ export default {
 | hide-on-single-page   | 只有一页时是否隐藏   | boolean | — | true  |
 
 
-
-
 ###  Pagination Attributes(自定义)
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ----| ----| --- | ---- | ----- |
@@ -308,20 +328,6 @@ export default {
 | top  | 分页距离表格的距离   | number | — | 24  |
 | align  | 分页的位置   | string | center、left、right | center  |
 
-
-### Column Attributes
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| ----| ----| --- | ---- | ----- |
-| prop   | 表格要渲染的key值  | string  |— | —  |
-| label  | 表头显示的值   | number | — | 24  |
-| width  | 当前列的宽度   | number | — | —  |
-| fixed  | 列是否固定在左侧或者右侧，true 表示固定在左侧   | string, boolean | true, left, right | — |
-| type   | 列的类型 | string |  selection(选择框)、index(序号)、operate(操作)、tree(下拉树)  | 普通内容 |
-| show-overflow-tooltip  | 当内容过长被隐藏时显示 tooltip   | boolean |  — | true  |
-| formatData | 简单改变当前列的文本值,复杂用render或者插槽    | Function(data) |  — | —  |
-| render  |  使用render函数自定义内容 |  Function(h,data)  | — | —  |
-
->  表头配置属性, 其中 `formatData` 方法只对`type`是普通内容列有效 ,`render`只对普通内容和操作列有效
 
 ###  Button  Attributes
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
