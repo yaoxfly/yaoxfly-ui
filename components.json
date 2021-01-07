@@ -1,0 +1,5 @@
+{
+    "tree": "./src/components/tree/index.js",
+    "menu":"./src/components/menu/index.js"
+    
+}

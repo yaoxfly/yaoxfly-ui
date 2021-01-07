@@ -1,6 +1,7 @@
 
 module.exports = {
   productionSourceMap: false,
+  parallel: false,
   chainWebpack: config => {
     config.module.rule('md')
       .test(/\.md/)

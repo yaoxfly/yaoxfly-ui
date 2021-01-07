@@ -12,7 +12,7 @@
 </template>
 <script>
 
-import { send } from '../../../bus/breadcrumb'
+import { send } from '../../../bus/breadcrumb.js'
 export default {
   name: 'EveBreadcrumbIcon',
   props: {

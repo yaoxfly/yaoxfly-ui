@@ -24,7 +24,6 @@
   }
 
   code {
-    background-color: hsla(0, 0%, 100%, 0.7);
     color: #445368;
   }
 
@@ -65,6 +64,17 @@
   }
   a:visited {
     color: #409eff;
+  }
+
+  pre {
+    line-height: 1.8;
+    font-family: Menlo, Monaco, Consolas, Courier, monospace;
+    padding: 18px 24px;
+    border: 1px solid #eaeefb;
+    margin-bottom: 25px;
+    border-radius: 4px;
+    -webkit-font-smoothing: auto;
+    background-color: #fafafa;
   }
 }
 

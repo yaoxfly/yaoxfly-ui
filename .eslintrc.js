@@ -8,7 +8,8 @@ module.exports = {
     '@vue/standard'
   ],
   globals: {
-    'tinymce': true
+    'tinymce': true,
+    "#": true
   },
   parserOptions: {
     parser: 'babel-eslint'

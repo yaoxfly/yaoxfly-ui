@@ -1,5 +1,5 @@
   # Scroll
-    滚动组件
+  滚动组件
   # 基础用法
 
  <template>

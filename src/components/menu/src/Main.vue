@@ -33,7 +33,7 @@
 
 <script>
 import { receive, send } from '../../../bus/menu.js'
-import MenuItem from './MenuItem'
+import MenuItem from './MenuItem.vue'
 export default {
   name: 'EveMenu',
   provide () {
@@ -276,6 +276,7 @@ export default {
     $route: {
       handler (val) {
         this.route = val.path
+        this.setActive(this.route, this.data) //高亮
       },
       immediate: true,
     },

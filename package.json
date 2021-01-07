@@ -7,13 +7,17 @@
   "author": "eve",
   "main": "src/index.js",
   "files": [
-    "src"
+    "src",
+    "lib"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "publish": "npm version patch -f"
+    "publish": "npm version patch -f",
+    "lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js",
+    "lib:test": "vue-cli-service build --target lib --name tree --dest lib src/components/tree/index.js",
+    "lib:com": "webpack --mode production --config build/webpack.component.js"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.3",
@@ -51,6 +55,7 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "vue-markdown-loader": "^2.4.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-cli": "^4.3.1"
   }
 }

@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import elDragDialog from './drag'
+import elDragDialog from './drag.js'
 export default {
   name: 'EveDialog',
   directives: {

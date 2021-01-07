@@ -1,4 +1,4 @@
-# 安装组件教程
+# 安装
 
 由于在私域 `npm`镜像 下，所以下载组件、插件的时候，会有些变化，请按照步骤来下载组件，否则会下载失败。如果 1、2 两步 之前已经操作过,不需要再重复操作。
 第一次 `npm i` 包含`eve-ui`组件的项目，产生不能下载的情况(产生原因:私域镜像不能下载 `npm` 上的包,`npm` 镜像也不能下载私域的包,所以可先下载 `npm` 的包，再下载私域的包)，可在 `package.json` 中把 `eve-ui` 删除或者注释,然后再按以下步骤重新下载，
@@ -41,14 +41,6 @@ npm i eve-ui
 当前组件库有用到`sass`，使用当前库需安装`node-sass`、`sass-loader`,如果工程中已经安装请跳过当前步骤。
 ```js
 npm i node-sass  sass-loader --save-dev
-```
-
-###  7.使用 eve-ui
-
-```js
-//main.js
-import eveUi from 'eve-ui'
-Vue.use(eveUi)
 ```
 
 > tips: 记得切换回 `npm` 镜像，不然外域的插件无法更新和下载

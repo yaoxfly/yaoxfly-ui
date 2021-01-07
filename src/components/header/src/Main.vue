@@ -133,7 +133,7 @@
 
 <script>
 
-import mixins from '../../scroll/src/mixins'
+import mixins from '../../scroll/src/mixins.js'
 export default {
   name: 'EveHeader',
   mixins: [mixins],

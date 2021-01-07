@@ -1,5 +1,5 @@
   # Menu
-    菜单组件,与Header和Breadcrumb以及TagViews组件有联动关系。
+  菜单组件,与Header和Breadcrumb以及TagViews组件有联动关系。
   # 基础用法
  <template>
   <div>
