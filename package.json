@@ -5,7 +5,7 @@
   "private": false,
   "license": "MIT",
   "author": "eve",
-  "main": "src/index.js",
+  "main": "lib/eve-ui.umd.min.js",
   "files": [
     "src",
     "lib"
@@ -15,9 +15,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "publish": "npm version patch -f",
-    "lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js",
-    "lib:test": "vue-cli-service build --target lib --name tree --dest lib src/components/tree/index.js",
-    "lib:com": "webpack --mode production --config build/webpack.component.js"
+    "lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js & webpack --mode production --config build/webpack.component.js"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.3",
