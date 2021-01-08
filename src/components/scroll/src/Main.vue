@@ -64,7 +64,7 @@
 
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
 import 'swiper/swiper-bundle.css'
-import MenuItem from '../../menu/src/MenuItem.vue'
+import MenuItem from 'eve-ui/src/components/menu/src/MenuItem.vue'
 import mixins from './mixins' // 参数和方法
 export default {
   name: 'EveScroll',

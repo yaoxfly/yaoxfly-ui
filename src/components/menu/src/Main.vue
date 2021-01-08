@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { receive, send } from '../../../bus/menu.js'
+import { receive, send } from 'eve-ui/src/bus/menu.js'
 import MenuItem from './MenuItem.vue'
 export default {
   name: 'EveMenu',

@@ -302,6 +302,10 @@ export default {
     $route: {
       handler (val, oldVal) {
         this.route = val
+        const menu = this.findBreadcrumb(this.route.path, this.menu, false)
+        //判断外面传进来的菜单的路径(path)是否有加斜杆,无论路径(path)是否带斜杆都可以找到(path兼容斜杆)。
+        const path = menu.length > 0 ? this.route.path : this.route.path.split('/')[1]
+        this.breadcrumbData = Array.from(this.formatBreadcrumb(path, this.menu))
       },
       immediate: true,
     },

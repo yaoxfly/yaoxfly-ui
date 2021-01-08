@@ -1,5 +1,12 @@
 {
     "tree": "./src/components/tree/index.js",
-    "menu":"./src/components/menu/index.js"
+    "menu":"./src/components/menu/index.js",
+    "header":"./src/components/header/index.js",
+    "tag-views":"./src/components/tag-views/index.js",
+    "main":"./src/components/main/index.js",
+    "scroll":"./src/components/scroll/index.js",
+    "container":"./src/components/container/index.js",
+    "upload":"./src/components/upload/index.js",
+    "breadcrumb":"./src/components/breadcrumb/index.js"
     
 }

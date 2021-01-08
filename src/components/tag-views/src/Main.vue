@@ -52,8 +52,8 @@
 </template>
 <script>
 import { SwiperSlide } from 'vue-awesome-swiper'
-import { receive } from '../../../bus/tagViews.js'
-import BreadcrumbIcon from '../../breadcrumb/src/BreadcrumbIcon.vue'
+import { receive } from 'eve-ui/src/bus/tagViews.js'
+import BreadcrumbIcon from 'eve-ui/src/components/breadcrumb/src/BreadcrumbIcon.vue'
 export default {
   name: 'EveTagViews',
   components: {

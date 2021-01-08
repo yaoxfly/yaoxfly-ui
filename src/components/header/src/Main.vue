@@ -133,7 +133,7 @@
 
 <script>
 
-import mixins from '../../scroll/src/mixins.js'
+import mixins from 'eve-ui/src/components/scroll/src/mixins.js'
 export default {
   name: 'EveHeader',
   mixins: [mixins],
@@ -147,7 +147,7 @@ export default {
     //logo
     logo: {
       type: String,
-      default: require('../../../assets/logo.png')
+      // default: require('../../../assets/logo.png')
     },
     // 标题
     title: {
@@ -278,23 +278,23 @@ export default {
     rightContent: {
       type: Array,
       default: () => [
-        {
-          type: 'icon',
-          value: require('../../../assets/image/header/help.png'),
-        },
-        {
-          type: 'icon',
-          value: require('../../../assets/image/header/info.png'),
-          number: 8, //在图标右上方添加number
-        },
-        {
-          type: 'icon',
-          value: require('../../../assets/image/header/head_sculpture.png'),
-        },
-        {
-          value: '李四',
-          dialog: true //设置这个属性后,点击这个按钮会弹出对话框,默认是false
-        }
+        // {
+        //   type: 'icon',
+        //   value: require('../../../assets/image/header/help.png'),
+        // },
+        // {
+        //   type: 'icon',
+        //   value: require('../../../assets/image/header/info.png'),
+        //   number: 8, //在图标右上方添加number
+        // },
+        // {
+        //   type: 'icon',
+        //   value: require('../../../assets/image/header/head_sculpture.png'),
+        // },
+        // {
+        //   value: '李四',
+        //   dialog: true //设置这个属性后,点击这个按钮会弹出对话框,默认是false
+        // }
       ]
     },
     //对话框的距离右边的距离

@@ -8,6 +8,7 @@ import '@/assets/style/initialize.scss'
 import 'element-ui/lib/theme-chalk/index.css'
 import eveUi from './index.js'
 import './assets/style/index.scss'
+// 将挂载到prototype单独抽离成一个文件
 Vue.use(ElementUI)
 Vue.use(eveUi)
 Vue.config.productionTip = false // from 路径是highlight.js的路径，纯属自定义

@@ -12,10 +12,15 @@ module.exports = merge(webpackBaseConfig, {
     module: {
         rules: [
             {
-                test: /\.scss$/,
+                test: /\.(sa|sc|c)ss$/,
                 use: ['vue-style-loader', 'css-loader', 'sass-loader']
             }
         ]
+    },
+    resolve: {
+        alias: {
+            'eve-ui': path.resolve(__dirname, '../'),
+        }
     }
 })
 

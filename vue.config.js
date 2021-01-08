@@ -1,4 +1,7 @@
-
+const path = require('path')
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
 module.exports = {
   productionSourceMap: false,
   parallel: false,
@@ -13,5 +16,6 @@ module.exports = {
       .options({
         raw: true
       })
+    config.resolve.alias.set('eve-ui', resolve('./'))
   }
 }

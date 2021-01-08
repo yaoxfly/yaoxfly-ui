@@ -24,7 +24,7 @@
 </template>
 <script>
 
-import { receive } from '../../../bus/menu.js'
+import { receive } from 'eve-ui/src/bus/menu.js'
 export default {
   name: 'EveMain',
   props: {
