@@ -9,7 +9,6 @@
 <script>
 import Md from './Use.md'
 export default {
-  name: 'Use',
   components: {
     Md
   }

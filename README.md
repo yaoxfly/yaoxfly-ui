@@ -45,17 +45,18 @@ npm i node-sass  sass-loader --save-dev
 
 > tips: 记得切换回 `npm` 镜像，不然外域的插件无法更新和下载
 
-### Q 问题
+### 7. eslint校验问题
 
-若安装组件库后发现这个组件库有 eslint 校验问题的解决：
+若安装组件库后发现终端一直输出 eslint 的校验问题，解决方案如下：
 
 在根路径 即 package.json 同级路径建立个.eslintignore 文件
 
 在文件中写入如下内容
 
 ```js
-node_modules
- dist/
+node_modules/
+dist/
+lib/
  *.md
 ```
-
+> tips：主要lib目录，当期目录不能省略

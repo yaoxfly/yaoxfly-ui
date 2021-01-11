@@ -5,6 +5,7 @@ function resolve (dir) {
 module.exports = {
   productionSourceMap: false,
   parallel: false,
+  publicPath: process.env.NODE_ENV === 'production' ? '/eve-ui/' : '/',
   chainWebpack: config => {
     config.module.rule('md')
       .test(/\.md/)

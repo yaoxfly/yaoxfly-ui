@@ -27,18 +27,26 @@ npm install babel-plugin-component -D
 
 ```js
 {
-  "presets": [["es2015", { "modules": false }]],
   "plugins": [
     [
       "component",
       {
-        "libraryName": "element-ui",
-        "styleLibraryName": "theme-chalk"
+        "libraryName": "eve-ui",
+        "style": false
       }
     ]
   ]
+}
 ```
-接下来，如果你只希望引入部分组件，比如 Button 和 Select，那么需要在 main.js 中写入以下内容：
+接下来，如果你只希望引入部分组件，比如 Tree、Header和Menu组件，那么需要在 main.js 中写入以下内容：
+
+``` js
+import { Tree, Header, Menu } from 'eve-ui'
+const component = [Tree, Header, Menu]
+component.forEach(item => {
+  Vue.use(item)
+})
+```
 
 ## 按需引入(单页面)
 有时并不想全局引入组件,这时候可以在页面组件中单独引入需要的组件,那么可以在页面组件的`<script>`标签中写入以下内容：

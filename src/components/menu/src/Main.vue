@@ -173,6 +173,7 @@ export default {
   },
   mounted () {
     this.receiveBus()
+    console.log(this.$store.state.test, 'store测试')
   },
 
   methods: {
