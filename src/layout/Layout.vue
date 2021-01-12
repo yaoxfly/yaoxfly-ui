@@ -28,7 +28,7 @@
             <div
               class="layout__up-container"
               @click="select"
-              v-if="scrollTop === 600"
+              v-if="scrollTop >= 600"
             >
               <el-icon class="el-icon-caret-top"></el-icon>
             </div>
