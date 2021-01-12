@@ -8,7 +8,7 @@ const routes = [
     path: '/',
     name: 'Layout',
     component: Layout,
-    redirect: '/use',
+    redirect: '/install',
     children: [
       {
         path: '/install',
