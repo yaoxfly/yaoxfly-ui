@@ -69,7 +69,6 @@ component.forEach(item => {
   } 
 ```
 
-
 ## 按需引入(单页面)
 有时并不想全局引入组件,这时候可以在页面组件中单独引入需要的组件,那么可以在页面组件的`<script>`标签中写入以下内容：
 ```js
@@ -126,3 +125,5 @@ export default {
   },
 }
 ```
+
+> tips： 按需引入Menu、Breadcrumb、TagViews暂时无法做到联动，需自己写联动逻辑。全局导入没有问题

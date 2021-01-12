@@ -37,15 +37,9 @@ npm login
 npm i eve-ui
 ```
 
-###  6.安装 sass
-当前组件库有用到`sass`，使用当前库需安装`node-sass`、`sass-loader`,如果工程中已经安装请跳过当前步骤。
-```js
-npm i node-sass  sass-loader --save-dev
-```
-
 > tips: 记得切换回 `npm` 镜像，不然外域的插件无法更新和下载
 
-### 7. eslint校验问题
+### 6. eslint校验问题
 
 若安装组件库后发现终端一直输出 eslint 的校验问题，解决方案如下：
 
@@ -60,3 +54,10 @@ lib/
  *.md
 ```
 > tips：主要lib目录，当期目录不能省略
+
+
+###  Q问题
+当前组件库有用到`sass`，如果有报 `node-sass`、`sass-loader` 未安装，则可执行以下命令安装,如果工程中已经安装请跳过当前步骤。
+```js
+npm i node-sass  sass-loader --save-dev
+```
