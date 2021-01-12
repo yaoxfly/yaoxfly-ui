@@ -1,12 +1,16 @@
 {
-    "tree": "./src/components/tree/index.js",
-    "menu":"./src/components/menu/index.js",
-    "header":"./src/components/header/index.js",
-    "tag-views":"./src/components/tag-views/index.js",
-    "main":"./src/components/main/index.js",
-    "scroll":"./src/components/scroll/index.js",
+    "breadcrumb":"./src/components/breadcrumb/index.js",
     "container":"./src/components/container/index.js",
-    "upload":"./src/components/upload/index.js",
-    "breadcrumb":"./src/components/breadcrumb/index.js"
-    
+    "dialog":"./src/components/dialog/index.js",
+    "drop-down-tree":"./src/components/drop-down-tree/index.js",
+    "header":"./src/components/header/index.js",
+    "main":"./src/components/main/index.js",
+    "menu":"./src/components/menu/index.js",
+    "rich-text":"./src/components/rich-text/index.js",
+    "scroll":"./src/components/scroll/index.js",
+    "select-form":"./src/components/select-form/index.js",
+    "table-pagination":"./src/components/table-pagination/index.js",
+    "tag-views":"./src/components/tag-views/index.js",
+    "tree": "./src/components/tree/index.js",
+    "upload":"./src/components/upload/index.js"
 }

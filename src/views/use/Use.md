@@ -48,6 +48,28 @@ component.forEach(item => {
 })
 ```
 
+完整组件列表
+
+```js
+ { 
+   Breadcrumb,
+   Container,
+   Dialog,
+   DropDowntTree,
+   Header,
+   Main,
+   Menu,
+   RichText,
+   Scroll,
+   SelectForm,
+   TablePagination,
+   TagViews,
+   Tree,  
+   Upload
+  } 
+```
+
+
 ## 按需引入(单页面)
 有时并不想全局引入组件,这时候可以在页面组件中单独引入需要的组件,那么可以在页面组件的`<script>`标签中写入以下内容：
 ```js
@@ -71,20 +93,20 @@ export default {
 完整组件列表和引入方式
 
 ```js
-import Breadcrumb from 'eve-ui/src/components/breadcrumb'
-import Container from 'eve-ui/src/components/container'
-import Dialog from 'eve-ui/src/components/dialog'
-import DropDownTree from 'eve-ui/src/components/drop-down-tree'
-import Header from 'eve-ui/src/components/header'
-import Main from 'eve-ui/src/components/main'
-import Menu from 'eve-ui/src/components/menu'
-import RichText from 'eve-ui/src/components/rich-text'
-import Scroll from 'eve-ui/src/components/scroll'
-import SelectForm from 'eve-ui/src/components/select-form'
-import TablePagination from 'eve-ui/src/components/table-pagination'
-import TagViews from 'eve-ui/src/components/tag-views'
-import Tree from 'eve-ui/src/components/tree'
-import Upload from 'eve-ui/src/components/upload'
+import Breadcrumb from 'eve-ui/lib/breadcrumb'
+import Container from 'eve-ui/lib/container'
+import Dialog from 'eve-ui/lib/dialog'
+import DropDownTree from 'eve-ui/lib/drop-down-tree'
+import Header from 'eve-ui/lib/header'
+import Main from 'eve-ui/lib/main'
+import Menu from 'eve-ui/lib/menu'
+import RichText from 'eve-ui/lib/rich-text'
+import Scroll from 'eve-ui/lib/scroll'
+import SelectForm from 'eve-ui/lib/select-form'
+import TablePagination from 'eve-ui/lib/table-pagination'
+import TagViews from 'eve-ui/lib/tag-views'
+import Tree from 'eve-ui/lib/tree'
+import Upload from 'eve-ui/lib/upload'
 export default {
   components: {
     Breadcrumb,
