@@ -19,11 +19,19 @@
             :top="140"
             class="layout__menu"
             :border-right="false"
+            @select="select"
           ></eve-menu>
         </div>
-        <div class="layout__right">
+        <div class="layout__right" ref="routerView">
           <div class="layout__router-in-main">
             <router-view class="layout__router" />
+            <div
+              class="layout__up-container"
+              @click="select"
+              v-if="scrollTop === 600"
+            >
+              <el-icon class="el-icon-caret-top"></el-icon>
+            </div>
           </div>
         </div>
       </div>
@@ -39,12 +47,22 @@ export default {
   data () {
     return {
       data: [],
+      scrollTop: ''
     }
   },
   mounted () {
     this.getMenu()
+    this.handleScroll()
   },
   methods: {
+    handleScroll () {
+      console.log(11)
+      this.$refs.routerView.addEventListener('scroll', () => {
+        this.scrollTop = this.$refs.routerView.scrollTop
+        // console.log(this.$refs.routerView.scrollTop)
+        // console.log(this.$refs.routerView.scrollHeight / 2)
+      })
+    },
     getMenu () {
       const arr = routes.filter(item => item.name === 'Layout')
       const route = JSON.parse(JSON.stringify(arr[0].children))
@@ -56,6 +74,12 @@ export default {
       this.data = route
     },
 
+    //菜单激活回调
+    select () {
+      setTimeout(() => {
+        this.$refs.routerView.scrollTop = 0
+      }, 100)
+    },
   }
 }
 </script>
@@ -108,6 +132,7 @@ export default {
   &__router-in-main {
     width: 89%;
     height: 80vh;
+    position: relative;
   }
   &__left {
     width: 25%;
@@ -121,6 +146,26 @@ export default {
     overflow: hidden;
     overflow-y: auto;
     height: calc(100vh - 152px);
+  }
+  &__up-container {
+    position: fixed;
+    background-color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #409eff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    z-index: 5;
+    right: 50px;
+    bottom: 100px;
+    &:hover {
+      background: #f2f6fc;
+    }
   }
 }
 
