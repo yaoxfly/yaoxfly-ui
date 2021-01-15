@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { receive, send } from 'eve-ui/src/bus/menu.js'
 import MenuItem from './MenuItem.vue'
 export default {
   name: 'EveMenu',
@@ -171,11 +170,7 @@ export default {
       route: ''
     }
   },
-  mounted () {
-    this.receiveBus()
-    console.log(this.$store.state.test, 'store测试')
-  },
-
+  mounted () { },
   methods: {
     /**@description  菜单激活回调
       * @author yx
@@ -193,7 +188,8 @@ export default {
         text: value,
         currentData: menu.length > 0 ? menu[0] : [],
       })
-      send.menuTagViewsData({ [this.tempConfig.path]: index, [this.tempConfig.text]: value })
+      this.$store.commit('SET_TAG_VIEWS_DATA', { [this.tempConfig.path]: index, [this.tempConfig.text]: value })
+      // console.log(this.$store.state.menu.tagViewsData, 22222)
     },
 
     /**@description  根据路由查找菜单数据中匹配路径的数组
@@ -218,19 +214,6 @@ export default {
         }
       })
       return arr
-    },
-
-    /**@description 接收各种兄弟通信
-     * @author yx
-     */
-    receiveBus () {
-      receive.breadcrumbCollapse(collapse => {
-        // console.log(collapse, 'menu')
-        this.tempCollapse = collapse
-        this.tempWidth = this.tempCollapse ? this.shrinkWidth : this.width
-        this.$emit('update:collapse', this.tempCollapse)
-        this.$emit('update:width', this.tempWidth)
-      })
     },
 
     //TODO:这里的联动，目前只是手动的设置，后期改成自动化
@@ -258,6 +241,7 @@ export default {
   components: {
     MenuItem
   },
+
 
   watch: {
     defaultActive: {
@@ -302,6 +286,15 @@ export default {
         this.tempWidth = val
       },
       immediate: true,
+    },
+
+    '$store.state.menu.collapse': {
+      handler (newValue) {
+        this.tempCollapse = newValue
+        this.tempWidth = this.tempCollapse ? this.shrinkWidth : this.width
+        this.$emit('update:collapse', this.tempCollapse)
+        this.$emit('update:width', this.tempWidth)
+      },
     }
   }
 }

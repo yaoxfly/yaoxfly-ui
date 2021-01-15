@@ -21,6 +21,7 @@
     >
       <swiper-slide v-for="item in tempData" :key="item[tempConfig.text]">
         <el-tag
+          v-if="item[tempConfig.text]"
           :closable="active(item[tempConfig.path])"
           :type="item.type"
           class="eve-tag-views__button"
@@ -34,25 +35,25 @@
       </swiper-slide>
     </eve-scroll>
 
-    <el-tag
-      v-else
-      v-for="item in tempData"
-      :key="item[tempConfig.text]"
-      :closable="active(item[tempConfig.path])"
-      :type="item.type"
-      class="eve-tag-views__button"
-      :effect="active(item[tempConfig.path]) ? 'dark' : 'plain'"
-      @click="jump(item[tempConfig.path])"
-      @close="close(item[tempConfig.path])"
-      :disable-transitions="disableTransitions"
-    >
-      <span> {{ item[tempConfig.text] }} </span>
-    </el-tag>
+    <template v-for="item in tempData">
+      <el-tag
+        v-if="!scroll && item[tempConfig.text]"
+        :key="item[tempConfig.text]"
+        :closable="active(item[tempConfig.path])"
+        :type="item.type"
+        class="eve-tag-views__button"
+        :effect="active(item[tempConfig.path]) ? 'dark' : 'plain'"
+        @click="jump(item[tempConfig.path])"
+        @close="close(item[tempConfig.path])"
+        :disable-transitions="disableTransitions"
+      >
+        <span> {{ item[tempConfig.text] }} </span>
+      </el-tag>
+    </template>
   </div>
 </template>
 <script>
 import { SwiperSlide } from 'vue-awesome-swiper'
-import { receive } from 'eve-ui/src/bus/tagViews.js'
 import BreadcrumbIcon from 'eve-ui/src/components/breadcrumb/src/BreadcrumbIcon.vue'
 export default {
   name: 'EveTagViews',
@@ -118,7 +119,7 @@ export default {
         children: 'children' //树结构数据的孩子节点
       })
     },
-    //是否滚动
+    //是否滚动 TODO:当前版本滚动开启会有一些警告信息，但不影响使用
     scroll: {
       type: Boolean,
       default: false
@@ -139,9 +140,7 @@ export default {
       },
     }
   },
-  mounted () {
-    this.receiveBus()
-  },
+  mounted () { },
 
   methods: {
     /** @description 左边图标的点击事件，主要用来做左边菜单收缩功能的
@@ -200,15 +199,6 @@ export default {
       sessionStorage.setItem(cacheName, JSON.stringify(this.tempData))
     },
 
-    /**@description 接收各种兄弟通信数据
-     * @author yx
-     */
-    receiveBus () {
-      receive.menuTagViewsData(data => {
-        this.addData(data)
-      })
-    },
-
     /**@description 添加页签数据
      * @param  {String}  data 单个页签数据 模式格式{text:"",path:""}
      * @author yx
@@ -237,6 +227,7 @@ export default {
   computed: {
     active () {
       return function (path) {
+        if (!path) return
         let active = false
         if (path.substr(0, 1) === '/') {
           if (this.$route.path === path) {
@@ -267,6 +258,13 @@ export default {
       },
       immediate: true,
     },
+
+    '$store.state.menu.tagViewsData': {
+      handler (val) {
+        this.addData(val)
+      },
+    },
+
   }
 }
 </script>

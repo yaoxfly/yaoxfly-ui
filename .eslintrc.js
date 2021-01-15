@@ -9,12 +9,15 @@ module.exports = {
   ],
   globals: {
     'tinymce': true,
-    "#": true
+    'Vue': true,
+    'VueRouter': true,
+    'Vuex': true
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: 'babel-eslint',
     sourceType: 'module',
+    ecmaVersion: 2017,
   },
 
   rules: {

@@ -11,7 +11,22 @@
 ```js
 import eveUi from 'eve-ui'
 Vue.use(eveUi)
+//引入全局样式
+import 'eve-ui/lib/eve-ui.css'
 ```
+
+接着在store目录的index.js文件里引入组件插件里的store
+
+```js
+import modules from 'eve-ui/src/store/modules'
+export default new Vuex.Store({
+  modules: {
+    ...modules
+  }
+})
+```
+
+> tips:组件库里`store`不管是完整引入还是按需，都需要引入，否则某些组件的功能会不完整,比如Menu和TagViews等组件的联动功能。
 
 ## 按需引入(全局)
 
@@ -46,7 +61,10 @@ const component = [Tree, Header, Menu]
 component.forEach(item => {
   Vue.use(item)
 })
+//引入全局样式
+import 'eve-ui/lib/eve-ui.css'
 ```
+
 
 完整组件列表
 
@@ -72,12 +90,17 @@ component.forEach(item => {
 ## 按需引入(单页面)
 有时并不想全局引入组件,这时候可以在页面组件中单独引入需要的组件,那么可以在页面组件的`<script>`标签中写入以下内容：
 ```js
-import EveTree from 'eve-ui/src/components/tree'
+import EveTree from 'eve-ui/lib/tree'
 export default {
   components: {
     EveTree
   },
 }
+```
+
+在`main.js`引入全局样式 
+```js
+import 'eve-ui/lib/eve-ui.css'
 ```
 
 在模板上简单使用

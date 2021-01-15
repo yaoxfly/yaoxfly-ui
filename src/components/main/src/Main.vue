@@ -24,7 +24,6 @@
 </template>
 <script>
 
-import { receive } from 'eve-ui/src/bus/menu.js'
 export default {
   name: 'EveMain',
   props: {
@@ -67,29 +66,19 @@ export default {
       tempLeft: 0 //距离左边的距离(内部用)
     }
   },
-
-  mounted () {
-    this.receiveBus()
-  },
-
-  methods: {
-    /**@description 接收各种兄弟通信
-       * @author yx
-       */
-    receiveBus () {
-      receive.breadcrumbCollapse(collapse => {
-        this.tempLeft = collapse ? this.shrinkWidth : this.left
-        // console.log(this.tempLeft, 'layout')
-      })
-    }
-
-  },
+  mounted () { },
+  methods: {},
   watch: {
     left: {
       handler (newValue) {
         this.tempLeft = newValue
       },
       immediate: true
+    },
+    '$store.state.menu.collapse': {
+      handler (newValue) {
+        this.tempLeft = newValue ? this.shrinkWidth : this.left
+      },
     }
   }
 }

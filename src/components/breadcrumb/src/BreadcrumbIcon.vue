@@ -12,7 +12,6 @@
 </template>
 <script>
 
-import { send } from 'eve-ui/src/bus/breadcrumb.js'
 export default {
   name: 'EveBreadcrumbIcon',
   props: {
@@ -44,7 +43,8 @@ export default {
          * @author yx
       */
     iconClick () {
-      this.sendBus()
+      this.collapse = !this.collapse
+      this.$store.commit('SET_COLLAPSE', this.collapse)
       this.$emit('icon-click')
     },
 
@@ -55,14 +55,6 @@ export default {
     checkString (str) {
       return typeof str === 'string' ? str : `${str}px`
     },
-
-    /**@description 发送通信
-     * @author yx
-     */
-    sendBus () {
-      this.collapse = !this.collapse
-      send.breadcrumbCollapse(this.collapse)
-    }
   },
 
 }
