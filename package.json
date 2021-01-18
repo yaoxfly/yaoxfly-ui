@@ -21,6 +21,7 @@
     "@tinymce/tinymce-vue": "^3.2.3",
     "codemirror": "^5.58.2",
     "core-js": "^3.6.5",
+    "element-ui": "^2.15.0",
     "file-saver": "^2.0.5",
     "github-markdown-css": "^4.0.0",
     "highlight.js": "^10.2.1",
@@ -31,7 +32,9 @@
     "tinymce": "^5.5.1",
     "vue": "^2.6.12",
     "vue-awesome-swiper": "^4.1.1",
-    "vuedraggable": "^2.24.2"
+    "vue-router": "^3.4.9",
+    "vuedraggable": "^2.24.2",
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

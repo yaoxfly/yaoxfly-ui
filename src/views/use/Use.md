@@ -47,7 +47,7 @@ npm install babel-plugin-component -D
       "component",
       {
         "libraryName": "eve-ui",
-        "style": false
+        "styleLibraryName": "theme-chalk"
       }
     ]
   ]

@@ -3,7 +3,7 @@ const merge = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.base.js')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = merge(webpackBaseConfig, {
-    entry: './src/assets/style/bass.scss',
+    entry: './src/assets/style/base.scss',
     output: {
         path: path.resolve(__dirname, '../lib'),
     },

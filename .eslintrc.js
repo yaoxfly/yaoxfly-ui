@@ -9,9 +9,6 @@ module.exports = {
   ],
   globals: {
     'tinymce': true,
-    'Vue': true,
-    'VueRouter': true,
-    'Vuex': true
   },
   parser: 'vue-eslint-parser',
   parserOptions: {

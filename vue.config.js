@@ -13,22 +13,6 @@ module.exports = {
       filename: 'index.html',
       // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
       title: 'eve-ui',
-      cdn: {
-        css: [
-          //element-ui
-          '//unpkg.zhimg.com/element-ui/lib/theme-chalk/index.css',
-        ],
-        js: [
-          // vue
-          '//unpkg.zhimg.com/vue@2.6.12/dist/vue.runtime.min.js',
-          // vue-router
-          '//unpkg.zhimg.com/vue-router@3.4.9/dist/vue-router.min.js',
-          // vuex
-          '//unpkg.zhimg.com/vuex@3.5.1/dist/vuex.min.js',
-          //element-ui
-          '//unpkg.zhimg.com/element-ui@2.13.2/lib/index.js',
-        ]
-      }
     }
   },
   productionSourceMap: false,
@@ -54,13 +38,4 @@ module.exports = {
     // 是否在构建css样式映射，false将提高构建速度
     sourceMap: false,
   },
-
-  configureWebpack: config => {
-    //cdn 配置
-    config.externals = {
-      vuex: 'Vuex',
-      'vue-router': 'VueRouter',
-      'element-ui': 'ELEMENT'
-    }
-  }
 }

@@ -1,5 +1,5 @@
-import main from './src/Main.vue'
-main.install = function (Vue) {
-    Vue.component(main.name, main)
+import Main from './src/Main.vue'
+Main.install = function (Vue) {
+    Vue.component(Main.name, Main)
 }
-export default main
+export default Main
