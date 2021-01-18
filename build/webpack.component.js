@@ -4,6 +4,9 @@ const webpackBaseConfig = require('./webpack.base.js')
 const components = require('../components.json')
 // 分离css代码
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const chalk = require('chalk')
+const log = (message) => console.log(chalk.green(`${message}`))
+log('正在打包组件')
 module.exports = merge(webpackBaseConfig, {
     entry: components,
     output: {

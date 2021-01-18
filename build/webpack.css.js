@@ -2,6 +2,9 @@ const path = require('path')
 const merge = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.base.js')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const chalk = require('chalk')
+const log = (message) => console.log(chalk.green(`${message}`))
+log('正在打包base.css')
 module.exports = merge(webpackBaseConfig, {
     entry: './src/assets/style/base.scss',
     output: {
@@ -24,4 +27,6 @@ module.exports = merge(webpackBaseConfig, {
         })
     ]
 })
+
+
 

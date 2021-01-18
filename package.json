@@ -15,7 +15,10 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "publish": "npm version patch -f",
-    "lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js & webpack --mode production --config build/webpack.component.js & webpack --mode production --config build/webpack.css.js"
+    "lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js & webpack --mode production --config build/webpack.component.js & webpack --mode production --config build/webpack.css.js & npm run  node",
+    "node":"node ./build/node.bass.js"
+     
+
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.3",

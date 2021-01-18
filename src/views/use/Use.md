@@ -65,7 +65,6 @@ component.forEach(item => {
 import 'eve-ui/lib/eve-ui.css'
 ```
 
-
 完整组件列表
 
 ```js
@@ -91,6 +90,7 @@ import 'eve-ui/lib/eve-ui.css'
 有时并不想全局引入组件,这时候可以在页面组件中单独引入需要的组件,那么可以在页面组件的`<script>`标签中写入以下内容：
 ```js
 import EveTree from 'eve-ui/lib/tree'
+import 'eve-ui/lib/theme-chalk/tree.css'
 export default {
   components: {
     EveTree
@@ -98,7 +98,7 @@ export default {
 }
 ```
 
-在`main.js`引入全局样式 
+某些组件在不引入全局css的情况样式会有点乱，如果有其他样式问题，可以在`main.js`引入全局样式 
 ```js
 import 'eve-ui/lib/eve-ui.css'
 ```
@@ -116,19 +116,33 @@ import 'eve-ui/lib/eve-ui.css'
 
 ```js
 import Breadcrumb from 'eve-ui/lib/breadcrumb'
+import 'eve-ui/lib/theme-chalk/breadcrumb.css'
 import Container from 'eve-ui/lib/container'
+import 'eve-ui/lib/theme-chalk/container.css'
 import Dialog from 'eve-ui/lib/dialog'
+import 'eve-ui/lib/theme-chalk/dialog.css'
 import DropDownTree from 'eve-ui/lib/drop-down-tree'
+import 'eve-ui/lib/theme-chalk/drop-down-tree.css'
 import Header from 'eve-ui/lib/header'
+import 'eve-ui/lib/theme-chalk/header.css'
 import Main from 'eve-ui/lib/main'
+import 'eve-ui/lib/theme-chalk/main.css'
 import Menu from 'eve-ui/lib/menu'
+import 'eve-ui/lib/theme-chalk/menu.css'
 import RichText from 'eve-ui/lib/rich-text'
+import 'eve-ui/lib/theme-chalk/rich-text.css'
 import Scroll from 'eve-ui/lib/scroll'
+import 'eve-ui/lib/theme-chalk/scroll.css'
 import SelectForm from 'eve-ui/lib/select-form'
+import 'eve-ui/lib/theme-chalk/select-form.css'
 import TablePagination from 'eve-ui/lib/table-pagination'
+import 'eve-ui/lib/theme-chalk/table-pagination.css'
 import TagViews from 'eve-ui/lib/tag-views'
+import 'eve-ui/lib/theme-chalk/tag-views.css'
 import Tree from 'eve-ui/lib/tree'
+import 'eve-ui/lib/theme-chalk/tree.css'
 import Upload from 'eve-ui/lib/upload'
+import 'eve-ui/lib/theme-chalk/upload.css'
 export default {
   components: {
     Breadcrumb,
