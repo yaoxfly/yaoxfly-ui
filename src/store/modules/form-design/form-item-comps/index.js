@@ -10,6 +10,9 @@ import { eveLabelFormConfig, eveLabel } from './other-props/fd-label'
 import { cascaderPropsForm, cascaderProps } from './form-item-props/fd-cascader'
 import { fdCard, fdCardFormConfig } from './form-layout-item-props/fd-card'
 import { fdDialog, fdDialogFormConfig } from './form-layout-item-props/fd-dialog'
+import { uploaderCompProps, uploaderCompPropsForm } from './form-item-props/fd-file-uploader'
+import { richText, richTextPropsForm } from './form-item-props/fd-rich-text'
+import { slotComp, slotCompPropsForm } from './form-item-props/fd-slot-comp'
 
 /**
  * 普通输入组件
@@ -64,6 +67,35 @@ export const commonComps = [
     category: 'input',
     props: cascaderProps.props,
     triggerUseChange: true
+  },
+  {
+    comp: 'fd-file-uploader',
+    label: '文件上传',
+    id: '100007',
+    category: 'input',
+    props: uploaderCompProps.props,
+    triggerUseChange: true,
+    // 不显示设置默认值的组件
+    dontShowDefault: true
+  },
+  {
+    comp: 'fd-rich-text',
+    label: '富文本',
+    id: '100008',
+    category: 'input',
+    props: richText.props,
+    triggerUseChange: true,
+    // 不显示设置默认值的组件
+    dontShowDefault: true
+  },
+  {
+    comp: 'fd-slot-comp',
+    label: '插槽',
+    id: '100009',
+    category: 'input',
+    props: slotComp.props,
+    // 不显示设置默认值的组件
+    dontShowDefault: true
   }
 ]
 /**
@@ -133,5 +165,8 @@ export const formItemPropsForms = {
   'fd-label': eveLabelFormConfig,
   'fd-cascader': cascaderPropsForm,
   'fd-card': fdCardFormConfig,
-  'fd-dialog': fdDialogFormConfig
+  'fd-dialog': fdDialogFormConfig,
+  'fd-file-uploader': uploaderCompPropsForm,
+  'fd-rich-text': richTextPropsForm,
+  'fd-slot-comp': slotCompPropsForm
 }

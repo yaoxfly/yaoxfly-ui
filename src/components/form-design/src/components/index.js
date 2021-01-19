@@ -9,6 +9,9 @@ import FdLabel from './fd-label'
 import FdCascader from './fd-cascader'
 import FdCard from './fd-card'
 import FdDialog from './fd-dialog'
+import fdFileUploader from './fd-file-uploader'
+import fdRichText from './fd-rich-text'
+import fdSlotComp from './fd-slot-comp'
 
 const components = [
   FdCascader,
@@ -20,7 +23,10 @@ const components = [
   FdRadioGroup,
   FdInput,
   FdCard,
-  FdDialog
+  FdDialog,
+  fdFileUploader,
+  fdRichText,
+  fdSlotComp
 ]
 
 const dic = {}

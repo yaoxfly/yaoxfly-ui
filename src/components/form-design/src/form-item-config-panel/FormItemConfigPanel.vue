@@ -7,7 +7,7 @@
         <config-form labelWidth="85px" :config="commonConfig" root="common"/>
         <template v-if="activateItem.category === 'input'">
           <el-divider>表单属性配置</el-divider>
-          <config-form labelWidth="85px" :config="elFormItemConfig" root="elFormItem"/>
+          <config-form labelWidth="85px" :config="elFormItemConfig" root="elFormItem" :dont-show="dontShow"/>
         </template>
         <el-divider>组件属性配置</el-divider>
         <config-form :config="curFormItemPropsConfigForm" labelWidth="85px" root="props"/>
@@ -66,6 +66,11 @@ export default {
     },
     childConfig () {
       return this.curFormItemPropsConfigForm.childConfig || {}
+    },
+    dontShow () {
+      return {
+        'elFormItem.defaultValue': this.activateItem.dontShowDefault
+      }
     }
   },
   watch: {
