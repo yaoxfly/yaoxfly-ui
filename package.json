@@ -15,7 +15,10 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "publish": "npm version patch -f",
-    "lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js & webpack --mode production --config build/webpack.component.js & webpack --mode production --config build/webpack.css.js & npm run  node",
+    "lib": "npm run build:lib &  npm run webpack:com  & npm run webpack:css  &  npm run node",
+    "build:lib":"vue-cli-service build --target lib --name eve-ui --dest lib src/index.js",
+    "webpack:com":"webpack --mode production --config build/webpack.component.js",
+    "webpack:css":"webpack --mode production --config build/webpack.css.js",
     "node": "node ./build/node.bass.js"
   },
   "dependencies": {
