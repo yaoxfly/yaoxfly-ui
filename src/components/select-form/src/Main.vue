@@ -461,6 +461,12 @@ export default {
       default: true
     },
 
+    // 左边表单的宽度,一般减去左边菜单栏的宽度，布局组件的间距
+    leftFormWidth: {
+      type: Number,
+      default: 0
+    },
+
     // 右边查询、重置等按钮的宽度,有用插槽、样式等方式改变了右边这个宽度需要手动设置--自适应收缩展开时用
     rightButtonWidth: {
       type: Number,
@@ -500,10 +506,10 @@ export default {
      *  @author yx
      */
     getNum (param) {
-      console.log(this.offset(this.$refs.reset.$el), 11)
+      // console.log(this.offset(this.$refs.reset.$el), 11)
       const {
         winWidth, formWidth, labelWidth,
-        leftWidth = this.offset(this.$refs.formValidate.$el).left,
+        leftWidth = this.leftFormWidth !== 0 ? this.leftFormWidth : this.offset(this.$refs.formValidate.$el).left,
         rightWidth = this.offset(this.$refs.reset.$el).right
       } = param || {}
       // 250是左边导航的宽度  230:右边查询重置收起等按钮的宽度  288:formWidth 120:label   1366-250-200/408=2.24 Math.floor()

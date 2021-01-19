@@ -81,12 +81,15 @@ export default {
 ### data 
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
 | ----- | ------ | ----- | ----- | - |
-| type | 类型   | string |  submenu，item  | — |
+| type | 类型   | string |  submenu(父菜单)，item(子菜单)  | — |
 | text | 菜单文本，可根据下表的config自定义修改参数名 | string |  — | — |
 | path | 菜单路径 ，可根据下表的config自定义修改参数名| string |  — | — |
 | children | 树结构数据的孩子节点，可根据下表的config自定义修改参数名 | string |  — | — |
 | title | 菜单分组的title ，可根据下表的config自定义修改参数名  | string |  — | — |
 | icon | 菜单的图标  | string |  — | — |
+
+
+> tips: `path`是唯一的，不能配置一样的`path`，如果父菜单没有跳转的功能，就不需要配置`path`
 
 ### config
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
@@ -109,4 +112,5 @@ export default {
 | 方法名 | 说明 | 参数  |
 | ----| ----| --- | 
 | update | 更新组件--配合header联动用, 当header组件调用findlowestMenu方法赋值时，跳转菜单，导致左边菜单展开多个情况时使用| —| 
+
 

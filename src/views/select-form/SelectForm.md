@@ -181,6 +181,7 @@ export default {
 | label-width |  所有左边label的宽度 |  number | — | 140 |
 | filter-param |  当参数为空时是否过滤参数 |  boolean | — | true |
 | adaptive-expand |  是否开启自适应收缩展开 |  boolean | — | true |
+| left-form-width |  左边表单的宽度,一般减去左边菜单栏的宽度，布局组件的间距 |  number | — | — |
 | right-button-width |  右边查询、重置等按钮的宽度 |  number | — | 230 |
 
 

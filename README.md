@@ -61,3 +61,14 @@ lib/
 ```js
 npm i node-sass  sass-loader --save-dev
 ```
+
+插件版本更新后，重新下载插件，package.json版本已经更新，但内容未更新
+
+解决方案如下：
+
+```js
+在node_modules 里找到 eve-ui 删除掉，先关闭编译器再删除，否则有权限问题，删除后再重新 执行 npm i eve-ui 
+```
+
+ 
+

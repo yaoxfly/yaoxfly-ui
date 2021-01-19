@@ -358,6 +358,10 @@ export default {
     background: #f0f3f6 !important;
     border-right: 3px solid #409eff;
   }
+  .el-menu-item.is-active {
+    background: #f0f3f6 !important;
+    border-right: 3px solid #409eff;
+  }
 }
 
 /*加快收缩的动画 */

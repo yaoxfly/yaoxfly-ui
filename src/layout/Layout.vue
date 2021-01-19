@@ -204,7 +204,8 @@ export default {
 }
 
 ::v-deep .eve-menu__menu-item .el-menu-item:focus,
-::v-deep .eve-menu__menu-item .el-menu-item:hover {
+::v-deep .eve-menu__menu-item .el-menu-item:hover,
+::v-deep .eve-menu__menu-item .el-menu-item.is-active {
   background: transparent !important;
   border-right: 0 solid transparent;
 }
