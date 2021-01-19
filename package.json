@@ -1,6 +1,6 @@
 {
   "name": "eve-ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "eve-ui",
   "private": false,
   "license": "MIT",
@@ -16,9 +16,7 @@
     "lint": "vue-cli-service lint",
     "publish": "npm version patch -f",
     "lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js & webpack --mode production --config build/webpack.component.js & webpack --mode production --config build/webpack.css.js & npm run  node",
-    "node":"node ./build/node.bass.js"
-     
-
+    "node": "node ./build/node.bass.js"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.3",
