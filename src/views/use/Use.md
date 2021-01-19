@@ -162,5 +162,3 @@ export default {
   },
 }
 ```
-
-> tips： 按需引入Menu、Breadcrumb、TagViews暂时无法做到联动，需自己写联动逻辑。全局导入没有问题
