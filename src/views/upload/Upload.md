@@ -550,7 +550,7 @@ export default {
 | with-credentials  | 是否支持发送 cookie 凭证信息 | boolean | — | false |
 | show-fileList  | 是否显示已上传文件列表 | boolean | — | true |
 | drag  | 是否启用拖拽上传| boolean | — |  false|
-| accept  | 上传的文件类型 |string  | .jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF | — |
+| accept  | 上传的文件类型 |string  |.jpg,.jpeg,.png,.gif,.bmp,.pdf等(小写转大写也可以) | — |
 | on-preview  |	点击文件列表中已上传的文件时的钩子 |	function(file)  |  — | — |
 | on-remove |	文件列表移除文件时的钩子 |	function(file, fileList)  |  — | — |
 | on-success |	文件上传成功时的钩子 |	function(response, file, fileList)  |  — | — |
