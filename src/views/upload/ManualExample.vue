@@ -40,12 +40,10 @@ export default {
     }
   },
   methods: {
-
     //点击文件列表中已上传的文件时的钩子
     handlePreview (file) {
       console.log(file, 11)
     },
-
     // 上传之前
     beforeUpload (file) {
       const isJPG = file.type === 'image/jpeg'
@@ -59,6 +57,8 @@ export default {
       this.permission = isJPG && isLt2M
       return this.permission
     },
+
+
     //清空上传的列表
     clear () {
       this.$refs.upload.clearFiles()

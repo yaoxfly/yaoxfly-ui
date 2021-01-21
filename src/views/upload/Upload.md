@@ -44,7 +44,6 @@ export default {
 
 
 # 演示代码
-
 ``` html
 <!--手动上传-->
 <template>
@@ -53,6 +52,7 @@ export default {
       ref="upload"
       action="https://jsonplaceholder.typicode.com/posts"
       :on-preview="handlePreview"
+      :before-upload="beforeUpload"
     ></eve-upload>
     <el-button @click="clear" :style="{ marginTop: '10px' }"
       >清空上传列表</el-button
@@ -63,7 +63,6 @@ export default {
   </div>
 </template>
 <script>
-
 export default {
   data () {
     return {
@@ -85,7 +84,6 @@ export default {
     handlePreview (file) {
       console.log(file, 11)
     },
-
     // 上传之前
     beforeUpload (file) {
       const isJPG = file.type === 'image/jpeg'
@@ -99,6 +97,7 @@ export default {
       this.permission = isJPG && isLt2M
       return this.permission
     },
+
     //清空上传的列表
     clear () {
       this.$refs.upload.clearFiles()
@@ -110,6 +109,7 @@ export default {
   }
 }
 </script>
+
 
 <!--自动上传-->
 <template>

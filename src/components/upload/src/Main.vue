@@ -157,7 +157,7 @@ export default {
     //上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传，要去掉列表
     beforeUpload: {
       type: Function,
-      default: () => { }
+      default: () => true
     },
 
     //删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止删除
@@ -306,15 +306,14 @@ export default {
        * @param  {Object}  file 文件详细信息
      */
     handleBeforeUpload (file) {
-      this.permission = this.beforeUpload(file) !== undefined ? this.beforeUpload(file) : this.permission
+      this.permission = this.beforeUpload(file)
       return this.permission
     },
 
     //删除文件之前的钩子，参数为上传的文件和文件列表，若返回 false 或者返回 Promise 且被 reject，则停止删除
     handleBeforeRemove (file, fileList) {
-      if (this.beforeRemove(file, fileList) !== undefined) {
-        return this.beforeRemove(file, fileList)
-      }
+      const flag = this.beforeRemove(file, fileList)
+      if (flag !== undefined) return flag
       if (this.permission) {
         return this.$confirm(`确定移除 ${file.name}?`, '', {
           closeOnClickModal: false,
