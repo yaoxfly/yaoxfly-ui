@@ -102,17 +102,14 @@ export default {
     setRemoteDataSetter (setter) {
       this.remoteDataSetters.push(setter)
     },
-    setRemoteData () {
+    setRemoteData (params) {
       return new Promise((resolve, reject) => {
         const ps = []
         this.remoteDataSetters.forEach(setter => {
           // 当前扩展数据输入域对应的可输入项字段名称
           ps.push(new Promise(resolve => {
-            setter.setRemoteData().then(data => {
-              // for (const key in rs) {
-              //   this.$set(this.form, key, rs[key])
-              // }
-              this.setFormData(data)
+            setter.setRemoteData(params).then(data => {
+              data && this.setFormData(data)
               resolve()
             })
           }))

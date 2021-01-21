@@ -3,6 +3,25 @@ import _ from 'lodash'
 import Ele from 'element-ui'
 import FileSaver from 'file-saver'
 /**
+ * 确认框
+ * @param {*} vm 
+ * @param {*} param1 { title: '提示', content: '确认删除？' }
+ * @调用方式  confirmMsgBox(this, { content: '确认删除密钥！' }).then(res => {})
+ */
+export const confirmMsgBox = (vm, { title, content }) => {
+  return new Promise((resolve, reject) => {
+    vm.$confirm(content, title || '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      resolve()
+    }).catch((e) => {
+      reject(e)
+    })
+  })
+}
+/**
  * 自定义数据响应克隆方法
  * @param {*} original
  */

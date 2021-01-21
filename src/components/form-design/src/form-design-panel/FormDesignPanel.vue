@@ -8,7 +8,7 @@
         @input="handleInput"
         @change="handleFormItemsChange"
         v-bind="{ group: 'formDesign', ghostClass: 'ghost', animation: 100, handle: '.drag-widget' }">
-        <form-config-item v-for="(formItem, listIdx) in formItemConfigs" parent-list-name="formItemConfigs" :list-index="listIdx" parent-is-top :key="formItem.key" :form-item="formItem"/>
+        <form-config-item isConfig v-for="(formItem, listIdx) in formItemConfigs" parent-list-name="formItemConfigs" :list-index="listIdx" parent-is-top :key="formItem.key" :form-item="formItem"/>
       </vue-draggable>
     </el-form>
   </div>

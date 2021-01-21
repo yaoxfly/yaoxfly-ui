@@ -10,6 +10,7 @@
       ref="upload"
       action="https://jsonplaceholder.typicode.com/posts"
       :on-preview="handlePreview"
+      :before-upload="beforeUpload"
     ></eve-upload>
     <el-button @click="clear" :style="{ marginTop: '10px' }"
       >清空上传列表</el-button

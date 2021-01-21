@@ -12,18 +12,19 @@
       :accept="fileType"
       :show-file-list="false"
       :before-upload="uploadZip"
+      :multiple="multiple"
     >
-      <el-button v-if="!needUploadZip" type="primary" :disabled="isDisabled" plain size="mini">重新上传<i class="el-icon-upload el-icon--right" /></el-button>
+      <el-button v-if="!showUploadBtn" type="primary" :disabled="isDisabled" plain size="mini">重新上传<i class="el-icon-upload el-icon--right" /></el-button>
       <template v-else>
         <el-button type="primary" :disabled="isDisabled" plain size="mini">点击上传<i class="el-icon-upload el-icon--right" /></el-button>
         <div v-if="fileType">支持扩展名：{{ fileType }}</div>
       </template>
       <div
-        v-if="fileZipName !== ''"
+        v-if="curFileName !== ''"
         slot="tip"
         style="margin: 5px 0"
       >
-        {{ fileZipName }}
+        {{ curFileName }}
       </div>
     </el-upload>
   </div>
@@ -44,21 +45,26 @@ export default {
     fileSize: {
       type: Number,
       default: 10
+    },
+    multiple: {
+      type: Boolean,
+      default: false
     }
   },
 
   data() {
     return {
-      fileZipName: '',
-      uploadZipFile: '', // 记录上传的zip文件流
-      needUploadZip: true// 记录是否需要上传zip包按钮，false的时候显示更新按钮可重新上传
+      fileList: '',
+      curFileName: '',
+      curFileObj: '', // 记录上传的文件流
+      showUploadBtn: true
     }
   },
 
   mounted() {
-    this.fileZipName = ''
-    if (this.curValue) {
-      this.needUploadZip = false
+    this.curFileName = ''
+    if (this.curValue && !this.multiple) {
+      this.showUploadBtn = false
     }
   },
 
@@ -79,10 +85,10 @@ export default {
           return false
         }
       }
-      this.fileZipName = file.name
+      this.curFileName = file.name
       // this.formData.file = 'alreadyUploadZip'
-      this.uploadZipFile = file
-      this.needUploadZip = false
+      this.curFileObj = file
+      this.showUploadBtn = false
       return false
     }
   }

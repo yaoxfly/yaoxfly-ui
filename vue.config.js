@@ -15,6 +15,7 @@ module.exports = {
       title: 'eve-ui',
     }
   },
+  transpileDependencies: ['element-ui'],
   productionSourceMap: false,
   parallel: false,
   publicPath: process.env.NODE_ENV === 'production' ? '/eve-ui/' : '/',

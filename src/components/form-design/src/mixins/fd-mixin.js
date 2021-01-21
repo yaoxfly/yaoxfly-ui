@@ -20,6 +20,10 @@ export default {
       type: Boolean,
       default: false
     },
+    inConfigPanel: {
+      type: Boolean,
+      default: false
+    },
     formData: {
       type: Object,
       default: () => ({})

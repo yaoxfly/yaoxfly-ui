@@ -20,6 +20,10 @@ export default {
       type: Object,
       default: () => ({})
     },
+    style: {
+      type: Object,
+      default: () => ({})
+    },
     // 组件名称
     compName: {
       type: String,
@@ -30,24 +34,22 @@ export default {
     onClick () {}
   },
   render: function(h) {
-    if (!this.compName) {
-      return h('div', '组件名称')
+    if (!this.compName || this.inConfigPanel) {
+      return h('div', '自定义组件插槽')
     }
-    return h('div', {
-      class: 'slot-render'
-    }, [
-      h(this.compName, {
+    return h(this.compName, {
+      style: this.style,
+      props: {
         value: this.curValue,
-        props: {
-          ...this.props
-        },
-        on: {
-          input: (v) => {
-            this.curValue = v
-          }
+        ...this.props,
+        placeholder: '请输入'
+      },
+      on: {
+        input: (v) => {
+          this.curValue = v
         }
-      })
-    ])
+      }
+    })
   }
 }
 </script>

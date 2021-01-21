@@ -160,7 +160,7 @@ function buildFormItemRender (h, formItem, instance, parentFieldStatus) {
   } else {
     props.size = instance.global.common.size
   }
-
+  console.log('vformItem.comp ', formItem.comp)
   return h('el-form-item', {
     props: formItemProps,
     // 只读装
@@ -176,6 +176,10 @@ function buildFormItemRender (h, formItem, instance, parentFieldStatus) {
       on: {
         input: (value) => {
           instance.handleInput(fieldName, value, { formItem })
+        },
+        'commit-remote-data-setter': (setter) => {
+          // 数据回填组件注册
+          instance.setRemoteDataSetter(setter)
         }
       }
     })

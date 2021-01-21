@@ -1,210 +1,108 @@
 <template>
-  <el-form ref="form" :model="formData" :rules="formRules" label-position="left" label-width="95px"> 
-    <el-form-item label="级联框" prop="form_field_81056">
-      <fd-cascader v-model="formData.form_field_81056" :selections="formItemOptionsDic.form_field_81056" readOnlySeperator="/" :multiple="false" :clearable="true" size="medium" :isRemote="false" status="readOnly"></fd-cascader>
-    </el-form-item>
-    <el-form-item label="输入框" prop="form_field_77263">
-      <fd-input v-model="formData.form_field_77263" placeholder="123" status="enable" size="medium"></fd-input>
-    </el-form-item>
-    <el-row :gutter="0" type="default">
-      <el-col :span="12">
-        <el-form-item label="输入框" prop="form_field_8200">
-          <fd-input v-model="formData.form_field_8200" placeholder="123" status="enable" size="medium"></fd-input>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="下拉框" prop="form_field_57594">
-          <fd-select v-model="formData.form_field_57594" :selections="formItemOptionsDic.form_field_57594" :multiple="false" :clearable="true" size="medium" :isRemote="false" status="enable"></fd-select>
-        </el-form-item>
-      </el-col>
-      <el-col :span="24">
-        <el-tabs v-model="tabsDic.layout_form_field_21912" type="-" :stretch="false">
-          <el-tab-pane label="标签页1" name="tab1">
-            <el-form-item label="输入框" prop="form_field_26046">
-              <fd-input v-model="formData.form_field_26046" placeholder="123" status="enable" size="medium"></fd-input>
-            </el-form-item>
-          </el-tab-pane>
-          <el-tab-pane label="标签页2" name="tab2">
-            <el-row :gutter="0" type="flex">
-              <el-col :span="12">
-                <el-form-item label="输入框" prop="form_field_89641">
-                  <fd-input v-model="formData.form_field_89641" placeholder="123" status="enable" size="medium"></fd-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="级联框" prop="form_field_72153">
-                  <fd-cascader v-model="formData.form_field_72153" :selections="formItemOptionsDic.form_field_72153" readOnlySeperator="/" :multiple="false" :clearable="true" size="medium" :isRemote="false" status="enable"></fd-cascader>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-form-item label="下拉框" prop="form_field_65218">
-              <fd-select v-model="formData.form_field_65218" :selections="formItemOptionsDic.form_field_65218" :multiple="false" :clearable="true" size="medium" :isRemote="false" status="enable"></fd-select>
-            </el-form-item>
-          </el-tab-pane>
-        </el-tabs>
-      </el-col>
-    </el-row>
-    <el-form-item label="下拉框" prop="form_field_72820">
-      <fd-select v-model="formData.form_field_72820" :selections="formItemOptionsDic.form_field_72820" :multiple="false" :clearable="true" size="medium" :isRemote="false"></fd-select>
-    </el-form-item>
-    <el-form-item label="日期选择器" prop="form_field_70608">
-      <fd-date-picker v-model="formData.form_field_70608" placeholder="请选择" type="date" valueFormat="yyyy-MM-dd" :optionBeforeToday="false" :optionAfterToday="false" :includeToday="false" :rangeDays="0" :dateCompareConfigs="[]" :defaultToday="false" size="medium"></fd-date-picker>
-    </el-form-item>
-    <el-form-item>
-      <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>
-      <el-button size="small" @click="handleReset" style="margin-left: 8px">Reset</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <form-render
+      ref="formRender"
+      @form-render-mounted="setData"
+      :form-config="form"
+    />
+  </div>
 </template>
 
 <script>
-import formCompsMixin from '@/components/form-design/src/mixins/form-comps-mixin'
+import FormRender from '@/components/form-design/src/form-preview-dialog/form-render/FormRender'
 
 export default {
-  mixins: [formCompsMixin],
+  components: {
+    FormRender
+  },
   data () {
     return {
-      formRules: {},
-      formData: {
-        form_field_81056: ['zhinan', 'daohang', 'dingbudaohang'],
-        form_field_77263: null,
-        form_field_8200: null,
-        form_field_57594: null,
-        form_field_26046: null,
-        form_field_89641: null,
-        form_field_72153: null,
-        form_field_65218: null,
-        form_field_72820: null,
-        form_field_70608: null
-      },
-      tabsDic: {
-        layout_form_field_21912: 'tab1'
-      },
-      formItemOptionsDic: {
-        form_field_81056: [
-          {
-            value: 'zhinan',
-            label: '指南',
-            children: [
-              {
-                value: 'shejiyuanze',
-                label: '设计原则',
-                children: [
-                  {
-                    value: 'yizhi',
-                    label: '一致'
-                  },
-                  {
-                    value: 'fankui',
-                    label: '反馈'
-                  },
-                  {
-                    value: 'xiaolv',
-                    label: '效率'
-                  },
-                  {
-                    value: 'kekong',
-                    label: '可控'
-                  }
-                ]
-              },
-              {
-                value: 'daohang',
-                label: '导航',
-                children: [
-                  {
-                    value: 'cexiangdaohang',
-                    label: '侧向导航'
-                  },
-                  {
-                    value: 'dingbudaohang',
-                    label: '顶部导航'
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        form_field_57594: [
-          {
-            label: '选项1',
-            value: '1'
-          },
-          {
-            label: '选项2',
-            value: '2'
-          }
-        ],
-        form_field_72153: [
-          {
-            value: 'zhinan',
-            label: '指南',
-            children: [
-              {
-                value: 'shejiyuanze',
-                label: '设计原则',
-                children: [
-                  {
-                    value: 'yizhi',
-                    label: '一致'
-                  },
-                  {
-                    value: 'fankui',
-                    label: '反馈'
-                  },
-                  {
-                    value: 'xiaolv',
-                    label: '效率'
-                  },
-                  {
-                    value: 'kekong',
-                    label: '可控'
-                  }
-                ]
-              },
-              {
-                value: 'daohang',
-                label: '导航',
-                children: [
-                  {
-                    value: 'cexiangdaohang',
-                    label: '侧向导航'
-                  },
-                  {
-                    value: 'dingbudaohang',
-                    label: '顶部导航'
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        form_field_65218: [
-          {
-            label: '选项1',
-            value: '1'
-          },
-          {
-            label: '选项2',
-            value: '2'
-          }
-        ],
-        form_field_72820: [
-          {
-            label: '选项1',
-            value: '1'
-          },
-          {
-            label: '选项2',
-            value: '2'
-          }
-        ]
-      },
+      form: null
     }
   },
   methods: {
-    handleSubmit () {},
-    handleReset () {}
+    setData () {
+      this.$refs.formRender.setRemoteData().then(formData => {
+        // setTimeout(() => {
+        //   const data = {}
+        //   const fields = ['s1', 's2', 's4']
+        //   fields.forEach((fieldName, idx) => {
+        //     data[fieldName] = `preview_${idx}`
+        //   })
+        //   this.$refs.formRender.setFormData(data)
+        // }, 3000)
+      })
+    },
+  },
+  created () {
+    this.form = {
+      global: {
+        common: {
+          labelPosition: 'left',
+          labelWidth: 95,
+          size: 'medium',
+          globalStatus: ''
+        }
+      },
+      formItemConfigs: [
+        {
+          comp: 'fd-file-uploader',
+          label: '文件上传',
+          id: '100007',
+          category: 'input',
+          props: {
+            fileType: '',
+            fileSize: 10,
+            multiple: true,
+            isImage: false,
+            isFlex: true
+          },
+          triggerUseChange: true,
+          dontShowDefault: true,
+          elFormItem: {
+            formItemLabel: '文件上传',
+            labelWidth: 0,
+            isRequired: false,
+            fieldName: 'form_field_35905',
+            size: '',
+            diyValidator: 'function validator (form, callback) {\n  callback()\n}',
+            defaultValue: null
+          },
+          common: {
+            fieldShowScript: 'function show (data) {\n  return true\n}',
+            status: ''
+          },
+          key: 'form_field_35905'
+        },
+        {
+          comp: 'fd-rich-text',
+          label: '富文本',
+          id: '100008',
+          category: 'input',
+          props: {
+            init: {
+              height: 327
+            }
+          },
+          triggerUseChange: true,
+          dontShowDefault: true,
+          elFormItem: {
+            formItemLabel: '富文本',
+            labelWidth: 0,
+            isRequired: false,
+            fieldName: 'form_field_51803',
+            size: '',
+            diyValidator: 'function validator (form, callback) {\n  callback()\n}',
+            defaultValue: null
+          },
+          common: {
+            fieldShowScript: 'function show (data) {\n  return true\n}',
+            status: ''
+          },
+          key: 'form_field_51803'
+        }
+      ]
+    }
   }
 }
 </script>
