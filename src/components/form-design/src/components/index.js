@@ -12,6 +12,7 @@ import FdDialog from './fd-dialog'
 import fdFileUploader from './fd-file-uploader'
 import fdRichText from './fd-rich-text'
 import fdSlotComp from './fd-slot-comp'
+import fdTree from './fd-tree'
 
 const components = [
   FdCascader,
@@ -26,7 +27,8 @@ const components = [
   FdDialog,
   fdFileUploader,
   fdRichText,
-  fdSlotComp
+  fdSlotComp,
+  fdTree
 ]
 
 const dic = {}

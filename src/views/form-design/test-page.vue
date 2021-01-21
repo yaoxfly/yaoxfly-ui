@@ -100,6 +100,104 @@ export default {
             status: ''
           },
           key: 'form_field_51803'
+        },
+
+        {
+          comp: 'fd-tree',
+          label: '树',
+          id: '100010',
+          category: 'input',
+          props: {
+            data: [
+              {
+                id: 1,
+                label: '一级 1',
+                disabled: true,
+                children: [
+                  {
+                    id: 4,
+                    label: '二级 1-1',
+                    children: [
+                      {
+                        id: 9,
+                        label: '三级 1-1-1'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 2,
+                label: '一级 2',
+                children: [
+                  {
+                    id: 5,
+                    label: '二级 2-1',
+                    children: [
+                      {
+                        id: 6,
+                        label: '三级 2-1-1'
+                      }
+                    ]
+                  },
+                  {
+                    id: 3,
+                    label: '二级 2-2',
+                    children: [
+                      {
+                        id: 7,
+                        label: '三级 2-2-1'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                label: '一级 3',
+                id: 8,
+                children: [
+                  {
+                    id: 10,
+                    label: '二级 3-1',
+                    children: [
+                      {
+                        id: 11,
+                        label: '三级 3-1-1'
+                      }
+                    ]
+                  },
+                  {
+                    label: '二级 3-2',
+                    id: 12,
+                    children: [
+                      {
+                        id: 13,
+                        label: '三级 3-2-1'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            showCheckbox: true,
+            status: 'enable',
+            size: 'medium'
+          },
+          dontShowDefault: true,
+          elFormItem: {
+            formItemLabel: '树',
+            labelWidth: 0,
+            isRequired: false,
+            fieldName: 'form_field_43668',
+            size: '',
+            diyValidator: 'function validator (form, callback) {\n  callback()\n}',
+            defaultValue: null
+          },
+          common: {
+            fieldShowScript: 'function show (data) {\n  return true\n}',
+            status: ''
+          },
+          key: 'form_field_43668'
         }
       ]
     }

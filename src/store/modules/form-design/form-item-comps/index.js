@@ -13,7 +13,7 @@ import { fdDialog, fdDialogFormConfig } from './form-layout-item-props/fd-dialog
 import { uploaderCompProps, uploaderCompPropsForm } from './form-item-props/fd-file-uploader'
 import { richText, richTextPropsForm } from './form-item-props/fd-rich-text'
 import { slotComp, slotCompPropsForm } from './form-item-props/fd-slot-comp'
-
+import { treeComp, treePropsForm } from './form-item-props/fd-tree'
 /**
  * 普通输入组件
  */
@@ -96,6 +96,15 @@ export const commonComps = [
     props: slotComp.props,
     // 不显示设置默认值的组件
     dontShowDefault: true
+  },
+  {
+    comp: 'fd-tree',
+    label: '树',
+    id: '100010',
+    category: 'input',
+    props: treeComp.props,
+    // 不显示设置默认值的组件
+    dontShowDefault: true
   }
 ]
 /**
@@ -168,5 +177,6 @@ export const formItemPropsForms = {
   'fd-dialog': fdDialogFormConfig,
   'fd-file-uploader': uploaderCompPropsForm,
   'fd-rich-text': richTextPropsForm,
-  'fd-slot-comp': slotCompPropsForm
+  'fd-slot-comp': slotCompPropsForm,
+  'fd-tree': treePropsForm
 }

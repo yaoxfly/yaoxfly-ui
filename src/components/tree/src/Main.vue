@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="eve-tree" :style="{ width: checkString(width) }">
-    <div class="eve-tree__filter" v-if="isShowfilter">
+    <div class="eve-tree__filter" v-if="isShowFilter">
       <el-input placeholder="输入关键字进行过滤" v-model="filterText" clearable>
       </el-input>
     </div>
@@ -256,7 +256,7 @@ export default {
     },
 
     //是否开启节点过滤
-    isShowfilter: {
+    isShowFilter: {
       type: Boolean,
       default: () => true
     },
