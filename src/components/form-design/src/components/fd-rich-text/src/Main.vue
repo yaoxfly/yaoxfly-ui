@@ -11,7 +11,7 @@
       :disabled="isDisabled"
       :init="init"
       @on-click="onClick"/>
-    <div v-html="curValue"></div>
+    <div v-else v-html="curValue"></div>
   </div>
 </template>
 <script>

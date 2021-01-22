@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export default function ({ formItemConfigs, global }) {
+export default function({ formItemConfigs, global }) {
   const { size, globalStatus } = global.common
   // console.log('p p', formItemConfigs, size, 12)
   const vuePageConfig = { tabsDic: [], pageCodes: [], formData: [], formRules: [], formItemOptionsDic: [] }
@@ -16,44 +16,51 @@ export default function ({ formItemConfigs, global }) {
 // 返回普通表单页面
 function generateCommomFormPage(globalCommon, vuePageConfig) {
   // labelPosition, labelWidth, globalStatus, tabsDic, pageCodes, formData, formRules, formItemOptionsDic
-  const { globalStatus, labelPosition, labelWidth } = globalCommon
+  const { globalStatus, labelPosition, labelWidth, size } = globalCommon
   const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = vuePageConfig
   return '<template>' +
-  `\n  <el-form ref="form" :model="formData" :rules="formRules" label-position="${labelPosition}" label-width="${labelWidth}px"> ` +
-  pageCodes.join('') +
-  '\n    <el-form-item class="form-foot-btns">' +
-  '\n      <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>' +
-  '\n      <el-button size="small" @click="handleReset" style="margin-left: 8px">Reset</el-button>' +
-  '\n    </el-form-item>' + 
-  '\n  </el-form>' +
-  '\n</template>\n' +
-  '\n<script>' +
-  `\nimport formCompsMixin from '@/mixins/comps'${''}\n` +
-  '\nexport default {' +
-  '\n  mixins: [formCompsMixin],' +
-  '\n  data () {' +
-  '\n    return {' +
-  `\n      globalStatus: '${globalStatus}',` +
-  `\n      formRules: {${formRules.length > 0 ? `${formRules.join(',')}\n      ` : ''}},` +
-  `\n      formData: {${formData.join(',')}\n      },` +
-  `${tabsDic.length > 0 ? `\n      tabsDic: {${tabsDic.join(',')}\n      },` : ''}` +
-  `${formItemOptionsDic.length > 0 ? `\n      formItemOptionsDic: {${formItemOptionsDic.join(',')}\n      },` : ''}` +
-  '\n    }' +
-  '\n  },' +
-  '\n  methods: {' +
-  '\n    handleSubmit () { this.$refs.form.validate(valid => {}) },' +
-  '\n    handleReset () { this.$refs.form.resetFields() },' +
-  '\n    validate (callback) {' + 
-  '\n      this.$refs.form.validate(valid => callback(valid))' +
-  '\n    }' +
-  '\n  }' +
-  '\n}' +
-  '\n</script>\n'
+'\n  <div class="form-page">' +
+'\n    <el-card class="form" shadow="never">' +
+`\n      <el-form ref="form" :model="formData" :rules="formRules" label-position="${labelPosition}" label-width="${labelWidth}px"> ` +
+pageCodes.join('') +
+'\n      </el-form>' +
+'\n    </el-card>' +
+'\n    <el-card shadow="never" class="form-btn-wrapper">' +
+'\n      <div class="form-foot-btns">' +
+'\n        <el-button size="small" type="primary" @click="handleSubmit">Submit</el-button>' +
+'\n        <el-button size="small" @click="handleReset" style="margin-left: 8px">Reset</el-button>' +
+'\n      </div>' +
+'\n    </el-card>' +
+'\n  </div>' +
+'\n</template>\n' +
+'\n<script>' +
+`\nimport formCompsMixin from '@/core/mixins/comps'${''}\n` +
+'\nexport default {' +
+'\n  mixins: [formCompsMixin],' +
+'\n  data () {' +
+'\n    return {' +
+`\n      globalStatus: '${globalStatus}',` +
+`\n      globalSize: '${size}',` +
+`\n      formRules: {${formRules.length > 0 ? `${formRules.join(',')}\n      ` : ''}},` +
+`\n      formData: {${formData.join(',')}\n      },` +
+`${tabsDic.length > 0 ? `\n      tabsDic: {${tabsDic.join(',')}\n      },` : ''}` +
+`${formItemOptionsDic.length > 0 ? `\n      formItemOptionsDic: {${formItemOptionsDic.join(',')}\n      },` : ''}` +
+'\n    }' +
+'\n  },' +
+'\n  methods: {' +
+'\n    handleSubmit () { this.$refs.form.validate(valid => {}) },' +
+'\n    handleReset () { this.$refs.form.resetFields() },' +
+'\n    validate (callback) {' +
+'\n      this.$refs.form.validate(valid => callback(valid))' +
+'\n    }' +
+'\n  }' +
+'\n}' +
+'\n</script>\n'
 }
 
 // 对话框表单页
 function generateFormDialog(dialogProps, globalCommon, vuePageConfig) {
-  const { globalStatus, labelPosition, labelWidth } = globalCommon
+  const { globalStatus, labelPosition, labelWidth, size } = globalCommon
   const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = vuePageConfig
   return '<template>' +
   `\n  <fd-dialog ${parseProps(dialogProps)} @open-dialog="handleOpenDialog" @close-dialog="handleCloseDialog">` +
@@ -67,12 +74,13 @@ function generateFormDialog(dialogProps, globalCommon, vuePageConfig) {
   '\n  </fd-dialog>' +
   '\n</template>\n' +
   '\n<script>' +
-  `\nimport formCompsMixin from '@/mixins/comps'${''}\n` +
+  `\nimport formCompsMixin from '@/core/mixins/comps'${''}\n` +
   '\nexport default {' +
   '\n  mixins: [formCompsMixin],' +
   '\n  data () {' +
   '\n    return {' +
   `\n      globalStatus: '${globalStatus}',` +
+  `\n      globalSize: '${size}',` +
   `\n      formRules: {${formRules.length > 0 ? `${formRules.join(',')}\n      ` : ''}},` +
   `\n      formData: {${formData.join(',')}\n      },` +
   `${tabsDic.length > 0 ? `\n      tabsDic: {${tabsDic.join(',')}\n      },` : ''}` +
@@ -93,9 +101,9 @@ function generateFormDialog(dialogProps, globalCommon, vuePageConfig) {
   '\n}' +
   '\n</script>\n'
 }
+
 const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
   const { tabsDic, pageCodes, formData, formRules, formItemOptionsDic } = parentConfig
-  const { globalSize } = globalConfig
   const currentIndents = getIndents(level)
   formItemList.forEach(formItem => {
     /**
@@ -185,20 +193,25 @@ const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
             formItemProps.labelWidth = '0'
           }
         }
-        const curInputFormItemCodeArr = [`\n${getIndents(level)}<el-form-item ${parseProps(formItemProps)}>`]
+        const curInputFormItemCodeArr = [`\n${getIndents(level)}<el-form-item style="width: 100%" ${parseProps(formItemProps)}>`]
         if (formItemLabel) {
           curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<span class="diy-el-item-label" slot="label">${formItemLabel}</span>`)
         }
         // 组件的props
         const inputCompProps = {
           ...formItem.props,
-          size: size || globalSize,
+          size,
           status
         }
         let statusStr = ''
         if (!inputCompProps.status) {
           delete inputCompProps.status
           statusStr = ' :status="globalStatus"'
+        }
+        let sizeStr = ''
+        if (!inputCompProps.size) {
+          delete inputCompProps.size
+          sizeStr = ' :size="globalSize"'
         }
         // 解析带可选项的组件的选项
         let selectionsStr = ''
@@ -210,7 +223,7 @@ const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
               `\n${getIndents(4)}]`)
           }
         }
-        curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<${formItem.comp} v-model="formData.${fieldName}"${selectionsStr}${statusStr} ${parseProps(inputCompProps)}>`)
+        curInputFormItemCodeArr.push(`\n${getIndents(level + 1)}<${formItem.comp} v-model${formItem.comp === 'fd-input' ? '.trim' : ''}="formData.${fieldName}"${selectionsStr}${statusStr}${sizeStr} ${parseProps(inputCompProps)}>`)
         // 可以在这里设置options
         curInputFormItemCodeArr.push(`</${formItem.comp}>`)
         curInputFormItemCodeArr.push(`\n${getIndents(level)}</el-form-item>`)
@@ -224,7 +237,7 @@ const visitFormItem = (formItemList, level, parentConfig, globalConfig) => {
 }
 
 // 解析输入组件的选项
-function parseSelections (selections, indents) {
+function parseSelections(selections, indents) {
   const selectionsStr = []
   _.forEach(selections, (item) => {
     if (_.isArray(item)) {
@@ -240,7 +253,7 @@ function parseSelections (selections, indents) {
   return selectionsStr.join(',')
 }
 
-function parseObjectToStringWithIndents (obj, indents) {
+function parseObjectToStringWithIndents(obj, indents) {
   if (_.isArray(obj)) {
     const arr = []
     obj.forEach(v => {
@@ -274,7 +287,7 @@ const getIndents = (n) => {
  * 当前项的空值
  * @param {*} props
  */
-function getEmpytValue (props) {
+function getEmpytValue(props) {
   if (props.multiple) {
     return []
   } else {
@@ -282,7 +295,7 @@ function getEmpytValue (props) {
   }
 }
 
-function parseProps (props) {
+function parseProps(props) {
   const propsStrArr = []
   Object.keys(props).forEach(prop => {
     //  !== 'selections'
@@ -295,7 +308,7 @@ function parseProps (props) {
         })
         propsStrArr.push(`:${prop}="[${arr.join(', ')}]"`)
       } else if (_.isObject(v)) {
-        propsStrArr.push(`:${prop}="{${parseObjectToString(v)}}"`)
+        propsStrArr.push(`:${prop}="${parseObjectToString(v)}"`)
       } else if (_.isBoolean(v) || _.isNumber(v)) {
         propsStrArr.push(`:${prop}="${v}"`)
       } else {
@@ -310,9 +323,9 @@ function parseProps (props) {
 
 /**
  * 不带缩进换行的对象解析
- * @param {*} obj 
+ * @param {*} obj
  */
-function parseObjectToString (obj) {
+function parseObjectToString(obj) {
   if (_.isArray(obj)) {
     const arr = []
     obj.forEach(v => {

@@ -18,30 +18,31 @@
       />
     </el-select>
     <template v-else>
-      <el-button type="primary" size="small">{{ btnLabel }}</el-button>
+      <el-button :disabled="disabled" type="primary" size="small" @click="handleClickShowDialog">{{ btnLabel }}</el-button>
+      <select-dialog ref="selectDialog" :title="btnLabel" :selections="realSelections" v-model="curValue"/>
     </template>
   </div>
 </template>
 
 <script>
-import VModelMixin from './v-model-mixin'
+import VModelMixin from '../v-model-mixin'
 import { mapState } from 'vuex'
+import selectDialog from './select-dialog'
 
 export default {
   name: 'UeSelect',
   mixins: [
     VModelMixin
   ],
+  components: {
+    selectDialog
+  },
   props: {
     selections: {
       type: Array,
       default: () => []
     },
     // 函数
-    selectionsParser: {
-      type: String,
-      default: null
-    },
     clearable: {
       type: Boolean,
       default: false
@@ -62,7 +63,8 @@ export default {
   },
   data () {
     return {
-      parsedOptions: []
+      clonedSelections: [],
+      showDialog: false
     }
   },
   computed: {
@@ -70,12 +72,17 @@ export default {
       curChart: state => state.bdUserConfig.clickedActivatedChart
     }),
     realSelections () {
-      if (this.selectionsParser) {
-        // eslint-disable-next-line no-eval
-        return eval(`(false || function () { return ${this.selectionsParser} })()`)(this, this.curChart)
-      } else {
-        return this.selections
+      if (this.multiple) {
+        const clonedSelections = this.selections
+        clonedSelections.sort((a, b) => a.label.length - b.label.length)
+        return clonedSelections
       }
+      return this.selections
+    }
+  },
+  methods: {
+    handleClickShowDialog () {
+      this.$refs.selectDialog.openDialog()
     }
   }
 }

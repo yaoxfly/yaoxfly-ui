@@ -16,7 +16,6 @@ export const richText = {
       init: {
         isGroup: true,
         configName: '富文本初始对象配置',
-        commonGroup: true,
         plugins: {
           configName: '',
           component: 'ue-select',
@@ -26,6 +25,7 @@ export const richText = {
           mode: 'dialog',
           btnLabel: '选择plugins',
           selections: [
+            { value: 'ax_wordlimit', label: '字数限制' },
             { value: 'lists', label: '列表插件' },
             { value: 'image', label: '插入上传图片插件' },
             { value: 'media', label: '插入视频插件' },
@@ -38,7 +38,7 @@ export const richText = {
             { value: 'charmap', label: '自定义特殊字符' },
             { value: 'codesample', label: '代码示例插件' },
             { value: 'directionality', label: '文字方向' },
-            { value: 'fullpage', label: '文档属性' },
+            // { value: 'fullpage', label: '文档属性' },
             { value: 'fullpage', label: '全屏' },
             { value: 'help', label: '帮助' },
             { value: 'hr', label: '水平分割线' },
@@ -76,21 +76,21 @@ export const richText = {
           configName: '富文本高度',
           component: 'ue-input',
           type: 'Number',
-          min: 327,
+          min: 0,
           max: 99999
         },
         min_height: {
           configName: '富文本最小高度',
           component: 'ue-input',
           type: 'Number',
-          min: 327,
+          min: 0,
           max: 99999
         },
         max_height: {
           configName: '富文本最大高度',
           component: 'ue-input',
           type: 'Number',
-          min: 327,
+          min: 0,
           max: 99999
         }
       }

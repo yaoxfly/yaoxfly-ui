@@ -120,10 +120,6 @@ export default {
         isBasicJsType: true
       },
       {
-        name: 'selectionsParser',
-        isBasicJsType: true
-      },
-      {
         name: 'clearable',
         isBasicJsType: true
       },
