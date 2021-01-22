@@ -51,7 +51,6 @@ export default {
     const { comp, props, category } = this.formItemConfig
     const rProps = {
       ...props,
-      notRequest: true,
       inConfigPanel: true
     }
     if (category === 'input' && !this.isLayoutChild) {

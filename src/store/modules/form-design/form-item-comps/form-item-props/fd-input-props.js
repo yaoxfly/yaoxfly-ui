@@ -1,3 +1,6 @@
+/**
+ * 输入框属性
+ */
 export const inputCompProps = {
   props: {
     placeholder: '',
@@ -10,7 +13,9 @@ export const inputCompProps = {
     maxlength: 300
   }
 }
-
+/**
+ * 输入框属性表单配置
+ */
 export const inputCompPropsForm = {
   props: {
     placeholder: {

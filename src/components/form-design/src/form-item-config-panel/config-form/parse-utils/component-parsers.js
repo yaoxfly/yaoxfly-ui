@@ -126,6 +126,16 @@ export default {
       {
         name: 'clearable',
         isBasicJsType: true
+      },
+      {
+        name: 'multiple',
+        isBasicJsType: true
+      },
+      {
+        name: 'mode'
+      },
+      {
+        name: 'btnLabel'
       }
     ]
     return buildFormItemRender(h, instance, formPropertyName, vueNodeConfig, componentProps, parentKey, {})

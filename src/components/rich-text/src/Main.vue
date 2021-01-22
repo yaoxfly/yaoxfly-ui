@@ -6,7 +6,7 @@
 <template>
   <div class="eve-rich-text">
     <editor
-      id="richText"
+      :id="id"
       ref="richText"
       v-model="myValue"
       :init="tempInit"
@@ -98,9 +98,10 @@ export default {
 
   data () {
     return {
+      id: null,
       //默认初始化
       tempInit: {
-        selector: 'richText',
+        selector: '',
         auto_focus: true,
         //语言插件地址
         language_url: languageUrl,
@@ -200,7 +201,10 @@ export default {
   mounted () {
     this.initialize()
   },
-
+  created () {
+    this.id = `rich_editor_${new Date().valueOf()}`
+    this.tempInit.selector = this.id
+  },
   methods: {
 
     /**@description  聚焦事件

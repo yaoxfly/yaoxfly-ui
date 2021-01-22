@@ -66,6 +66,10 @@ export default {
     needDeleteConfirm: {
       type: Boolean,
       default: true
+    },
+    isImage: {
+      type: Boolean,
+      default: false                
     }
   },
   computed: {
@@ -104,7 +108,7 @@ export default {
           return false
         }
       }
-      this.newFileList.push(file)
+      this.newFileList.splice(0, 0, file)
       return false
     },
     //清空上传的列表

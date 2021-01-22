@@ -15,11 +15,12 @@
         <form-item-config-panel/>
       </el-aside>
     </el-container>
-    <form-preview-dialog v-model="showPreviewDialog"/>
+    <form-preview-dialog v-model="showPreviewDialog" :fullscreen="fullscreen"/>
     <json-preview-dialog v-model="showJsonDialog"/>
     <vue-preview-dialog v-model="previewVue"/>
     <el-footer class="eve-form-design-footer">
       <el-button size="small" @click="handleClickPreview" type="success">表单预览</el-button>
+      <el-button size="small" @click="handleClickFullscreenPreview" type="success">表单全屏预览</el-button>
       <el-button size="small" @click="handleClickPreviewJson" type="info">JSON文件预览</el-button>
       <el-button size="small" @click="handleClickPreviewVue" type="info" plain>页面代码预览</el-button>
       <el-button size="small" @click="handleExportJson" type="info" plain>导出json配置</el-button>
@@ -57,7 +58,8 @@ export default {
     return {
       showPreviewDialog: false,
       showJsonDialog: false,
-      previewVue: false
+      previewVue: false,
+      fullscreen: false
     }
   },
   computed: {
@@ -72,6 +74,7 @@ export default {
     }),
     handleClickPreview () {
       this.showPreviewDialog = true
+      this.fullscreen = false
     },
     handleClickPreviewJson () {
       this.showJsonDialog = true
@@ -87,8 +90,11 @@ export default {
       }
     },
     handleUploadJson (data) {
-      console.log('d ', data)
       this.setFormConfig(data)
+    },
+    handleClickFullscreenPreview () {
+      this.fullscreen = true
+      this.showPreviewDialog = true
     }
   }
 }
@@ -107,7 +113,7 @@ export default {
     border-bottom: 1px solid #e8eaec;
   }
   .eve-form-design-main-container {
-    height: calc(100vh - #{$HeaderFooterHeight} * 2);
+    height: calc(100vh - #{$HeaderFooterHeight + 2px} * 2);
     padding: 8px;
     .el-main {
       padding: 0 !important;

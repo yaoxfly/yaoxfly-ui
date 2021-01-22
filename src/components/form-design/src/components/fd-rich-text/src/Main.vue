@@ -8,6 +8,7 @@
     <eve-rich-text
        v-if="!isReadOnly"
       v-model="curValue"
+      :disabled="isDisabled"
       :init="init"
       @on-click="onClick"/>
     <div v-html="curValue"></div>

@@ -1,6 +1,6 @@
 <!-- 表单设计 -->
 <template>
-  <el-dialog :visible.sync="show" append-to-body custom-class="vertical-center-modal" :width="modalWidth + 'px'" :close-on-click-modal="false" @open="handleOpen" @close="handleCancel">
+  <el-dialog :fullscreen="fullscreen" :visible.sync="show" append-to-body custom-class="vertical-center-modal" :width="modalWidth + 'px'" :close-on-click-modal="false" @open="handleOpen" @close="handleCancel">
     <div slot="title">
       预览
     </div>
@@ -26,6 +26,10 @@ export default {
     ModalMixin
   ],
   props: {
+    fullscreen: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {}
