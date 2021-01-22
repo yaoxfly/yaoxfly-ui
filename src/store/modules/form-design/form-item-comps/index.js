@@ -14,6 +14,7 @@ import { uploaderCompProps, uploaderCompPropsForm } from './form-item-props/fd-f
 import { richText, richTextPropsForm } from './form-item-props/fd-rich-text'
 import { slotComp, slotCompPropsForm } from './form-item-props/fd-slot-comp'
 import { treeComp, treePropsForm } from './form-item-props/fd-tree'
+import { dropDownTreeComp, dropDownTreePropsForm } from './form-item-props/fd-drop-down-tree'
 /**
  * 普通输入组件
  */
@@ -105,6 +106,15 @@ export const commonComps = [
     props: treeComp.props,
     // 不显示设置默认值的组件
     dontShowDefault: true
+  },
+  {
+    comp: 'fd-drop-down-tree',
+    label: '下拉树',
+    id: '100011',
+    category: 'input',
+    props: dropDownTreeComp.props,
+    // 不显示设置默认值的组件
+    dontShowDefault: true
   }
 ]
 /**
@@ -178,5 +188,6 @@ export const formItemPropsForms = {
   'fd-file-uploader': uploaderCompPropsForm,
   'fd-rich-text': richTextPropsForm,
   'fd-slot-comp': slotCompPropsForm,
-  'fd-tree': treePropsForm
+  'fd-tree': treePropsForm,
+  'fd-drop-down-tree': dropDownTreePropsForm,
 }

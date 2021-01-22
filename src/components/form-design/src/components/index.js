@@ -13,7 +13,7 @@ import fdFileUploader from './fd-file-uploader'
 import fdRichText from './fd-rich-text'
 import fdSlotComp from './fd-slot-comp'
 import fdTree from './fd-tree'
-
+import fdDropDownTree from './fd-drop-down-tree'
 const components = [
   FdCascader,
   FdLabel,
@@ -28,12 +28,11 @@ const components = [
   fdFileUploader,
   fdRichText,
   fdSlotComp,
-  fdTree
+  fdTree,
+  fdDropDownTree
 ]
-
 const dic = {}
 components.forEach(component => {
   dic[component.name] = component
 })
-
 export default dic

@@ -6,7 +6,7 @@
 <template>
   <div class="eve-rich-text">
     <editor
-      :id="id"
+      :id="tempInit.selector"
       ref="richText"
       v-model="myValue"
       :init="tempInit"
@@ -98,10 +98,9 @@ export default {
 
   data () {
     return {
-      id: null,
       //默认初始化
       tempInit: {
-        selector: '',
+        selector: `rich_editor_${this.getGenerateMixed()}`,
         auto_focus: true,
         //语言插件地址
         language_url: languageUrl,
@@ -202,8 +201,7 @@ export default {
     this.initialize()
   },
   created () {
-    this.id = `rich_editor_${new Date().valueOf()}`
-    this.tempInit.selector = this.id
+
   },
   methods: {
 
@@ -280,7 +278,21 @@ export default {
           writable: false //不可修改
         })
       }
-    }
+    },
+
+    /**@description  获取随机数
+    * @author yx
+    * @param  {Number}  num 位数
+    */
+    getGenerateMixed (num = 32) {
+      const chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+      let res = ''
+      for (let i = 0; i < num; i++) {
+        const id = Math.ceil(Math.random() * 35)
+        res += chars[id]
+      }
+      return res
+    },
   },
 
   watch: {
