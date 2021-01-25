@@ -101,11 +101,11 @@ export default {
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ----| ----| --- | ---- | ----- |
 | data  | 展示数据 | array | — | — |
-| props  | 配置选项，具体看下表 | object | — | — |
+| props  | 配置选项，具体看下表 | object | — | {label:'label',children:'children',isLeaf:'leaf'})|
 | show-checkbox  | 节点是否可被选择 | boolean | — | false |
 | lazy  | 是否懒加载子节点，需与 load 方法结合使用 | boolean | — | false |
 | load  | 加载子树数据的方法，仅当 lazy 属性为true 时生效 |function(node, resolve) | — |  — |
-| node-key  | 每个树节点用来作为唯一标识的属性，整棵树应该是唯一的 | string | — |  — |
+| node-key  | 每个树节点用来作为唯一标识的属性，整棵树应该是唯一的 | string | — |  id |
 | default-expanded-keys  | 默认展开的节点的 key 的数组 | array | — |  — |
 | default-checked-keys	  | 默认勾选的节点的 key 的数组 | array | — |  — |
 | default-expand-all	  | 是否默认展开所有节点 | boolean | — |  false |

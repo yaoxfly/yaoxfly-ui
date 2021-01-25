@@ -215,8 +215,8 @@ export default {
 | data  | 展示数据 | array | — | — |
 | value / v-model  | 绑定值|  string / array | — | — |
 | only-leaf  | 是否只选中和高亮叶子节点 | boolean | — | true |
-| props  | 配置选项，具体看下表 | object | — |  — |
-| node-key  | 每个树节点用来作为唯一标识的属性，整棵树应该是唯一的 | string | — |  — |
+| props  | 配置选项，具体看下表 | object | — |  {children: 'children', label: 'label'} |
+| node-key  | 每个树节点用来作为唯一标识的属性，整棵树应该是唯一的 | string | — |  id |
 | default-expand-all	  | 是否默认展开所有节点 | boolean | — |  false |
 | multiple|  节点是否多选| boolean | — |  false |
 | check-strictly|   在显示复选框的情况下，是否严格的遵循父子不互相关联的做法| boolean | — |  true |

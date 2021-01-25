@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Md from '../../../README.md'
+import Md from './Install.md'
 export default {
   name: 'Install',
   components: {
