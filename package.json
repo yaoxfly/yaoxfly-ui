@@ -1,11 +1,11 @@
 {
   "name": "eve-ui",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "eve-ui",
   "private": false,
   "license": "MIT",
   "author": "yaoxfly",
-  "main": "src/index.js",
+  "main": "lib/eve-ui.umd.min.js",
   "files": [
     "src",
     "lib"
@@ -15,11 +15,13 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "publish": "npm version patch -f",
-    "lib": "npm run build:lib &  npm run webpack:com  & npm run webpack:css  &  npm run node",
+    "lib": "npm run build:lib &  npm run webpack:com  & npm run webpack:css  &  npm run node  & npm run node:edp",
     "build:lib": "vue-cli-service build --target lib --name eve-ui --dest lib src/index.js",
     "webpack:com": "webpack --mode production --config build/webpack.component.js",
     "webpack:css": "webpack --mode production --config build/webpack.css.js",
-    "node": "node ./build/node.bass.js"
+    "node": "node ./build/node.base.js",
+    "node:edp": "node ./build/node.edit.package.js",
+    "prepublish": "npm run lib"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.3",
