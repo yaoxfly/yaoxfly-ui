@@ -363,7 +363,8 @@ export default {
 | select  |当用户手动勾选数据行的 Checkbox 时触发的事件 | [] (id数组或者当前行数据的数组) |
 | select-all  |当用户手动勾选全选 Checkbox 时触发的事件 | [] (id数组或者当前行数据的数组) |
 | current-row-change  | 当表格的当前行发生变化的时候会触发该事件，如果要高亮当前行，请打开表格的 highlight-current-row 属性 |currentRow, oldCurrentRow|
-| sortChange  |当表格的排序条件发生变化的时候会触发该事件 |{ column, prop, order }|
+| sort-change  |当表格的排序条件发生变化的时候会触发该事件 |{ column, prop, order }|
+| filter-change  |当表格的筛选条件发生变化的时候会触发该事件，参数的值是一个对象，对象的 key 是 column 的 columnKey，对应的 value 为用户选择的筛选条件的数组。 |filters|
 
 
 ###  Pagination Event

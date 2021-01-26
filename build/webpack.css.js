@@ -2,6 +2,7 @@ const path = require('path')
 const merge = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.base.js')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const editPackage = require('./node.edit.package.js')
 const chalk = require('chalk')
 const log = (message) => console.log(chalk.green(`${message}`))
 log('正在打包base.css')
@@ -27,6 +28,7 @@ module.exports = merge(webpackBaseConfig, {
         })
     ]
 })
-
+log('正在更新package.json')
+editPackage.writePackageJson()
 
 

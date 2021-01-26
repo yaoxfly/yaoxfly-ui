@@ -3,7 +3,6 @@
 * @Description:表格-分页组件
 * @Date: 2020-09-24
 -->
-
 <template>
   <div class="eve-table-pagination">
     <el-table
@@ -26,9 +25,11 @@
       @current-change="currentRowChange"
       @select="select"
       @select-all="selectAll"
+      @sort-change="sortChange"
+      @filter-change="filterChange"
       v-bind="$attrs"
-      v-on="$listeners"
     >
+      <!-- v-on="$listeners" -->
       <!--暂无数据 -->
       <template #empty>
         <slot name="empty">暂无数据</slot>
@@ -192,6 +193,7 @@
 import render from './render.js'
 export default {
   name: 'EveTablePagination',
+  inheritAttrs: false,
   props: {
     /* --------饿了么自带属性---------- */
     // 表格数据
@@ -636,11 +638,6 @@ export default {
       // console.log(val)
       this.$emit('current-row-change', currentRow, oldCurrentRow)
     },
-    // // 排序回调
-    // sortChange (emit) {
-    //   // console.log(emit)
-    //   this.$emit('sort-change', emit)
-    // },
 
     // 当用户手动勾选数据行的 Checkbox 时触发的事件
     select (emit) {
@@ -654,6 +651,23 @@ export default {
       // console.log(emit)
       this.$emit('select-all', emit)
     },
+
+    /** @description 当表格的排序条件发生变化的时候会触发该事件
+      * @author yx
+      * @param  {Number}  val 
+   */
+    sortChange (val) {
+      this.$emit('sort-change', val)
+    },
+
+    /** @description 当表格的筛选条件发生变化的时候会触发该事件，参数的值是一个对象，对象的 key 是 column 的 columnKey，对应的 value 为用户选择的筛选条件的数组。
+         * @author yx
+         * @param  {Number}  val 
+      */
+    filterChange (filters) {
+      this.$emit('filter-change', filters)
+    },
+
 
     /** @description 自定义序号
      * @author yx
@@ -681,6 +695,9 @@ export default {
       // console.log(`当前页: ${val}`)
       this.$emit('current-change', val)
     },
+
+
+
 
     /* ---------自定义的函数----------- */
 
