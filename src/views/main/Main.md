@@ -151,6 +151,8 @@ export default {
 | scroll |  是否开启滚动 |  boolean | — | false |
 | shrink-width |    面包屑的收缩按钮，收缩后菜单的宽度,如果有padding、margin也要算进去 |  number | — | 64 |
 
+> tips: `spacing`(间距)如果看不到，要在`app.vue`文件中设置背景色 ，设置当前页面的背景色如：`body{ background: #f5f7fa}`;
+
 
 ### Slot
 | name                 | 说明                         |

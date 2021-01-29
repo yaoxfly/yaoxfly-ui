@@ -25,15 +25,7 @@ nrm add enpm http://192.168.200.127:8081/repository/npm-public/
 nrm use enpm
 ```
 
-###  4.登录到私服
-
-```js
-npm login
-```
-
-> tips: 账号: admin 、密码: admin123 、邮箱:admin@example.org
-
-###  5.安装 eve-ui
+###  4.安装 eve-ui
 
 ```js
 npm i eve-ui
@@ -41,11 +33,19 @@ npm i eve-ui
 
 > tips: 记得切换回 `npm` 镜像，不然外域的插件无法更新和下载
 
+
+###  5.安装 element-ui
+
+```js
+npm i element-ui 
+```
+> tips: `eve-ui`基于`element-ui`，所以`element-ui`必须下载
+
 ### 6. eslint校验问题
 
-若安装组件库后发现终端一直输出 eslint 的校验问题，解决方案如下：
+若安装组件库后发现终端一直输出 `eslint` 的校验问题，解决方案如下：
 
-在根路径 即 package.json 同级路径建立个.eslintignore 文件
+在根路径 即 `package.json` 同级路径建立个 `.eslintignore` 文件
 
 在文件中写入如下内容
 
@@ -55,7 +55,7 @@ dist/
 lib/
  *.md
 ```
-> tips：主要lib目录，当期目录不能省略
+> tips：主要`lib`目录，当期目录不能省略
 
 
 ###  Q问题
@@ -64,7 +64,7 @@ lib/
 npm i node-sass  sass-loader --save-dev
 ```
 
-插件版本更新后，重新下载插件，package.json版本已经更新，但内容未更新
+插件版本更新后，重新下载插件，`package.json`版本已经更新，但内容未更新
 
 解决方案如下：
 

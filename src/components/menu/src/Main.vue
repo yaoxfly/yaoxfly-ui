@@ -123,10 +123,12 @@ export default {
       type: Number,
       default: 200
     },
-    // 距离顶部(header)的距离(原本属性是height现在改完top)
+    /* 距离顶部(header)的距离(原本属性是height现在改完top),设置了box-sizing: border-box后会影响这个值,如果设置当前值还会出现没铺满的bug
+    请设置当前值为0并在app.vue中添加样式 body{overflow: hidden;}
+    */
     top: {
       type: Number,
-      default: 55
+      default: 42
     },
     // 配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认
     config: {

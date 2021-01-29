@@ -1,21 +1,26 @@
 #  快速上手
-本节将介绍如何在项目中使用 eve-ui
+本节将介绍如何在项目中使用 `eve-ui`
 
 # 引入 eve-ui
-你可以引入整个 eve-ui，或是根据需要仅引入部分组件。我们先介绍如何引入完整的 eve-ui。
+你可以引入整个 `eve-ui`，或是根据需要仅引入部分组件。我们先介绍如何引入完整的 `eve-ui`。
 
 ## 完整引入
 
-在 main.js 中写入以下内容：
+在 `main.js` 中写入以下内容：
 
 ```js
+//引入element-ui
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
+//引入eve-ui
 import eveUi from 'eve-ui'
-Vue.use(eveUi)
-//引入全局样式
 import 'eve-ui/lib/eve-ui.css'
+Vue.use(eveUi)
 ```
 
-接着在store目录的index.js文件里引入组件插件里的store
+接着在`store`目录的`index.js`文件里引入组件插件里的`store`
 
 ```js
 import modules from 'eve-ui/src/store/modules'
@@ -25,8 +30,7 @@ export default new Vuex.Store({
   }
 })
 ```
-
-> tips:组件库里`store`不管是完整引入还是按需，都需要引入，否则某些组件的功能会不完整,比如Menu和TagViews等组件的联动功能。
+> tips:组件库里`store`不管是完整引入还是按需，都需要引入，否则某些组件的功能会不完整,比如`Menu`和`TagViews`等组件的联动功能，由于组件是基于`element-ui`的所以`element-ui`也要引入。
 
 ## 按需引入(全局)
 
@@ -53,15 +57,19 @@ npm install babel-plugin-component -D
   ]
 }
 ```
-接下来，如果你只希望引入部分组件，比如 Tree、Header和Menu组件，那么需要在 main.js 中写入以下内容：
+接下来，如果你只希望引入部分组件，比如 `Tree`、`Header`和`Menu`组件，那么需要在 `main.js` 中写入以下内容：
 
 ``` js
+//引入element-ui
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
 import { Tree, Header, Menu } from 'eve-ui'
 const component = [Tree, Header, Menu]
 component.forEach(item => {
   Vue.use(item)
 })
-//引入全局样式
 import 'eve-ui/lib/eve-ui.css'
 ```
 
@@ -101,6 +109,16 @@ export default {
 某些组件在不引入全局css的情况样式会有点乱，如果有其他样式问题，可以在`main.js`引入全局样式 
 ```js
 import 'eve-ui/lib/eve-ui.css'
+```
+
+不要忘了引入依赖包 `element-ui` 在 `main.js`文件中引入
+
+```js
+//引入element-ui
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
 ```
 
 在模板上简单使用
