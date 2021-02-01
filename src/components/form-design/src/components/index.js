@@ -14,6 +14,7 @@ import fdRichText from './fd-rich-text'
 import fdSlotComp from './fd-slot-comp'
 import fdTree from './fd-tree'
 import fdDropDownTree from './fd-drop-down-tree'
+import fdInputUnitChange from './fd-input-unit-change'
 const components = [
   FdCascader,
   FdLabel,
@@ -29,7 +30,8 @@ const components = [
   fdRichText,
   fdSlotComp,
   fdTree,
-  fdDropDownTree
+  fdDropDownTree,
+  fdInputUnitChange
 ]
 const dic = {}
 components.forEach(component => {

@@ -15,6 +15,8 @@ import { richText, richTextPropsForm } from './form-item-props/fd-rich-text'
 import { slotComp, slotCompPropsForm } from './form-item-props/fd-slot-comp'
 import { treeComp, treePropsForm } from './form-item-props/fd-tree'
 import { dropDownTreeComp, dropDownTreePropsForm } from './form-item-props/fd-drop-down-tree'
+import { inputUnitChangeComp, inputUnitChangePropsForm } from './form-item-props/fd-input-unit-change'
+
 /**
  * 普通输入组件
  */
@@ -115,7 +117,17 @@ export const commonComps = [
     props: dropDownTreeComp.props,
     // 不显示设置默认值的组件
     dontShowDefault: true
-  }
+  },
+  {
+    comp: 'fd-input-unit-change',
+    label: '单位输入框',
+    id: '100012',
+    category: 'input',
+    props: inputUnitChangeComp.props,
+    // 不显示设置默认值的组件
+    dontShowDefault: true
+  },
+
 ]
 /**
  * 布局组件
@@ -190,4 +202,5 @@ export const formItemPropsForms = {
   'fd-slot-comp': slotCompPropsForm,
   'fd-tree': treePropsForm,
   'fd-drop-down-tree': dropDownTreePropsForm,
+  'fd-input-unit-change': inputUnitChangePropsForm
 }
