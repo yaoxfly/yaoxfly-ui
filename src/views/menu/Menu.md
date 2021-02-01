@@ -75,8 +75,10 @@ export default {
 | ----- | ------ | ----- | ----- | - |
 | data  |   菜单数据,详细参数见下表 |  array | — | [] |
 | width |  菜单宽度 |  number | — | 200 |
-| top   |   距离顶部(header)的距离 |  number | — | 55 |
+| top   |   距离顶部(header)的距离|  number | — | 42 |
 | config   |   配置菜单的text、path、children等key值--支持只修改某个key值,其他配置默认,详细参数见下表 |  object | — | {} |
+
+>tips: 设置了`box-sizing: border-box`后会影响`top`属性,如果出现菜单纵向没铺满的`bug`,可自由调节当前值到铺满的为止，或者设置`top`值为`0`并在`app.vue`中添加样式 `body{overflow: hidden;}`
 
 ### data 
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
@@ -112,5 +114,7 @@ export default {
 | 方法名 | 说明 | 参数  |
 | ----| ----| --- | 
 | update | 更新组件--配合header联动用, 当header组件调用findlowestMenu方法赋值时，跳转菜单，导致左边菜单展开多个情况时使用| —| 
+
+
 
 
