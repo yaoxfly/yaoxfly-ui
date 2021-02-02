@@ -78,11 +78,14 @@
   }
 
   li {
-    list-style: disc !important;
+    // list-style: disc !important;
   }
 
   .hljs-comment {
     color: rgb(86, 124, 80);
+  }
+  .hljs-keyword {
+    color: #445368;
   }
 }
 
