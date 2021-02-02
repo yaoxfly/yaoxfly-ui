@@ -76,6 +76,14 @@
     -webkit-font-smoothing: auto;
     background-color: #fafafa;
   }
+
+  li {
+    list-style: disc !important;
+  }
+
+  .hljs-comment {
+    color: rgb(86, 124, 80);
+  }
 }
 
 // //滚动条的宽度

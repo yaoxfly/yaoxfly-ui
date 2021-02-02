@@ -22,6 +22,12 @@ const routes = [
 
       },
       {
+        path: '/cli',
+        name: '脚手架',
+        component: () => import('../views/eve-cli/EveCli.vue'),
+
+      },
+      {
         path: '/main',
         name: 'Main',
         component: () => import('../views/main/Main.vue'),
