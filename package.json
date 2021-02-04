@@ -1,11 +1,11 @@
 {
   "name": "eve-ui",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "eve-ui",
   "private": false,
   "license": "MIT",
   "author": "yaoxfly",
-  "main": "src/index.js",
+  "main": "lib/eve-ui.umd.min.js",
   "files": [
     "src",
     "lib"
