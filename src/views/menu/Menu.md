@@ -1,5 +1,7 @@
   # Menu
   菜单组件,与Header和Breadcrumb以及TagViews组件有联动关系。
+  > tips: 全局样式 `li{
+    display: inline-block;`} 会影响到菜单三级(包括三级)以上的样式及布局,设置当前样式时不要设置为全局，以免导致菜单样式错乱。
   # 基础用法
  <template>
   <div>
@@ -114,7 +116,6 @@ export default {
 | 方法名 | 说明 | 参数  |
 | ----| ----| --- | 
 | update | 更新组件--配合header联动用, 当header组件调用findlowestMenu方法赋值时，跳转菜单，导致左边菜单展开多个情况时使用| —| 
-
 
 
 
