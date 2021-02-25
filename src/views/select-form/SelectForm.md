@@ -182,8 +182,17 @@ export default {
 | filter-param |  当参数为空时是否过滤参数 |  boolean | — | true |
 | adaptive-expand |  是否开启自适应收缩展开 |  boolean | — | true |
 | left-form-width |  左边表单的宽度,一般减去左边菜单栏的宽度，布局组件的间距 |  number | — | — |
-| right-button-width |  右边查询、重置等按钮的宽度 |  number | — | 230 |
+| right-button-width | 右边查询、重置等按钮的宽度 |  number | — | 230 |
+| right-button-data | 右边按钮的数组--当前数组会覆盖默认的按钮,个性化需求用，详细配置见下表| array | — | [] |
 
+### right-button-data
+| 参数   | 说明 | 类型  | 可选值 | 默认值 |
+| ----- | ------ | ----- | ----- | - |
+| value  | 按钮文本 | string | — | — | 
+| buttonClassName |按钮的样式名称| string | — | —|
+| iconClassName |按钮的icon名称| string | — | —|  
+| valueClassName |按钮文本的样式| string | — | —| 
+| type |按钮的类型| string| reset(重置)、packUp(展开或收起)，默认就是普通的按钮 | — | 
 
 ### Data Attributes
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
@@ -228,8 +237,10 @@ export default {
 ### Events
 | 事件名称              | 说明                        | 回调参数 |
 | --------------------- | -------------------------  | -------- |
-| handle-submit         | 查询按钮的回调函数           |  双向绑定值 {} |
-| pack-up               |  展开或收起  |    isHidden    |
+| handle-submit | 查询按钮的回调函数 | 双向绑定{} |
+| pack-up      |  展开或收起  |    isHidden |
+| right-button-event | 右边按钮事件 | 当前点击按钮的值，如{index:1,value:'重置'} |
+
 
 ### Slot
 | name                 | 说明                          |

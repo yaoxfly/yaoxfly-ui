@@ -284,23 +284,44 @@
         <!--按钮的值-->
         <el-form-item class="eve-select-form__form">
           <slot name="right-button">
-            <el-button
-              type="primary"
-              ref="search"
-              @click="handleSubmit('formValidate')"
-              >查 询</el-button
-            >
-            <el-button ref="reset" @click="handleReset('formValidate')"
-              >重 置</el-button
-            >
-            <span
-              ref="packUp"
-              class="eve-select-form__pack-up"
-              @click="packUp"
-              v-if="isShowExpand"
-            >
-              {{ isHidden ? '展开' : '收起' }}
-            </span>
+            <div v-if="rightButtonData.length > 0">
+              <template v-for="(item, index) in rightButtonData">
+                <el-button
+                  :class="item.buttonClassName"
+                  :key="`rightButtonData_${index}`"
+                  @click="
+                    rightButtonEvent({
+                      index: index,
+                      value: item.value,
+                      type: item.type,
+                    })
+                  "
+                >
+                  <i :class="item.iconClassName"></i>
+                  <span :class="item.valueClassName">{{ item.value }}</span>
+                </el-button>
+              </template>
+            </div>
+            <div v-else>
+              <el-button
+                type="primary"
+                ref="search"
+                @click="handleSubmit('formValidate')"
+              >
+                <span>查 询</span>
+              </el-button>
+              <el-button ref="reset" @click="handleReset('formValidate')">
+                <span>重 置</span>
+              </el-button>
+              <span
+                ref="packUp"
+                class="eve-select-form__pack-up"
+                @click="packUp"
+                v-if="isShowExpand"
+              >
+                {{ isHidden ? '展开' : '收起' }}
+              </span>
+            </div>
           </slot>
         </el-form-item>
       </section>
@@ -461,18 +482,23 @@ export default {
       default: true
     },
 
-    // 左边表单的宽度,一般减去左边菜单栏的宽度，布局组件的间距
+    //当前组件的左偏移量,一般是指减去左边菜单栏的宽度和布局组件间距的距离--自适应收缩展开时用
     leftFormWidth: {
       type: Number,
       default: 0
     },
 
-    // 右边查询、重置等按钮的宽度,有用插槽、样式等方式改变了右边这个宽度需要手动设置--自适应收缩展开时用
+    // 右边查询、重置等按钮的宽度,有用插槽、样式等方式改变了右边这个宽度需要手动设置且需加上按钮离最右边body的偏移量--自适应收缩展开时用
     rightButtonWidth: {
       type: Number,
       default: 230
-    }
+    },
 
+    //右边按钮的数组--当前数组会覆盖默认的按钮，符合个性化的需求
+    rightButtonData: {
+      type: Array,
+      default: () => []
+    }
   },
 
   data () {
@@ -510,7 +536,7 @@ export default {
       const {
         winWidth, formWidth, labelWidth,
         leftWidth = this.leftFormWidth !== 0 ? this.leftFormWidth : this.offset(this.$refs.formValidate.$el).left,
-        rightWidth = this.offset(this.$refs.reset.$el).right
+        rightWidth = this.$refs.reset ? this.offset(this.$refs.reset.$el).right : 0
       } = param || {}
       // 250是左边导航的宽度  230:右边查询重置收起等按钮的宽度  288:formWidth 120:label   1366-250-200/408=2.24 Math.floor()
       return Math.floor((winWidth - leftWidth - this.rightButtonWidth - rightWidth) / (formWidth + labelWidth))
@@ -580,7 +606,26 @@ export default {
       return model
     },
 
-
+    /** @description  右边按钮事件
+      * @author yx
+      * @param  {Object}  param //事件回调
+      */
+    rightButtonEvent (param) {
+      const { type, index, value } = param || {}
+      const keyMap = {
+        reset: () => {
+          this.handleReset('formValidate')
+        },
+        'pack-up': () => {
+          this.packUp()
+        }
+      }
+      keyMap[type] && keyMap[type]()
+      this.$emit('right-button-event', {
+        index: index,
+        value: value
+      })
+    }
   },
 
   computed: {

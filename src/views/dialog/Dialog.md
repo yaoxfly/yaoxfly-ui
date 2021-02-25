@@ -108,20 +108,18 @@ export default {
 | is-sure-close (自定义) | 点击确定是否关闭 Dialog| boolean | — | true|
 
 ### Slot
-
 | name                 | 说明                          |
 | -------------------- | ----------------------------|
 | —                    | Dialog 的内容               |
 | title                | Dialog 标题区的内容          |
 | footer               | Dialog 按钮操作区的内容      |
-| leftFooter(自定义)   | Dialog 按钮操作区左边的内容   |
-| rightFooter (自定义) | Dialog 按钮操作区的右边的内容  |
+| leftFooter(自定义)    | Dialog 按钮操作区左边的内容   |
+| rightFooter (自定义)  | Dialog 按钮操作区的右边的内容  |
 
 ### Events
-
-| 事件名称              | 说明                          | 回调参数 |
+| 事件名称               | 说明                          | 回调参数 |
 | --------------------- | ----------------------------- | -------- |
-| close                 | Dialog 关闭前的回调           | —        |
-| closed                | Dialog 关闭动画结束时的回调   | —        |
-| left-button(自定义)   | Dialog 左边按钮点击事件的回调 | —        |
-| right-button (自定义) | Dialog 右边按钮点击事件的回调 | —        |
+| close                 | Dialog 关闭前的回调         | —        |
+| closed                | Dialog 关闭动画结束时的回调  | —        |
+| left-button(自定义)   | Dialog 左边按钮点击事件的回调 |  {index:index,//按钮下标 value:value //按钮值}        |
+| right-button (自定义) | Dialog 右边按钮点击事件的回调 |  {index:index,//按钮下标 value:value //按钮值}  |
