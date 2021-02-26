@@ -200,10 +200,10 @@ export default {
 | label  | 表单左边的文本 | string | — | — | 
 | prop  |  表单的key值,用来规则校验的,和model、rules里key值保持同步 | string | — | — | 
 | type  |  表单类型  | string | input、select、date、time、radio、checkbox | — | 
-| pickerType  | type是date类型表单的显示类型  | string | 	year/month/date/dates/ week/datetime/datetimerange/ daterange/monthrange | datetime | 
+| pickerType  | type是date类型表单的显示类型  | string | 	year/month/date/dates/ week/datetime/datetimerange/ daterange/monthrange | date | 
 | placeholder  |  提供可描述输入字段预期值的提示信息（hint）  | string | 	 —  |  —  | 
-| valueFormat  | 可选，绑定值的格式。不指定则绑定值为 Date/time 对象  | string | 见日期格式| yyyy-MM-dd/HH:mm:ss  | 
-| format  |  可选，显示在输入框中的格式  | string | 见日期格式 | yyyy-MM-dd/HH:mm:ss| 
+| valueFormat  | 可选，绑定值的格式。不指定则绑定值为 Date/time 对象  | string | 见日期格式| yyyy-MM-dd HH:mm:ss  | 
+| format  |  可选，显示在输入框中的格式  | string | 见日期格式 | yyyy-MM-dd HH:mm:ss| 
 | pickerOptions  | 当前时间日期选择器特有的选项参考下表  | object | — |  {}  | 
 | formWidth  | 表单的宽度  | number | — |   没写默认是跟着全局属性formWidth  | 
 | labelWidth  | 表单左边的文本的宽度  | number | — | 没写默认是跟着全局属性labelWidth| 

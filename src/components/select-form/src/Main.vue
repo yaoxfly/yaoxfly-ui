@@ -71,7 +71,6 @@
                 </span>
                 {{ item.label }}</label
               >
-
               <el-form-item
                 :prop="item.prop"
                 class="eve-select-form__formItem"
@@ -79,7 +78,7 @@
               >
                 <slot :name="item.prop" :row="item" :data="data">
                   <el-date-picker
-                    :type="item.pickerType"
+                    :type="item.pickerType || 'date'"
                     v-model="model[item.prop]"
                     :placeholder="item.placeholder || '选择日期'"
                     :style="{ width: `${getFormWidth(item.formWidth)}px` }"
@@ -402,7 +401,7 @@ export default {
           label: '日期：',
           prop: 'date',
           type: 'date',
-          pickerType: 'datetime', //类型可选为:date、datetime
+          // pickerType: 'datetime', //类型可选为:date、datetime
           // valueFormat: 'yyyy-MM', //输出值的格式转换
           // format: 'yyyy-MM'//显示在输入框中的格式 
         },
@@ -612,19 +611,38 @@ export default {
       */
     rightButtonEvent (param) {
       const { type, index, value } = param || {}
+      const emitParam = {}
       const keyMap = {
         reset: () => {
           this.handleReset('formValidate')
+          Object.assign(emitParam, {
+            index: index,
+            value: value
+          })
         },
         'pack-up': () => {
-          this.packUp()
+          this.isHidden = !this.isHidden
+          Object.assign(emitParam, {
+            isHidden: this.isHidde,
+          })
+        },
+        search: () => {
+          this.$refs.formValidate.validate(valid => {
+            if (valid) {
+              const model = this.filterParams(this.model)
+              Object.assign(emitParam, model)
+            }
+          })
+        },
+        default: () => {
+          Object.assign(emitParam, {
+            index: index,
+            value: value
+          })
         }
       }
-      keyMap[type] && keyMap[type]()
-      this.$emit('right-button-event', {
-        index: index,
-        value: value
-      })
+      keyMap[type] ? keyMap[type]() : keyMap.default()
+      this.$emit('right-button-event', emitParam)
     }
   },
 
@@ -659,7 +677,7 @@ export default {
 
     //日期/时间 输出格式
     pickerFormat () {
-      return function (valueFormat, pickerType, type) {
+      return function (valueFormat, pickerType = 'date', type) {
         if (valueFormat) {
           return valueFormat
         }
