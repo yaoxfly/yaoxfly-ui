@@ -192,7 +192,7 @@ export default {
 | buttonClassName |按钮的样式名称| string | — | —|
 | iconClassName |按钮的icon名称| string | — | —|  
 | valueClassName |按钮文本的样式| string | — | —| 
-| type |按钮的类型| string| reset(重置)、packUp(展开或收起)，默认就是普通的按钮 | — | 
+| type |按钮的类型| string| search(查询) reset(重置)、packUp(展开或收起)， 默认就是普通的按钮 | — | 
 
 ### Data Attributes
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
