@@ -86,7 +86,7 @@ export default {
             label: '日期：',
             prop: 'date',
             type: 'date',
-            pickerType: 'datetime', //类型可选为:date、datetime
+            // pickerType: 'date', //类型可选为:date、datetime
             // valueFormat: 'yyyy-MM', //输出值的格式转换
             // format: 'yyyy-MM'//选择框里的值的格式转换
           },

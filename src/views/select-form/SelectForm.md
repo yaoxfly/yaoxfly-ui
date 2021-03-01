@@ -111,7 +111,7 @@ export default {
             label: '日期：',
             prop: 'date',
             type: 'date',
-            pickerType: 'datetime', //类型可选为:date、datetime
+            // pickerType: 'date', //类型可选为:date、datetime
             // valueFormat: 'yyyy-MM', //输出值的格式转换
             // format: 'yyyy-MM'//选择框里的值的格式转换
           },
@@ -192,7 +192,7 @@ export default {
 | buttonClassName |按钮的样式名称| string | — | —|
 | iconClassName |按钮的icon名称| string | — | —|  
 | valueClassName |按钮文本的样式| string | — | —| 
-| type |按钮的类型| string| search(查询) reset(重置)、packUp(展开或收起)， 默认就是普通的按钮 | — | 
+| type |按钮的类型| string| search(查询)、 reset(重置)、packUp(展开或收起)， 默认就是普通的按钮 | — | 
 
 ### Data Attributes
 | 参数   | 说明 | 类型  | 可选值 | 默认值 |
@@ -202,8 +202,8 @@ export default {
 | type  |  表单类型  | string | input、select、date、time、radio、checkbox | — | 
 | pickerType  | type是date类型表单的显示类型  | string | 	year/month/date/dates/ week/datetime/datetimerange/ daterange/monthrange | date | 
 | placeholder  |  提供可描述输入字段预期值的提示信息（hint）  | string | 	 —  |  —  | 
-| valueFormat  | 可选，绑定值的格式。不指定则绑定值为 Date/time 对象  | string | 见日期格式| yyyy-MM-dd HH:mm:ss  | 
-| format  |  可选，显示在输入框中的格式  | string | 见日期格式 | yyyy-MM-dd HH:mm:ss| 
+| valueFormat  | 可选，绑定值的格式。不指定则绑定值为 Date/time 对象  | string | 见日期格式| yyyy-MM-dd   | 
+| format  |  可选，显示在输入框中的格式  | string | 见日期格式 | yyyy-MM-dd | 
 | pickerOptions  | 当前时间日期选择器特有的选项参考下表  | object | — |  {}  | 
 | formWidth  | 表单的宽度  | number | — |   没写默认是跟着全局属性formWidth  | 
 | labelWidth  | 表单左边的文本的宽度  | number | — | 没写默认是跟着全局属性labelWidth| 
