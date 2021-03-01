@@ -73,7 +73,7 @@ npm i node-sass  sass-loader --save-dev
 npm i nrm@1.0.0 -g
 ```
 
-4.`npm i`包含`eve-ui`组件的项目，产生不能下载的情况
+4.npm i包含`eve-ui`组件的项目，产生不能下载的情况
 ```js
 首先检查是否在enpm的镜像下 如果不是则切换为enpm镜像，再下载，若发现除了eve-ui可以下载，其他组件无法下载则在
 package.json 中把 eve-ui 删除或者注释,然后再按以下步骤重新下载，发生这种情况的原因主要是:私域镜像不能下载
